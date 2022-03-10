@@ -1,0 +1,92 @@
+<template>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+    <div class="input-hotel-details">
+        <h1>Make Your Stay Memorable</h1>
+
+        <form class="form-details">
+            <div class="form-group">
+                <input type="text" class="form-control" id="hotelName" placeholder="Destination Country/Hotel Name">
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <input type="date" class="form-control" id="checkInDate" placeholder="Check-in Date">
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" id="checkOutDate" placeholder="Check-out Date" onfocus="(this.type='date')">
+                </div>
+                <div class="col">
+                    <input type="number" class="form-control" id="noOfGuests" placeholder="No. of Guest(s)">
+                </div>
+                <div class="col">
+                    <input type="number" class="form-control" id="noOfRooms" placeholder="No. of Room(s)">
+                </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Search Accomodations</button>
+        </form>
+    </div> <br>
+
+    <h2>Popular Hotels</h2>
+
+    <div class="popular-hotels">
+        <div class="row">
+            <div class="col">
+                <figure>
+                    <img src="@/assets/the-plaza-ny.jpg" alt="">
+                    <figcaption>The Plaza, New York</figcaption>
+                </figure>
+            </div>
+            <div class="col">
+                <figure>
+                    <img src="@/assets/mbs-singapore.jpg" alt="">
+                    <figcaption>Marina Bay Sands, Singapore</figcaption>
+                </figure>
+            </div>
+            <div class="col">
+                <figure>
+                    <img src="@/assets/the-shelbourne-hotel-dublin.jpg" alt="">
+                    <figcaption>The Shelbourne Hotel, Dublin</figcaption>
+                </figure>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    
+}
+</script>
+
+<style scoped>
+h2 {
+    text-align: left;
+}
+
+button {
+    background-color: lightskyblue;
+    border-color: lightskyblue;
+    color: black;
+    font-weight: bold;
+}
+
+img {
+    height: 100%;
+    width: 100%;
+}
+
+.form-details {
+    background-color: rgb(1, 1, 87);
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.input-hotel-details {
+    background-image: url("@/assets/accomodation-page.jpeg");
+}
+</style>
