@@ -1,16 +1,16 @@
 <template>
-  <BookFlight/>
+  <!-- <BookFlight/> -->
   <FlightResults/>
 </template>
 
 <script>
-import BookFlight from './components/BookFlight.vue'
+// import BookFlight from './components/BookFlight.vue'
 import FlightResults from './components/FlightResults.vue'
 
 export default {
   name: 'App',
   components: {
-    BookFlight,
+    // BookFlight,
     FlightResults
   }
 }

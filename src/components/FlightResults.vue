@@ -4,35 +4,13 @@
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
-
-    <div class="container">
-        <div class="row" gx-5>
-            <div class="col">
-                <div class="col bg-light text-dark p-2">
-                    Melbourne
-                </div>
-            </div>
-            <div class="col">
-                <div class="col bg-light text-dark p-2">
-                    Singapore
-                </div>
-            </div>
-            <div class="col">
-                <div class="col bg-light text-dark p-2">
-                    14 Feb 2022 - 21 Feb 2022
-                </div>
-            </div>
-            <div class="col">
-                <div class="col bg-light text-dark p-2">
-                    2 Passengers
-                </div>
-            </div>
-            <div class="col">
-                <div class="col bg-light text-dark p-2">
-                    Economy Class
-                </div>
-            </div>
-        </div>
+     <div class="search-field">
+        <FlightSearchInput input="Melbourne"/>
+        <i class="bi bi-arrow-right"></i>
+        <FlightSearchInput input="Singapore"/>
+        <FlightSearchInput input="14 Feb 2022 - 21 Feb 2022"/>
+        <FlightSearchInput input="2 Passengers"/>
+        <FlightSearchInput input="Economy Class"/>
     </div>
     <br>
     <div class="form-group">
@@ -43,19 +21,56 @@
         </div>
     </div>
     <br>
-    <div class="text-left">
-        <h4>Depart - Melbourne to Singapore</h4>
+
+    <h2>Depart - Melbourne to Singapore</h2>
+    <div class="container">
+        <div class="row rectangle">
+            <div class="circle"></div>
+        </div>
+        <br>
+        <div class="row rectangle">
+            <div class="circle"></div>
+        </div>
     </div>
-    <div class="container-md">100% wide until medium breakpoint</div>
 
 </template>
 
 <script>
+import FlightSearchInput from '@/template/FlightSearchInput.vue'
+
 export default {
-    
+    name: 'FlightResults',
+    components: {
+        FlightSearchInput
+    }
 }
 </script>
 
-<style>
-
+<style scoped>
+    .search-field {
+        display: flex;
+        justify-content: center;
+    }
+    .search-result {
+        text-align: left;
+    }
+    h2 {
+    text-align: left;
+    margin-left: 80px;
+    font-weight: bold;
+    color: rgb(1, 1, 87);
+    }   
+    .rectangle {
+        width: 1300px;
+        height: 150px;
+        background: rgb(0, 15, 95, 0.13);
+    }
+    .circle {
+    width: 120px;
+    height: 120px;
+    background: white;
+    border-radius: 50%;
+    margin-left: 30px;
+    margin-top: 15px;
+    }
 </style>
