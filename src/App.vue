@@ -1,14 +1,17 @@
 <template>
   <AccomodationPage/>
+  <AccomodationResults/>
 </template>
 
 <script>
-import AccomodationPage from './components/AccomodationPage.vue'
+import AccomodationPage from '@/components/AccomodationPage.vue'
+import AccomodationResults from '@/components/AccomodationResults.vue'
 
 export default {
   name: 'App',
   components: {
-    AccomodationPage
+    AccomodationPage,
+    AccomodationResults
   }
 }
 </script>

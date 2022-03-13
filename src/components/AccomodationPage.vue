@@ -27,11 +27,12 @@
             <br>
             <button type="submit" class="btn btn-primary">Search Accomodations</button>
         </form>
+        <br>
     </div> <br>
 
     <h2>Popular Hotels</h2>
 
-    <div class="popular-hotels">
+    <div class="container">
         <div class="row">
             <div class="col">
                 <figure>
@@ -62,8 +63,18 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+    text-align: left;
+    margin-left: 180px;
+    font-weight: bold;
+    color: rgb(1, 1, 87);
+}
+
 h2 {
     text-align: left;
+    margin-left: 120px;
+    font-weight: bold;
+    color: rgb(1, 1, 87);
 }
 
 button {
@@ -76,17 +87,24 @@ button {
 img {
     height: 100%;
     width: 100%;
+    border-radius: 10px;
+}
+
+figcaption {
+    font-weight: bold;
 }
 
 .form-details {
     background-color: rgb(1, 1, 87);
     padding: 20px;
     border-radius: 10px;
-    margin-right: 50px;
-    margin-left: 50px;
+    margin-right: 180px;
+    margin-left: 180px;
 }
 
 .input-hotel-details {
     background-image: url("@/assets/accomodation-page.jpeg");
+    height: 500px;
+    padding-top: 100px;
 }
 </style>
