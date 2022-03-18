@@ -1,18 +1,10 @@
 <template>
-  <AccomodationPage/>
-  <AccomodationResults/>
+  <router-view/>
 </template>
 
 <script>
-import AccomodationPage from '@/components/AccomodationPage.vue'
-import AccomodationResults from '@/components/AccomodationResults.vue'
-
 export default {
   name: 'App',
-  components: {
-    AccomodationPage,
-    AccomodationResults
-  }
 }
 </script>
 

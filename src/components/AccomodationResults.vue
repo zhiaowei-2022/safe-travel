@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     
     <div class="container-fluid" style="margin-bottom: 100px">
+        <h1>{{this.hotelName}} {{this.checkInDate}} {{this.checkOutDate}} {{this.noOfGuests}} {{this.noOfRooms}}</h1>
         <span class="search-field">
             <SearchInput input="Singapore"/>
             <SearchInput input="14 Feb 2022 - 21 Feb 2022"/>
@@ -30,9 +31,28 @@ import AccomodationResult from '@/template/AccomodationResult.vue'
 
 export default {
     name: 'AccomodationResults',
+
     components: {
         SearchInput,
         AccomodationResult
+    },
+    
+    data() {
+        return {
+            hotelName: "",
+            checkInDate: "",
+            checkOutDate: "",
+            noOfGuests: "",
+            noOfRooms: "",
+        }
+    },
+
+    created() {
+        this.hotelName=this.$route.query.hotelName
+        this.checkInDate=this.$route.query.checkInDate
+        this.checkOutDate=this.$route.query.checkOutDate
+        this.noOfGuests=this.$route.query.noOfGuests
+        this.noOfRooms=this.$route.query.noOfRooms
     }
 }
 </script>
@@ -57,9 +77,5 @@ img {
     width: 90%;
     border-radius: 20px;
     display: inline-block;
-}
-
-p {
-    margin: 0px;
 }
 </style>

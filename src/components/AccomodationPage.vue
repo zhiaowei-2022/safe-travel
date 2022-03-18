@@ -7,25 +7,30 @@
 
         <form class="form-details">
             <div class="form-group">
-                <input type="text" class="form-control" id="hotelName" placeholder="Destination Country/Hotel Name">
+                <label for="hotelName" class="form-label">Destination Country/Hotel Name:</label>
+                <input type="text" class="form-control" id="hotelName" v-model="hotelName" required>
             </div>
             <br>
             <div class="row">
                 <div class="col">
-                    <input type="date" class="form-control" id="checkInDate" placeholder="Check-in Date">
+                    <label for="checkInDate" class="form-label">Check-in Date:</label>
+                    <input type="date" class="form-control" id="checkInDate" v-model="checkInDate" required>
                 </div>
                 <div class="col">
-                    <input type="date" class="form-control" id="checkOutDate" placeholder="Check-out Date">
+                    <label for="checkOutDate" class="form-label">Check-out Date:</label>
+                    <input type="date" class="form-control" id="checkOutDate" v-model="checkOutDate" required>
                 </div>
                 <div class="col">
-                    <input type="number" class="form-control" id="noOfGuests" placeholder="No. of Guest(s)">
+                    <label for="noOfGuests" class="form-label">No. of Guest(s):</label>
+                    <input type="number" min="1" class="form-control" id="noOfGuests" v-model="noOfGuests" required>
                 </div>
                 <div class="col">
-                    <input type="number" class="form-control" id="noOfRooms" placeholder="No. of Room(s)">
+                    <label for="noOfRooms" class="form-label">No. of Room(s):</label>
+                    <input type="number" min="1" class="form-control" id="noOfRooms" v-model="noOfRooms" required>
                 </div>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Search Accomodations</button>
+            <button type="button" class="btn btn-primary" @click="searchAccomodations()">Search Accomodations</button>
         </form>
         <br>
     </div> <br>
@@ -58,6 +63,29 @@
 
 <script>
 export default {
+    name:"AccomodationPage",
+
+    data() {
+        return {
+            hotelName: "",
+            checkInDate: "",
+            checkOutDate: "",
+            noOfGuests: "",
+            noOfRooms: "",
+        }
+    },
+
+    methods: {
+        async searchAccomodations() {
+            this.$router.push({name: "AccomodationResults", 
+                query:{hotelName: this.hotelName,
+                        checkInDate: this.checkInDate,
+                        checkOutDate: this.checkOutDate,
+                        noOfGuests: this.noOfGuests,
+                        noOfRooms: this.noOfRooms}
+            })
+        }
+    }
     
 }
 </script>
@@ -108,6 +136,13 @@ figcaption {
     background-image: url("@/assets/accomodation-page.jpeg");
     width: 100%;
     height: 500px;
-    padding-top: 100px;
+    padding-top: 80px;
+}
+
+label {
+    color: white;
+    float: left;
+    text-align: left;
+    font-weight: bold;
 }
 </style>
