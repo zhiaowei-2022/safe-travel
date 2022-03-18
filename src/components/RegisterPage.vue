@@ -129,13 +129,19 @@ export default {
         this.emailCriteria = "Invalid Email: Cannot be blank"
         return true
       } else{
-        if (!(this.email.includes("@"))) {
-          this.emailCriteria = "Invalid Email: Requires @"
-          return true
-        } else if (!(this.email.includes("."))) {
-          this.emailCriteria = "Invalid Email: Requires ."
-          return true
-         } 
+        var emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ /* eslint-disable-line */
+        if (!emailFormat.test(this.email)) { /* eslint-disable-line */
+          this.emailCriteria = "Invalid Email Format" 
+          return true;
+        }
+        // if (!(this.email.includes("@"))) {
+        //   this.emailCriteria = "Invalid Email: Requires @"
+        //   return true
+        // } else if (!(this.email.includes("."))) {
+        //   this.emailCriteria = "Invalid Email: Requires ."
+        //   return true
+        //  } 
+        
          else{
           const docRef = doc(db, "Users", this.email);
           const docSnap = await getDoc(docRef);
