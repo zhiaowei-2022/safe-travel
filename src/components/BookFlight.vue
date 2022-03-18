@@ -2,21 +2,18 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-    <SavedModal v-show="showModal" @close-modal="showModal = false" />
-    <div class="save-btn">
-    <button @click="showModal = true">Save</button>
-    </div>
+    
     <!-- Form for Book Flight Search Fields -->
     <div class="book-flight">
         <h1>Dedicated for Happy Flying Experience</h1>
         <form class=form-details>
         <div class="row">
           <div class="col">
-           <label for="origin-country" class="title">Origin</label>
+           <!-- <label for="origin-country" class="form-label">Origin</label> -->
            <input type="text" class="form-control" id="origin-country-input" placeholder="Enter origin country">
           </div>
           <div class="col">
-            <label for="destination-country" class="title">Destination</label>
+            <!-- <label for="destination-country" class="form-label">Destination</label> -->
             <input type="text" class="form-control" id="destination-country-input" placeholder="Enter destination country">
            </div>
         </div>
@@ -25,11 +22,11 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <label for="departure-date" class="label">Departure Date</label>
-                        <input id="departure-date" class="form-control" type="date"/>
+                        <!-- <label for="departure-date">Departure Date</label> -->
+                        <input id="departure-date" class="form-control" type="date" />
                     </div>
                     <div class="col">
-                        <label for="return-date" class="label">Return Date</label>
+                        <!-- <label for="return-date">Return Date</label> -->
                         <input id="return-date" class="form-control" type="date" />
                     </div>
                 </div>
@@ -37,12 +34,12 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <label  class="label">No of Passengers</label>
-                        <input id="no-passengers" min="1" class="form-control" type="number" placeholder="No. of Passenger(s)">
+                        <!-- <label>No of Passengers</label> -->
+                        <input id="no-passengers" class="form-control" type="number" placeholder="No. of Passenger(s)">
                     </div>
                     <div class="col">
-                        <label  class="label">Class</label>
-                        <input id="class-type" min="1" class="form-control" type="number" placeholder="Class">
+                        <!-- <label>Class</label> -->
+                        <input id="class-type" class="form-control" type="number" placeholder="Class">
                     </div>
                 </div>
             </div>  
@@ -83,17 +80,14 @@
                 </figure>
             </div>
         </div>
-    </div>    
+    </div>
+    
+    
 </template>
+
 <script>
-import SavedModal from '@/components/SavedModal.vue'
 export default {
-    components: { SavedModal },
-  data() {
-    return {
-      showModal: false,
-    }
-  },
+    
 }
 </script>
 
@@ -137,11 +131,5 @@ export default {
         border-radius: 10px;
         margin-right: 180px;
         margin-left: 180px;
-    }
-
-    label {
-        color: white;
-        float: left;
-        text-align: left;
     }
 </style>
