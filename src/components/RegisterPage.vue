@@ -166,14 +166,8 @@ export default {
         let y = this.invalidPassword()
         let z = this.invalidUsername()
 
-        console.log(x + " email")
-                console.log(z + " username")
-        
-        console.log(y + " pw")
-
       if ((x == false) && (y == false) && (z == false)) {
-        console.log((x == false) && (y == false) && (z == false))
-        console.log("false alrdy wtf")
+
         return false
       }
       else {
@@ -191,9 +185,6 @@ export default {
         let y = this.invalidPassword()
         let z = this.invalidUsername()
 
-          console.log(x + " email")
-          console.log(y + " pw")
-        console.log(z + " name")
 
         if (x == false && y == false && z == false) {
           alert("Registering for " + username)
