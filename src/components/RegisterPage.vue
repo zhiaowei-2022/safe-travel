@@ -8,21 +8,24 @@
                 <label for="email">Email: </label>
                 <p></p>
               </td>
-
               <td>
-                <input class="registerForm" v-model="email" type="email" placeholder="xyz@gmail.com">
-                <p id="invalidCritera" v-if="invalidEmail()"> {{emailCriteria}} </p>
-                <p v-else>Why is this not showing</p>
+                <input class="registerForm" v-model="email" @input="checkEmail()" type="email" placeholder="xyz@gmail.com">
+                <p v-if="checkingEmail" id="invalidCritera"> {{emailCriteria}} </p>
+                <p v-else id="invalidCritera">&nbsp;</p>
+                
+
               </td>
             </tr>
             
             <tr>
               <td>
-              <label for="username">Username: </label>
+                <label for="username">Username: </label>
+                <p></p>
               </td>
               <td>
-                  <input class="registerForm" v-model="username" type="text" placeholder="xyz">
-                  <p id="invalidCritera" v-if="invalidUsername()"> {{usernameCriteria}} </p>
+                  <input class="registerForm" v-model="username" @input="checkUsername()" type="text" placeholder="xyz">
+                  <p id="invalidCritera" v-if="checkingUsername"> {{usernameCriteria}} </p>
+                  <p v-else id="invalidCritera">&nbsp;</p>
               </td>
             </tr>
 
@@ -32,10 +35,11 @@
                 <p></p>
               </td>
               <td>
-                <input class="registerForm" v-if="showPassword" v-model="password" type="" placeholder="*******">
-                <input class="registerForm" v-else id="password" v-model="password" type="password" placeholder="*******">
-                <p id="invalidCritera" v-if="invalidPassword()"> {{passwordCriteria}} </p> 
-                <p></p>
+                <input class="registerForm" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="*******">
+                <input class="registerForm" v-else v-model="password" @input="checkPassword()" type="password" placeholder="*******">
+                <p id="invalidCritera" v-if="checkingPassword"> {{passwordCriteria}} </p> 
+                <p v-else id="invalidCritera">&nbsp;</p>
+                
               </td>
               <td>
                 <div v-if="showPassword" @click="toggleShow">
@@ -55,17 +59,12 @@
                 <p id="login"> Already have an account? Login HERE </p>
                   <!-- <router-link to="/loginrouter">HERE</router-link> </p> -->
                   <!-- <router-view/> <br> -->
-                <button type="button" id="registerBtn" v-on:click="register()"> REGISTER</button>
-                <!-- <button type="button" id = "invalidRegisterBtn" v-if = "allInvalid()">REGISTER</button>
-                <button type="button" v-else id="registerBtn" v-on:click="register()"> REGISTER</button> -->
+
+                <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>
+                <button type="button" v-else id ="invalidRegisterBtn"> REGISTER</button>
                 </td>
             </tr>
-
           </table>
-
-
-                
-
         </div>
 </template>
 
@@ -90,9 +89,12 @@ export default {
       emailCriteria: "",
       passwordCriteria: "",
       usernameCriteria: "",
-      username: ""
-
-
+      username: "",
+      checkingEmail: false,
+      checkingUsername: false,
+      checkingPassword: false,
+      checkingRegister: true,
+      criteriaArray:[false, false, false]
     };
   },
   methods: {
@@ -104,7 +106,24 @@ export default {
       }
     },
 
+    async checkEmail() {
+      this.checkingEmail = true
+      this.invalidEmail()
+    },
+
+    async checkUsername() {
+      this.checkingUsername = true
+
+      this.invalidUsername()
+    },
+
+    async checkPassword () {
+      this.checkingPassword = true
+      this.invalidPassword()
+    },
+
     async invalidEmail(){
+      this.criteriaArray[0] = false
       this.email = this.email.trim()
       if (this.email == ""){
         this.emailCriteria = "Invalid Email: Cannot be blank"
@@ -126,23 +145,30 @@ export default {
           }
           else {
             this.emailCriteria = ""
+            this.checkingEmail = false
+            this.criteriaArray[0] = true
             return false;
+
           }
         }
       }
     },
 
     invalidUsername() {
+      this.criteriaArray[1] = false
       if (this.username == "") {
         this.usernameCriteria = "Invalid Username: Cannot be empty"
         return true
       } 
       else {
+        this.checkingUsername = false
+        this.criteriaArray[1] = true
         return false
       }
     },
 
     invalidPassword() {
+      this.criteriaArray[2] = false
       var numbers = /[0-9]/g;
       if (!this.password.match(numbers) && this.password.length < 8) {
         this.passwordCriteria = "Invalid Password: At least 8 Characters with numeric number"
@@ -156,25 +182,13 @@ export default {
         this.passwordCriteria = "Invalid Password: At least 8 Characters"
         return true
       }else{
+        this.checkingPassword = false
+        this.criteriaArray[2] = true
+
         return false
       }
     },
 
-    async allInvalid() {
-              
-        let x = await this.invalidEmail()
-        let y = this.invalidPassword()
-        let z = this.invalidUsername()
-
-      if ((x == false) && (y == false) && (z == false)) {
-
-        return false
-      }
-      else {
-        return true
-    }
-
-    },
 
     async register() {
         var email = this.email
