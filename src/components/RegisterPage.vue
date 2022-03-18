@@ -52,9 +52,9 @@
             <tr>
               <td></td>
               <td>
-                <p id="login"> Already have an account? Login 
-                  <router-link to="/loginrouter">HERE</router-link> </p>
-                  <router-view/> <br>
+                <p id="login"> Already have an account? Login HERE </p>
+                  <!-- <router-link to="/loginrouter">HERE</router-link> </p> -->
+                  <!-- <router-view/> <br> -->
                 <button type="button" id="registerBtn" v-on:click="register()"> REGISTER</button>
                 <!-- <button type="button" id = "invalidRegisterBtn" v-if = "allInvalid()">REGISTER</button>
                 <button type="button" v-else id="registerBtn" v-on:click="register()"> REGISTER</button> -->
@@ -235,6 +235,66 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
+    .registerForm {
+            width: 280px;
+            background-color: #f0f0f0;
+            height: 30px;
+            border-radius: 55px;
+            border: 3px solid transparent;
+            padding: 0;
+            font-size: 15px;
+            
+
+            
+    }
+
+    #invalidCritera {
+      font-size: 10px;
+      width:300px;
+      color: red;
+      margin : 0px;
+      padding : 0px;
+      margin: auto;
+    
+
+    }
+
+    #login {
+        font-size: 10px;
+    }
+
+
+    table{
+
+      margin: auto;
+    }
+
+    td{
+      height: 100px;
+      margin: 0px;
+      
+    }
+
+    #registerBtn, #invalidRegisterBtn {
+      background-color: rgb(0, 15, 92);
+      color: white;
+      font-weight: bold;
+      width: 120px;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #invalidRegisterBtn {
+      background-color: #f0f0f0;
+      border:0;
+      color: grey;
+    }
+
+    #visibility:hover{
+    border-radius: 5px;
+    box-shadow: 4px 4px;
+}
 
 </style>
