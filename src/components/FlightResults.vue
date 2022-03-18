@@ -3,7 +3,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
+    
      <div class="search-field">
         <FlightSearchInput input="Melbourne"/>
         <i class="bi bi-arrow-right"></i>
@@ -23,25 +23,27 @@
     <br>
 
     <h2>Depart - Melbourne to Singapore</h2>
-    <div class="container">
-        <div class="row rectangle">
-            <div class="circle"></div>
-        </div>
-        <br>
-        <div class="row rectangle">
-            <div class="circle"></div>
-        </div>
-    </div>
+
+    <br>
+    <FlightResult name="Marina Bay Sands, Singapore" rating="4.6/5" 
+        checkInDate="14 Feb 2022" checkOutDate="21 Feb 2022" price="$634"/>
+    <FlightResult name="Mandarin Orchard, Singapore" rating="4.4/5" 
+        checkInDate="14 Feb 2022" checkOutDate="21 Feb 2022" price="$496"/>
+    <FlightResult name="Hotel G, Singapore" rating="4.1/5" 
+        checkInDate="14 Feb 2022" checkOutDate="21 Feb 2022" price="$133"/>
+     
 
 </template>
 
 <script>
 import FlightSearchInput from '@/template/FlightSearchInput.vue'
+import FlightResult from '@/template/FlightResult.vue'
 
 export default {
     name: 'FlightResults',
     components: {
-        FlightSearchInput
+        FlightSearchInput,
+        FlightResult
     }
 }
 </script>
@@ -72,5 +74,19 @@ export default {
     border-radius: 50%;
     margin-left: 30px;
     margin-top: 15px;
+    }
+    button {
+    background-color: rgb(0, 15, 92);
+    border-color: rgb(0, 15, 92);
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-right: 60px;
+    margin-top: 10px;
+    }
+    img {
+    width: 90%;
+    border-radius: 50%;
+    display: inline-block;
     }
 </style>
