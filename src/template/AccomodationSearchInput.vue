@@ -21,8 +21,14 @@ export default {
 .input{
     background-color: rgb(0, 15, 95, 0.13);
     border-radius: 10px;
-    padding: 5px 120px;
+    width: 330px;
+    height: auto;
+    padding: 10px 10px;
     margin: 0px 5px;
     color: black;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

@@ -77,16 +77,33 @@ export default {
 
     methods: {
         async searchAccomodations() {
-            this.$router.push({name: "AccomodationResults", 
-                query:{hotelName: this.hotelName,
-                        checkInDate: this.checkInDate,
-                        checkOutDate: this.checkOutDate,
-                        noOfGuests: this.noOfGuests,
-                        noOfRooms: this.noOfRooms}
-            })
+            if (this.hotelName != "" && this.checkInDate != "" && this.checkInDate != "") {
+                if (this.noOfGuests >= 1 && this.noOfRooms >= 1) {
+                    if (this.checkOutDate > this.checkInDate) {
+                        this.$router.push({
+                            name: "AccomodationResults", 
+                            query: {
+                                hotelName: this.hotelName,
+                                checkInDate: this.checkInDate,
+                                checkOutDate: this.checkOutDate,
+                                noOfGuests: this.noOfGuests,
+                                noOfRooms: this.noOfRooms
+                            }
+                        })
+                    } else {
+                        console.log("error in check out date")
+                        alert("Check-out Date must be after Check-in Date.")
+                    }
+                } else {
+                    console.log("error, not a positive number")
+                    alert("Number of Guests and Rooms must be a positive number.")
+                }
+            } else {
+                console.log("error, missing fields")
+                alert("There are missing fields.")
+            }
         }
     }
-    
 }
 </script>
 

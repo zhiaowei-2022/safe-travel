@@ -3,12 +3,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     
     <div class="container-fluid" style="margin-bottom: 100px">
-        <h1>{{this.hotelName}} {{this.checkInDate}} {{this.checkOutDate}} {{this.noOfGuests}} {{this.noOfRooms}}</h1>
         <span class="search-field">
-            <SearchInput input="Singapore"/>
-            <SearchInput input="14 Feb 2022 - 21 Feb 2022"/>
-            <SearchInput input="2 Guests"/>
-            <SearchInput input="1 Room"/>
+            <SearchInput :input = "name"/>
+            <SearchInput :input = "date"/>
+            <SearchInput :input = "guests"/>
+            <SearchInput :input = "rooms"/>
         </span>
         <div>
             <button class="btn btn-primary" name="submit" type="submit">
@@ -39,21 +38,12 @@ export default {
     
     data() {
         return {
-            hotelName: "",
-            checkInDate: "",
-            checkOutDate: "",
-            noOfGuests: "",
-            noOfRooms: "",
+            name: this.$route.query.hotelName,
+            date: this.$route.query.checkInDate + " - " + this.$route.query.checkOutDate,
+            guests: this.$route.query.noOfGuests + " Guest(s)",
+            rooms: this.$route.query.noOfRooms + " Room(s)",
         }
     },
-
-    created() {
-        this.hotelName=this.$route.query.hotelName
-        this.checkInDate=this.$route.query.checkInDate
-        this.checkOutDate=this.$route.query.checkOutDate
-        this.noOfGuests=this.$route.query.noOfGuests
-        this.noOfRooms=this.$route.query.noOfRooms
-    }
 }
 </script>
 
@@ -64,13 +54,12 @@ button {
     color: white;
     font-weight: bold;
     float: right;
-    margin-right: 60px;
     margin-top: 10px;
 }
 
 .search-field {
-   display: flex;
-   justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 img {
