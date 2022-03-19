@@ -3,24 +3,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <div class="container">
         <div class="row justify-content-md-center">
-            <div class="col col-lg-2">
-                <img src="@/assets/berlin-germany.jpg" alt="">
+            <div class="col col-lg-1">
+                <img src="@/assets/australian-airlines.jpeg" alt="">
             </div>
-            <div class="col" style="text-align:left">
-                <div class="hotel-name"> {{ name }} </div>
-                <div class="hotel-body"> {{ rating }} </div>
-                <div class="hotel-body"> {{ checkInDate }} - {{ checkOutDate }}</div>
-            </div>
-            <div class="col col-lg-2">
-                <img src="@/assets/berlin-germany.jpg" alt="">
-            </div>
-            <div class="col" style="text-align:left">
-                <div class="hotel-name"> {{ name }} </div>
-                <div class="hotel-body"> {{ rating }} </div>
-                <div class="hotel-body"> {{ checkInDate }} - {{ checkOutDate }}</div>
+            <div class="col col-lg-3" style="text-align:left; margin-left: 50px">
+                <div class="flight-name"> {{ departureCountryId }} {{departureTime}}</div>
+                <div class="flight-body"> {{ departureCountryName }} </div>
+                <div class="flight-body"> {{ departureDate }}</div>
             </div>
             <div class="col col-lg-2">
-                <div class="hotel-price"> From {{ price }} </div> <br>
+                <div class="row-lg" id="duration">{{ duration }}</div>
+                <div class="row-lg" style="background-color: rgb(0, 15, 95, 0);"><i class="bi bi-arrow-right" style="font-size:50px; display: inline-block"></i></div>
+                <div class="row-lg"> {{ airline }} </div>
+            </div>
+            <div class="col col-lg-3" style="text-align:left; margin-left: 50px">
+                <div class="flight-name"> {{ arrivalCountryId }} {{arrivalTime}}</div>
+                <div class="flight-body"> {{ arrivalCountryName }} </div>
+                <div class="flight-body"> {{ departureDate }}</div>
+            </div>
+            <div class="col col-lg-2">
+                <div class="flight-price"> {{ price }} </div> <br>
                 <button type="button" class="btn btn-link" style="background-color: rgb(0, 15, 95, 0)">Add to cart</button>
             </div>
         </div>
@@ -32,12 +34,31 @@
 export default {
     name: "FlightResult",
     props: {
-        photo: String,
-        name: String,
-        rating: String,
-        checkInDate: String,
-        checkOutDate: String,
-        price: String
+        departureCountryId: String,
+        departureCountryName: String,
+        departureTime: Number,
+        departureDate: String,
+        arrivalCountryId: String,
+        arrivalCountryName: String,
+        arrivalTime: String,
+        arrivalDate: String,
+        duration: String,
+        price: String,
+        airline: String,
+    },
+    mounted() {
+        // script for firebase
+        let firebase = document.createElement('script')
+        firebase.setAttribute('src', "https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js")
+        document.head.appendChild(firebase)
+        // script for firestore
+        let firestore = document.createElement('script')
+        firestore.setAttribute('src', "https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js")
+        document.head.appendChild(firestore)
+        // script for firebase.js
+        let firebasejs = document.createElement('script')
+        firebasejs.setAttribute('src', "https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js")
+        document.head.appendChild(firebasejs)
     }
 }
 </script>
@@ -53,15 +74,15 @@ img {
     height: 120px;
     border-radius: 50%;
 }
-.hotel-name {
+.flight-name {
     font-weight: bold;
     font-size: 25px;
     color: black;
 }
-.hotel-body {
+.flight-body {
     color: black;
 }
-.hotel-price {
+.flight-price {
     background-color: rgb(0, 15, 95);
     width: 100px;
     height: 100px;
@@ -71,11 +92,17 @@ img {
     font-weight: bold;
     color: white;
     font-size: 15px;
+    margin-top: 20px;
     
 }
 button {
     margin-bottom: 15px;
     background-color: rgb(0, 15, 95, 0.05);
     color: rgb(0, 15, 95);
+}
+
+#duration {
+    background-color: rgb(0, 15, 95, 0); 
+    display:inline-block;
 }
 </style>

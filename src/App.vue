@@ -1,17 +1,20 @@
 <template>
-  <!-- <BookFlight/> -->
+  <BookFlight/>
   <FlightResults/>
+  <FlightNotFound/>
 </template>
 
 <script>
-// import BookFlight from './components/BookFlight.vue'
+import BookFlight from './components/BookFlight.vue'
 import FlightResults from './components/FlightResults.vue'
+import FlightNotFound from './components/FlightNotFound.vue'
 
 export default {
   name: 'App',
   components: {
-    // BookFlight,
-    FlightResults
+    BookFlight,
+    FlightResults,
+    FlightNotFound
   }
 }
 </script>

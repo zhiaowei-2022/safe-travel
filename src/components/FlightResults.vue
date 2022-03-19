@@ -25,12 +25,39 @@
     <h2>Depart - Melbourne to Singapore</h2>
 
     <br>
-    <FlightResult name="Marina Bay Sands, Singapore" rating="4.6/5" 
-        checkInDate="14 Feb 2022" checkOutDate="21 Feb 2022" price="$634"/>
-    <FlightResult name="Mandarin Orchard, Singapore" rating="4.4/5" 
-        checkInDate="14 Feb 2022" checkOutDate="21 Feb 2022" price="$496"/>
-    <FlightResult name="Hotel G, Singapore" rating="4.1/5" 
-        checkInDate="14 Feb 2022" checkOutDate="21 Feb 2022" price="$133"/>
+    <FlightResult departureCountryId="MEL"
+        departureCountryName="Melbourne"
+        departureTime="08:00"
+        departureDate="14 Feb 2022 (Mon)"
+        arrivalCountryId="SIN"
+        arrivalCountryName="Singapore"
+        arrivalTime="18:40"
+        arrivalDate="14 Feb 2022 (Tues)"
+        duration="7 hr 40 mins"
+        price="SGD 425"
+        airline="Qantas Airlines"/>
+    <FlightResult departureCountryId="MEL"
+        departureCountryName="Melbourne"
+        departureTime="08:00"
+        departureDate="14 Feb 2022 (Mon)"
+        arrivalCountryId="SIN"
+        arrivalCountryName="Singapore"
+        arrivalTime="18:40"
+        arrivalDate="14 Feb 2022 (Tues)"
+        duration="7 hr 40 mins"
+        price="SGD 425"
+        airline="Qantas Airlines"/>
+    <FlightResult departureCountryId="MEL"
+        departureCountryName="Melbourne"
+        departureTime="08:00"
+        departureDate="14 Feb 2022 (Mon)"
+        arrivalCountryId="SIN"
+        arrivalCountryName="Singapore"
+        arrivalTime="18:40"
+        arrivalDate="14 Feb 2022 (Tues)"
+        duration="7 hr 40 mins"
+        price="SGD 425"
+        airline="Qantas Airlines"/>
      
 
 </template>

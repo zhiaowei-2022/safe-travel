@@ -2,10 +2,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-    <SavedModal v-show="showModal" @close-modal="showModal = false" />
-    <div class="save-btn">
-    <button @click="showModal = true">Save</button>
-    </div>
+
     <!-- Form for Book Flight Search Fields -->
     <div class="book-flight">
         <h1>Dedicated for Happy Flying Experience</h1>
@@ -42,7 +39,17 @@
                     </div>
                     <div class="col">
                         <label  class="label">Class</label>
-                        <input id="class-type" min="1" class="form-control" type="number" placeholder="Class">
+                        <!-- <input id="class-type" min="1" class="form-control" type="number" placeholder="Class"> -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                -Select-
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Economy Class</a>
+                                <a class="dropdown-item" href="#">Business Class</a>
+                                <a class="dropdown-item" href="#">First Class</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>  
@@ -86,14 +93,17 @@
     </div>    
 </template>
 <script>
-import SavedModal from '@/components/SavedModal.vue'
 export default {
-    components: { SavedModal },
   data() {
     return {
       showModal: false,
     }
   },
+    mounted() {
+      let jquery = document.createElement('script')
+      jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
+      document.head.appendChild(jquery)
+    },
 }
 </script>
 
