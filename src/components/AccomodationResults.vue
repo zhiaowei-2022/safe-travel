@@ -1,18 +1,41 @@
 <template>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-    
+
     <div class="container-fluid" style="margin-bottom: 100px">
         <span class="search-field">
             <SearchInput :input = "name"/>
             <SearchInput :input = "date"/>
-            <SearchInput :input = "guests"/>
-            <SearchInput :input = "rooms"/>
+            <SearchInput v-if="manyGuests" :input = "guests"/>
+            <SearchInput v-if="!manyGuests" :input = "guest"/>
+            <SearchInput v-if="manyRooms" :input = "rooms"/>
+            <SearchInput v-if="!manyRooms" :input = "room"/>
         </span>
+
         <div>
-            <button class="btn btn-primary" name="submit" type="submit">
+            <button class="btn btn-primary" name="submit" type="button" data-toggle="modal" data-bs-target="#exampleModal" data-target=".bd-example-modal-lg">
                 Modify Search
             </button>
+        </div>
+
+        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    ...
+                <!-- <div class="modal-header">
+                    <h5 class="modal-title" id="myLargeModalLabel" style="font-weight:bold; font-size:30px;">
+                        Flight is unavailable :(
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sorry, the flight that you are looking for is unavailable. Try searching again!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div> -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -40,9 +63,19 @@ export default {
         return {
             name: this.$route.query.hotelName,
             date: this.$route.query.checkInDate + " - " + this.$route.query.checkOutDate,
-            guests: this.$route.query.noOfGuests + " Guest(s)",
-            rooms: this.$route.query.noOfRooms + " Room(s)",
+            guest: this.$route.query.noOfGuests + " Guest",
+            guests: this.$route.query.noOfGuests + " Guests",
+            room: this.$route.query.noOfRooms + " Room",
+            rooms: this.$route.query.noOfRooms + " Rooms",
+            manyGuests: this.$route.query.manyGuests,
+            manyRooms: this.$route.query.manyRooms,
         }
+    },
+
+    mounted() {
+        let jquery = document.createElement('script')
+        jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
+        document.head.appendChild(jquery)
     },
 }
 </script>
