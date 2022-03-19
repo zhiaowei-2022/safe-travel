@@ -1,4 +1,6 @@
 <template>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 <div>
     <table>
         <tr>
@@ -37,7 +39,8 @@
                   <router-view/>
                  <br>
                 
-                <button type="button" id="loginBtn" v-on:click="LogIn()"> Log In</button>
+                <button type="button" id="loginBtn" v-on:click="UserLogin()"> Log In as User</button>
+                <button type="button" id="loginBtn" v-on:click="AnonymousLogin()"> Log In Anonymously</button>
             </td>
         </tr>
 
@@ -56,7 +59,7 @@
 // import firebaseApp from '../firebase.js';
 // import {getFirestore} from "firebase/firestore"
 // import { doc, getDoc } from "firebase/firestore";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInAnonymously } from "firebase/auth";
 // import { ref } from "vue";
 
 // const db = getFirestore(firebaseApp);
@@ -80,7 +83,8 @@ export default {
         this.showPassword = true
       }
     },
-    LogIn() {
+
+    UserLogin() {
       var email = document.getElementById("email").value
       var password = document.getElementById("password").value
       const auth = getAuth();
@@ -89,7 +93,7 @@ export default {
           const user = userCredential.user;
           console.log(user.email)
           console.log("signed in")
-          this.$router.push({name: 'RegisterView'})
+          this.$router.push({name: 'HomeView'})
         })
         .catch((error) => {
           console.log(error.message)
@@ -101,16 +105,30 @@ export default {
               alert("Incorrect Email/Password")
               break;
           }
-        });
-
+        });   
     },
+    AnonymousLogin() {
+      const auth = getAuth();
+      signInAnonymously(auth)
+        .then(() => {
+          console.log(auth.currentUser.isAnonymous)
+          this.$router.push({name: 'HomeView'})
+        })
+        .catch((error) => {
+          console.log(error.message)
+
+          // ...
+        });
+    },
+
+
     // signOut() {
     //   signOut(this.auth).then(() => {
     //     console.log("signed out")
     //   })
     // },
 
-  },
+  }
     // mounted() {
     //     const auth = getAuth();
     //     onAuthStateChanged(this.auth, (user) => {
