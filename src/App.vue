@@ -1,21 +1,10 @@
 <template>
-  <BookFlight/>
-  <FlightResults/>
-  <FlightNotFound/>
+  <router-view/>
 </template>
 
 <script>
-import BookFlight from './components/BookFlight.vue'
-import FlightResults from './components/FlightResults.vue'
-import FlightNotFound from './components/FlightNotFound.vue'
-
 export default {
   name: 'App',
-  components: {
-    BookFlight,
-    FlightResults,
-    FlightNotFound
-  }
 }
 </script>
 
