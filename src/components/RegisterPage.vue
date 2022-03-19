@@ -72,7 +72,7 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore} from "firebase/firestore"
 import {doc, setDoc, getDoc} from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 
 const db = getFirestore(firebaseApp);
@@ -220,17 +220,26 @@ export default {
 
             })
 
-              const auth = getAuth();
-              createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                  const user = userCredential.user;
-                  console.log(user)
-                });
-              
-
             console.log(docRef)
+
+            const auth = getAuth();
+            createUserWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user)
+
+                updateProfile(auth.currentUser, {
+                  displayName: username
+                  }).then(() => {
+                    console.log("displayName set")
+                    this.$router.push({name: 'HomeView'})
+                  }).catch((error) => {
+                    console.log(error.message)
+                  });
+              })
+
+            
           }
-          
           catch(error) {
               console.error("Error adding document: ", error);
           }

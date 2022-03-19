@@ -33,7 +33,7 @@
             <td></td>
             <td>
                 <p id="register"> New to Safe Travel? Sign up 
-                  <router-link to="/registerrouter">HERE</router-link> </p>
+                  <router-link to="/registerview">HERE</router-link> </p>
                   <router-view/>
                  <br>
                 
@@ -43,8 +43,8 @@
 
     </table>
 
-    <button @click="signOut" v-if="isLoggedIn"> Sign out</button>
-    <p v-if="isLoggedIn" id="displayUsername"> </p>
+    <!-- <button @click="signOut" v-if="isLoggedIn"> Sign out</button>
+    <p v-if="isLoggedIn" id="displayUsername"> </p> -->
 
 
                 
@@ -53,13 +53,13 @@
 </template>
 
 <script>
-import firebaseApp from '../firebase.js';
-import {getFirestore} from "firebase/firestore"
-import { doc, getDoc } from "firebase/firestore";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-import { ref } from "vue";
+// import firebaseApp from '../firebase.js';
+// import {getFirestore} from "firebase/firestore"
+// import { doc, getDoc } from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+// import { ref } from "vue";
 
-const db = getFirestore(firebaseApp);
+// const db = getFirestore(firebaseApp);
 
 export default {
     name: 'LoginPage',
@@ -67,8 +67,8 @@ export default {
   data() {
     return {
       showPassword: false,
-      isLoggedIn: ref(false),
-      auth: getAuth(),
+    //   isLoggedIn: ref(false),
+    //   auth: getAuth(),
       username: "",
     };
   },
@@ -89,9 +89,10 @@ export default {
           const user = userCredential.user;
           console.log(user.email)
           console.log("signed in")
+          this.$router.push({name: 'RegisterView'})
         })
         .catch((error) => {
-          console.log(error.code)
+          console.log(error.message)
           switch (error.code) {
             case "auth/invalid-email":
               alert("Invalid Email");
@@ -103,36 +104,38 @@ export default {
         });
 
     },
-    signOut() {
-      signOut(this.auth).then(() => {
-        console.log("signed out")
-      })
-    },
+    // signOut() {
+    //   signOut(this.auth).then(() => {
+    //     console.log("signed out")
+    //   })
+    // },
 
   },
-    beforeMount() {
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        this.isLoggedIn = true;
-        display(user.email)
+    // mounted() {
+    //     const auth = getAuth();
+    //     onAuthStateChanged(this.auth, (user) => {
+    //     if (user) {
+    //         this.isLoggedIn = true;
+    //         // display(user.email)
+    
+    //     } else {
+    //         this.isLoggedIn = false;
+    //     }
+    //     })
+        
+    //   async function display(email) {
+    //     const docRef = doc(db, "Users", email);
+    //       const docSnap = await getDoc(docRef);
 
-      } else {
-        this.isLoggedIn = false;
-      }
-    })
-      async function display(email) {
-        const docRef = doc(db, "Users", email);
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
-            document.getElementById("displayUsername").innerHTML = docSnap.data().username
-          } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-          }
-      }
-    }
+    //       if (docSnap.exists()) {
+    //         console.log("Document data:", docSnap.data());
+    //         document.getElementById("displayUsername").innerHTML = docSnap.data().username
+    //       } else {
+    //         // doc.data() will be undefined in this case
+    //         console.log("No such document!");
+    //       }
+    //   }
+    // }
 
 }
 </script>
