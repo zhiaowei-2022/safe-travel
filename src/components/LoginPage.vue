@@ -39,7 +39,7 @@
                   <router-view/>
                  <br>
                 
-                <button type="button" id="loginBtn" v-on:click="UserLogin()"> Log In as User</button>
+                <button type="button" id="loginBtn" v-on:click="UserLogin()"> Log In as User</button><br><br>
                 <button type="button" id="loginBtn" v-on:click="AnonymousLogin()"> Log In Anonymously</button>
             </td>
         </tr>
@@ -111,7 +111,7 @@ export default {
       const auth = getAuth();
       signInAnonymously(auth)
         .then(() => {
-          console.log(auth.currentUser.isAnonymous)
+          console.log(auth.currentUser)
           this.$router.push({name: 'HomeView'})
         })
         .catch((error) => {

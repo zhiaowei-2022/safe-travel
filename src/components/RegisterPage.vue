@@ -1,4 +1,6 @@
 <template>
+<div id="container">
+  <div id="content">
         <h1> Register for an account </h1>
         
         <div>
@@ -65,6 +67,8 @@
                 </td>
             </tr>
           </table>
+        </div>
+        </div>
         </div>
 </template>
 
@@ -315,6 +319,29 @@ export default {
     #visibility:hover{
     border-radius: 5px;
     box-shadow: 4px 4px;
-}
+    }
+    #container {
+    position: relative
+    }
+
+    #container:before {
+      content: ' ';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("../assets/parachute.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0.6;
+    }
+
+    #content {
+      position: relative;
+    }
+
 
 </style>
