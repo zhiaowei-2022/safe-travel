@@ -1,20 +1,22 @@
 <template>
-   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-  <!-- <HelloWorld msg="Welcome"/>  -->
-  <RegisterPage/>
+    <div id="nav">
+    <router-link to="/">Login</router-link> |
+    <router-link to="/registerview">Register</router-link> |
+  </div>
+  <router-view/>
 
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-import RegisterPage from './components/RegisterPage.vue'
+// import LoginPage from './components/LoginPage.vue'
+// import RegisterPage from './components/RegisterPage.vue'
 
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld
-    RegisterPage
+    // RegisterPage,
+    // LoginPage
   }
 }
 </script>
@@ -27,5 +29,19 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: rgb(4, 64, 121);
+}
+
+#nav a.router-link-exact-active {
+  color: pink;
+
 }
 </style>

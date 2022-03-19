@@ -56,9 +56,9 @@
             <tr>
               <td></td>
               <td>
-                <p id="login"> Already have an account? Login HERE </p>
-                  <!-- <router-link to="/loginrouter">HERE</router-link> </p> -->
-                  <!-- <router-view/> <br> -->
+                <p id="login"> Already have an account? Login
+                  <router-link to="/">HERE</router-link> </p>
+                  <router-view/> <br>
 
                 <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>
                 <button type="button" v-else id ="invalidRegisterBtn"> REGISTER</button>
