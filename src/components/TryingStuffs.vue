@@ -2,16 +2,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
+    
 <div v-if="user">
   <button id = "btn" @click="signOut()">Logout</button> <br>
-  <div v-if="anonymous">
-    <p> unknown </p>
-    {{ user }}
+    {{ user.displayName }}
   </div>
   <div v-else>
-  {{ user.displayName }}
-  </div>
+      <p> unknown user</p>
   </div>
 
   <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
@@ -77,7 +74,6 @@ export default {
     data() {
         return {
             user: false,
-            anonymous: false,
             invalid: false,
         }
     },
