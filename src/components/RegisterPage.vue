@@ -7,7 +7,7 @@
           <table border = '0'>
             <tr>
               <td>
-                <label for="email">Email: </label>
+                <strong><label for="email">Email: </label></strong>
                 <p></p>
               </td>
               <td>
@@ -21,7 +21,7 @@
             
             <tr>
               <td>
-                <label for="username">Username: </label>
+                <strong><label for="username">Username: </label></strong>
                 <p></p>
               </td>
               <td>
@@ -33,7 +33,7 @@
 
             <tr>
               <td>
-                <label for="password">Password: </label>
+                <strong><label for="password">Password: </label></strong>
                 <p></p>
               </td>
               <td>
@@ -70,6 +70,9 @@
         </div>
         </div>
         </div>
+
+
+        
 </template>
 
 <script>
@@ -268,8 +271,7 @@ export default {
             border: 3px solid transparent;
             padding: 0;
             font-size: 15px;
-            
-
+          
             
     }
 
@@ -281,7 +283,6 @@ export default {
       padding : 0px;
       margin: auto;
     
-
     }
 
     #login {
@@ -290,6 +291,7 @@ export default {
 
 
     table{
+      height: 100%;
 
       margin: auto;
     }
@@ -320,8 +322,11 @@ export default {
     border-radius: 5px;
     box-shadow: 4px 4px;
     }
+    
     #container {
-    position: relative
+    position: relative;
+    height: 100%;
+    margin: 0;
     }
 
     #container:before {
@@ -331,7 +336,7 @@ export default {
       left: 0;
       top: 0;
       width: 100%;
-      height: 100%;
+      height: 77.8vh;
       background-image: url("../assets/parachute.jpg");
       background-position: center;
       background-repeat: no-repeat;
@@ -341,6 +346,10 @@ export default {
 
     #content {
       position: relative;
+            height: 100%;
+
+        /* height: 100vh;
+        width: 100%; */
     }
 
 

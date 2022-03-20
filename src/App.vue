@@ -3,6 +3,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/loginview">Login</router-link> |
     <router-link to="/registerview">Register</router-link> |
+    <router-link to="/tryingstuffs">try</router-link> |
   </div>
   <router-view/>
 
