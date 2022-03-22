@@ -71,7 +71,7 @@ export default {
             z.forEach((docs) => {
                 let yy = docs.data()
                 var container = document.getElementById(ind)
-                // container.innerHTML = ""
+                //container.innerHTML = ""
                 var name = (yy.Name)
                 var imageURL = (yy.ImageURL)
                 if (ind > 5) {
