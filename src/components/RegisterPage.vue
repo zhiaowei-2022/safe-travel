@@ -7,8 +7,8 @@
           <table border = '0'>
             <tr>
               <td>
-                <strong><label for="email">Email: </label></strong>
-                <p></p>
+                <strong><label for="email" >Email: </label></strong>
+                <p style="font-size:10px;">&nbsp;</p>
               </td>
               <td>
                 <input class="registerForm" v-model="email" @input="checkEmail()" type="email" placeholder="xyz@gmail.com">
@@ -22,7 +22,7 @@
             <tr>
               <td>
                 <strong><label for="username">Username: </label></strong>
-                <p></p>
+                <p style="font-size:7px;">&nbsp;</p>
               </td>
               <td>
                   <input class="registerForm" v-model="username" @input="checkUsername()" type="text" placeholder="xyz">
@@ -34,7 +34,7 @@
             <tr>
               <td>
                 <strong><label for="password">Password: </label></strong>
-                <p></p>
+                <p style="font-size:10px;">&nbsp;</p>
               </td>
               <td>
                 <input class="registerForm" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="*******">
@@ -264,14 +264,14 @@ export default {
 
 <style scoped>
     .registerForm {
-            width: 280px;
-            background-color: #f0f0f0;
-            height: 30px;
-            border-radius: 55px;
-            border: 3px solid transparent;
-            padding: 0;
-            font-size: 15px;
-          
+      width: 280px;
+      background-color: #f0f0f0;
+      height: 30px;
+      border-radius: 55px;
+      border: 3px solid transparent;
+      padding: 0;
+      font-size: 15px;
+      
             
     }
 
@@ -292,8 +292,8 @@ export default {
 
     table{
       height: 100%;
-
       margin: auto;
+      
     }
 
     td{
@@ -327,6 +327,8 @@ export default {
     position: relative;
     height: 100%;
     margin: 0;
+    text-align: center
+    
     }
 
     #container:before {
@@ -336,12 +338,19 @@ export default {
       left: 0;
       top: 0;
       width: 100%;
-      height: 77.8vh;
+      height: 80.5vh;
       background-image: url("../assets/parachute.jpg");
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
       opacity: 0.6;
+    }
+
+    label {
+      color: black;
+      /* text-align: right; */
+      
+      
     }
 
     #content {
@@ -350,6 +359,13 @@ export default {
 
         /* height: 100vh;
         width: 100%; */
+    }
+
+    h1 {
+      text-align: center;
+      margin: auto;
+      padding-bottom: 40px;
+      padding-top:30px;
     }
 
 

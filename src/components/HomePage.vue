@@ -5,19 +5,30 @@
 
 
     <!-- Form for Book Flight Search Fields -->
-    <div class="book-flight">
+    <div class="search-info">
         <h1>Guidelines</h1>
         <form class=form-details>
         <div class="row">
           <!-- Search field for origin country -->
           <div class="col">
            <label for="origin-country" class="title">Origin</label>
-           <input type="text" class="form-control" id="origin-country-input" placeholder="Enter origin country" v-model="originCountry" required>
+            <select class="form-select" required id="origin" >
+               <option value="" selected hidden>---- Please select origin country ----</option>
+               <option value="economyClass">Singapore</option>
+               <option value="businessClass">Malaysia</option>
+               <option value="firstClass">China</option>
+            </select>
           </div>
           <!-- Search field for destination country -->
           <div class="col">
             <label for="destination-country" class="title">Destination</label>
-            <input type="text" class="form-control" id="destination-country-input" placeholder="Enter destination country" v-model="destinationCountry" required>
+            <select class="form-select" required id="destination" >
+               <option value="" selected hidden>---- Please select destination country ----</option>
+               <option value="economyClass">Singapore</option>
+               <option value="businessClass">Malaysia</option>
+               <option value="firstClass">China</option>
+            </select>
+          
            </div>
         </div>
         <br>
@@ -32,7 +43,94 @@
         </div>
         </form>
     </div>
+    <br>
+    
+    <!-- <div class="form-details" style="color:black">
+        <div class="container" style="background-color:white">
+        <div class="row">
+            <div class="col-5" style="background-color:white">
+                origin <br>
+                Fully Vaccinated: X <br>
+                Non-Fully Vaccinated: X
+            </div>
+            <div class="col">
+                covid <br>
+                Daily cases: X <br>
+                Weekly cases: X 
 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                destination
+            </div>
+            <div class="col">
+                covid
+            </div>
+        </div>
+        </div>
+    </div> -->
+
+
+    
+    <div class="form-details">
+        <h3 style="color:lightskyblue;"> COVID </h3>
+    <table class="table table-dark table-bordered" style="border-radius: 10px; overflow: hidden;" >
+  <tbody>
+    <tr>
+      <td class="col-4">
+          <strong>Origin</strong> <br> <br>
+          Fully Vaccinated: X <br>
+          Non-Fully Vaccinated: X <br>
+          <a href="https://www.google.com">For more details click me</a>
+          
+          </td>
+      <td><strong>Covid Information</strong> <br> <br>
+      Daily cases: X <br>
+      Weekly cases: X 
+      </td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td>Destination</td>
+      <td>Covid Information</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+
+
+<div v-if="displayInfo">
+    <div class="form-details">
+    <table class="table table-dark table-bordered" style="border-radius: 10px; overflow: hidden;" >
+  <tbody>
+    <tr>
+      <td class="col-4">
+          <strong>Origin</strong> <br> <br>
+          Fully Vaccinated: X <br>
+          Non-Fully Vaccinated: X <br>
+          <a href="https://www.google.com">For more details click me</a>
+          
+          </td>
+      <td><strong>Covid Information</strong> <br> <br>
+      Daily cases: X <br>
+      Weekly cases: X 
+      </td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td>Destination</td>
+      <td>Covid Information</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<br>
 
 
 
@@ -55,6 +153,7 @@ export default {
         return {
             user: false,
             invalid: false,
+            displayInfo: false
         }
     },
 
@@ -77,19 +176,24 @@ export default {
             signOut(auth, user)
             this.$router.push({name:'LoginView'})
         },
+
+        searchInfo() {
+            this.displayInfo = true;
+        }
     }
     
 }
 </script>
 
-<style>
-    .book-flight {
+<style scoped>
+    .search-info {
         background-image: url("@/assets/holding-earth.jpg");
-        height: 50vh;
-        /* padding-top: 100px; */
+        /* height: 50vh; */
+        padding-top: 100px;
+        padding-bottom: 120px;
         background-size: cover;
-              background-position: center;
-      background-repeat: no-repeat;
+        background-position: center;
+        background-repeat: no-repeat;
     }
     h1 {
     text-align: left;
@@ -120,11 +224,20 @@ export default {
         border-radius: 10px;
         margin-right: 180px;
         margin-left: 180px;
+        
     }
     label {
         color: white;
         float: left;
         text-align: left;
     }
+        select:invalid{
+        color: gray;
+    }
+    option{
+        color: black;
+    }
+
+
 
 </style>
