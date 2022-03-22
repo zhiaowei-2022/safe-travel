@@ -4,13 +4,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
 
-<!-- <div v-if="user">
+<div v-if="user">
   <button id = "btn" @click="signOut()">Logout</button> <br>
     {{ user.displayName }}
   </div>
   <div v-else>
       <p> unknown user</p>
-  </div> -->
+  </div>
   <a id = "trial" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" role="button">Open first modal</a>
 
   <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
