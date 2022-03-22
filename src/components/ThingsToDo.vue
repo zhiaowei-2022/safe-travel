@@ -50,6 +50,7 @@ export default {
             let z = await getDocs(collection(db, "ThingToDo"))
             let ind = 0
             //let col = 0
+            
             if (variable != undefined ){
                 {
                     var containerclear0 = document.getElementById(0)
@@ -66,10 +67,11 @@ export default {
                     containerclear5.innerHTML = ""
                 }
             }
-
+            
             z.forEach((docs) => {
                 let yy = docs.data()
                 var container = document.getElementById(ind)
+                // container.innerHTML = ""
                 var name = (yy.Name)
                 var imageURL = (yy.ImageURL)
                 if (ind > 5) {
@@ -82,17 +84,19 @@ export default {
                         + "<img src='"+ imageURL +"'style='width:100%'>"
                         + "<figcaption>" + name + " </figcaption>"
                         + "</figure>"  
+                        ind+=1
                     }
                     else {
                         var category = (yy.Category)
                         if (variable == category) {
                             container.innerHTML +=  "<figure>" 
-                            + "<img src='"+ imageURL +"'style='width:100%'>"
+                            + "<img src='"+ imageURL +" 'style='width:100%'>"
                             + "<figcaption>" + name + " </figcaption>"
                             + "</figure>" 
+                            ind+=1
                         }
                     }
-                    ind+=1
+                    
                 }
             })
             
@@ -104,6 +108,20 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.row {
+    background-color: rgb(0, 15, 95, 0.05);
+    align-items: center;
+    margin: 10px 0px;
+}
+img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+button {
+    margin-bottom: 15px;
+    background-color: rgb(0, 15, 95, 0.05);
+    color: rgb(0, 15, 95);
+}
 </style>
