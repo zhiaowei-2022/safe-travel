@@ -46,27 +46,22 @@ import { collection, getDocs } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 export default {
     methods: {
+        clearAll(){
+            for (var i = 0; i < 6; i++){
+                var containerclear = document.getElementById(i);
+                containerclear.innerHTML = ""
+            }
+            
+            
+        },
         async display(variable){
             let z = await getDocs(collection(db, "ThingToDo"))
+            
             let ind = 0
             //let col = 0
             
-            if (variable != undefined ){
-                {
-                    var containerclear0 = document.getElementById(0)
-                    var containerclear1 = document.getElementById(1)
-                    var containerclear2 = document.getElementById(2)
-                    var containerclear3 = document.getElementById(3)
-                    var containerclear4 = document.getElementById(4)
-                    var containerclear5 = document.getElementById(5)
-                    containerclear0.innerHTML = ""
-                    containerclear1.innerHTML = ""
-                    containerclear2.innerHTML = ""
-                    containerclear3.innerHTML = ""
-                    containerclear4.innerHTML = ""
-                    containerclear5.innerHTML = ""
-                }
-            }
+            this.clearAll()
+            
             
             z.forEach((docs) => {
                 let yy = docs.data()
