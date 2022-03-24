@@ -162,14 +162,17 @@ export default {
                             // need to insert Information into Modal
                             var photoinfo = document.getElementById("photo")
                             photoinfo.innerHTML = 
-                                "<img src='"+ imageURL +" 'style='width:100%'>"
+                                "<img src='"+ imageURL +" 'style='width:100%'>" 
+                                
                             var resultbox = document.getElementById("resultinfo")
                             resultbox.innerHTML =
-                                "Address: " + address + "<br>" +
-                                "Contact: " + contact + "<br>" + 
-                                "Rating: " + rating + "<br>" +
-                                "Description: " + desc + "<br>" +
-                                "Website: " + web + "<br>" 
+                                "<h4><b>" + name + "</b></h4>" +
+                                "<b>Rating:</b> " + rating + " / 5 <br>" +
+                                "<b>Address:</b> " + address + "<br>" +
+                                "<b>Phone:</b> " + contact + "<br><br>" + 
+                                
+                                "<h5><b>Description:</b></h5> " + desc + "<br><br>" +
+                                "For more information please visit <a href='" + web + "' target='_blank' style='color:black'>here</a> <br>" 
                             modal.style.display = "block";
                             console.log("modal displayed")
                     }
@@ -267,6 +270,11 @@ label {
   text-decoration: none;
   cursor: pointer;
 }
+
+#resultinfo {
+    text-align: left;
+}
+
 
 
 </style>
