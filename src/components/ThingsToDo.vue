@@ -55,18 +55,29 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close" v-on:click="closeModal()">&times;</span>
-        <p>Some text in the Modal..</p>
-        <!-- 
-            img
+        <div class="container">
+        <div class="row">
+            <div id="photo">
+                <!-- 
+                    img -->
+            </div>
+
+        </div>
+        <div class="row">
+            <div id="resultinfo">
+            <!--
             Name
             Rating
             Address
             Phone
-
             Description
-
             Website
-        -->
+            -->
+            </div>            
+        </div>
+        </div>
+        
+            
     </div>
     </div>
 </template>
@@ -110,6 +121,13 @@ export default {
                 //container.innerHTML = ""
                 var name = (yy.Name)
                 var imageURL = (yy.ImageURL)
+                
+                var address = (yy.Address)
+                var contact = (yy.Contact)
+                var desc = (yy.Description)
+                var rating = (yy.Rating)
+                var web = (yy.Website)
+                
                 if (ind > 5) {
                     return;
                 }
@@ -142,7 +160,16 @@ export default {
                             console.log("getting modal");
 
                             // need to insert Information into Modal
-
+                            var photoinfo = document.getElementById("photo")
+                            photoinfo.innerHTML = 
+                                "<img src='"+ imageURL +" 'style='width:100%'>"
+                            var resultbox = document.getElementById("resultinfo")
+                            resultbox.innerHTML =
+                                "Address: " + address + "<br>" +
+                                "Contact: " + contact + "<br>" + 
+                                "Rating: " + rating + "<br>" +
+                                "Description: " + desc + "<br>" +
+                                "Website: " + web + "<br>" 
                             modal.style.display = "block";
                             console.log("modal displayed")
                     }
