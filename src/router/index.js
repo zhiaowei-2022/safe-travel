@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import BookFlight from '@/components/BookFlight.vue'
 import FlightResults from '@/components/FlightResults.vue'
+// import checkFB from '@/components/checkFB.vue'
 
 const routes = [
     {

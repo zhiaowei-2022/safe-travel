@@ -46,20 +46,6 @@ export default {
         price: String,
         airline: String,
     },
-    mounted() {
-        // script for firebase
-        let firebase = document.createElement('script')
-        firebase.setAttribute('src', "https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js")
-        document.head.appendChild(firebase)
-        // script for firestore
-        let firestore = document.createElement('script')
-        firestore.setAttribute('src', "https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js")
-        document.head.appendChild(firestore)
-        // script for firebase.js
-        let firebasejs = document.createElement('script')
-        firebasejs.setAttribute('src', "https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js")
-        document.head.appendChild(firebasejs)
-    }
 }
 </script>
 

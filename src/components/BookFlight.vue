@@ -3,6 +3,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
+      <button v-on:click="displayCountries()">displayCountries</button>
+    
     <!-- Form for Book Flight Search Fields -->
     <div class="book-flight">
         <h1>Dedicated for Happy Flying Experience</h1>
@@ -10,8 +12,14 @@
         <div class="row">
           <!-- Search field for origin country -->
           <div class="col">
-           <label for="origin-country" class="title">Origin</label>
-           <input type="text" class="form-control" id="origin-country-input" placeholder="Enter origin country" v-model="originCountry" required>
+           <label for="originCountry" class="title">Origin</label>
+           <!-- <input type="text" class="form-control" id="origin-country-input" placeholder="Enter origin country" v-model="originCountry" required> -->
+           <select name="originCountry" class="form-select form-control" v-model="originCountry" aria-placeholder="Select Country">
+                <option value="null">---- Select Country ----</option>
+                <option v-for="country in countries" 
+                v-bind:key="country.countryName"
+                value="country.countryName"> {{ country.countryName }} </option>
+           </select>
           </div>
           <!-- Search field for destination country -->
           <div class="col">
@@ -91,46 +99,56 @@
                 </figure>
             </div>
         </div>
-    </div>    
+    </div>
+
 </template>
 <script>
+import firebaseApp from "../firebase.js";
+import { collection, getDocs, getFirestore } from "firebase/firestore"
+import { query, where } from "firebase/firestore";  
+
+const db = getFirestore(firebaseApp);
 export default {
     name: "BookFlight",
     data() {
         return {
-            originCountry: "",
+            originCountry: null,
             destinationCountry: "",
             departureDate: "",
             arrivalDate: "",
             noOfPassengers: "",
             classType: "",
+            countries: this.displayCountries(),
         }
     },
     mounted() {
       let jquery = document.createElement('script')
       jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
       document.head.appendChild(jquery)
+
     },
     methods: {
+        async displayCountries() {
+            const listCountries = [];
+            const countries = collection(db, "FlightCountries");
+            const snapshot = await getDocs(countries);
+            snapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            // console.log(doc.id, " => ", doc.data());
+            listCountries.push(doc.data())
+            });
+            console.log(listCountries)
+            return listCountries;
+        },
         async searchFlights() {
             if (this.originCountry != "" && this.destinationCountry != "" && this.departureDate != "" && this.arrivalDate != "" && this.classType != "") {
                 if (this.noOfPassengers >= 1) {
                     if (this.arrivalDate > this.departureDate) {
-                        this.$router.push({
-                            name: "FlightResults",
-                            query: {
-                                originCountry: this.originCountry,
-                                destinationCountry: this.destinationCountry,
-                                departureDate: this.departureDate,
-                                arrivalDate: this.arrivalDate,
-                                noOfPassengers: this.noOfPassengers,
-                                classType: this.classType,
-                            }
-                        })
+                        this.isFlightSearchValid()
                     }
                     else {
-                        console.log("error in check out date")
-                        alert("Check-out Date must be after Check-in Date.")
+                        console.log("error in return date")
+                        alert("Return Date must be after Departure Date.")
                     }
                 }
                 else {
@@ -142,6 +160,34 @@ export default {
                     console.log("error, missing fields")
                     alert("There are missing fields.")
             }
+        },
+
+        async isFlightSearchValid() {
+            // check if there is available flight in firebase
+            let flights = await getDocs(collection(db), "Flights") 
+            console.log(flights)
+            const q = query(flights, where("arrivalCountryName", "==", this.originCountry),
+            where("departureCountryName", "==", this.destinationCountry));
+            if (q != null) {
+                alert("have flights")
+            } else { // no flights available
+                alert("no flights")
+            }
+
+            // flight is available
+            // this.$router.push({
+            //                 name: "FlightResults",
+            //                 query: {
+            //                     originCountry: this.originCountry,
+            //                     destinationCountry: this.destinationCountry,
+            //                     departureDate: this.departureDate,
+            //                     arrivalDate: this.arrivalDate,
+            //                     noOfPassengers: this.noOfPassengers,
+            //                     classType: this.classType,
+            //                 }
+            // })
+
+            // flight is unavailable
         }
     }
 }
