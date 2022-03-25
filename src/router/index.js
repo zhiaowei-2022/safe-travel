@@ -16,6 +16,7 @@ const routes = [
         name: 'AccomodationResults',
         component: AccomodationResults
     },
+    {
         path: '/bookflight',
         name: 'BookFlight',
         component: BookFlight

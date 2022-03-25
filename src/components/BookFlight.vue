@@ -104,8 +104,7 @@
 </template>
 <script>
 import firebaseApp from "../firebase.js";
-import { collection, getDocs, getFirestore } from "firebase/firestore"
-import { query, where } from "firebase/firestore";  
+import { collection, getDocs, getFirestore, query, where } from "firebase/firestore"
 
 const db = getFirestore(firebaseApp);
 export default {
