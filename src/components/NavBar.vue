@@ -19,7 +19,7 @@
                 <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/">Accommodation</router-link></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active"><router-link style="text-decoration: none; color: inherit;" to="/FoodAndDining">Food And Dining</router-link></a>
+                <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/">Food And Dining</router-link></a>
             </li>            
         </ul>
     </div>

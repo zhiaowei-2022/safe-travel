@@ -1,17 +1,14 @@
 <template>
-  <title> SafeTravel | Food and Dining </title>
   <NavBar/>
-  <FoodAndDining/>
+  <router-view/>
 </template>
 
 <script>
-import FoodAndDining from './components/FoodAndDining.vue'
 import NavBar from './components/NavBar.vue'
 
 export default {
   name: 'App',
   components: {
-    FoodAndDining,
     NavBar,
   }
 }
