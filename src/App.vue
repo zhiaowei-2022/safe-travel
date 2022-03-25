@@ -1,14 +1,15 @@
 <template>
-  <ThingsToDo/>
+  <NavBar/>
+  <router-view/>
 </template>
 
 <script>
-import ThingsToDo from './components/ThingsToDo.vue'
+import NavBar from './components/NavBar.vue'
 
 export default {
   name: 'App',
   components: {
-    ThingsToDo
+    NavBar,
   }
 }
 </script>
