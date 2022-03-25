@@ -14,11 +14,10 @@
           <div class="col">
            <label for="originCountry" class="title">Origin</label>
            <!-- <input type="text" class="form-control" id="origin-country-input" placeholder="Enter origin country" v-model="originCountry" required> -->
-           <select name="originCountry" class="form-select form-control" v-model="originCountry" aria-placeholder="Select Country">
+           <select name="originCountry" class="form-select form-control" v-model="listCountries" aria-placeholder="Select Country">
                 <option value="null">---- Select Country ----</option>
-                <option v-for="country in countries" 
-                v-bind:key="country.countryName"
-                value="country.countryName"> {{ country.countryName }} </option>
+                <option v-for="country in listCountries" 
+                v-bind:key="country.countryName"> {{ country.countryName }} </option>
            </select>
           </div>
           <!-- Search field for destination country -->
@@ -54,7 +53,7 @@
                     <div class="col">
                         <label  class="label">Class</label>
                         <select name="classType" class="form-select form-control" v-model="classType">
-                            <option>---- Select Class ----</option>
+                            <option value=null>---- Select Class ----</option>
                             <option value="economyClass">Economy Class</option>
                             <option value="businessClass">Business Class</option>
                             <option value="firstClass">First Class</option>
@@ -117,10 +116,11 @@ export default {
             departureDate: "",
             arrivalDate: "",
             noOfPassengers: "",
-            classType: "",
-            countries: this.displayCountries(),
+            classType: null,
+            listCountries: this.displayCountries()
         }
     },
+
     mounted() {
       let jquery = document.createElement('script')
       jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
@@ -129,7 +129,7 @@ export default {
     },
     methods: {
         async displayCountries() {
-            const listCountries = [];
+            var listCountries = [];
             const countries = collection(db, "FlightCountries");
             const snapshot = await getDocs(countries);
             snapshot.forEach((doc) => {
