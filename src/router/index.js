@@ -9,7 +9,7 @@ import FlightResults from '@/components/FlightResults.vue'
 
 const routes = [
     {
-        path: '/',
+        path: '/FoodAndDining',
         name: 'FoodAndDining',
         component: FoodAndDining
     },
