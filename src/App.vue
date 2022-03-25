@@ -12,7 +12,7 @@ export default {
   name: 'App',
   components: {
     FoodAndDining,
-    NavBar
+    NavBar,
   }
 }
 </script>
