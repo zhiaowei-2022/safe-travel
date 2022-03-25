@@ -58,21 +58,13 @@
         <div class="container">
         <div class="row">
             <div id="photo">
-                <!-- 
-                    img -->
+            <!-- img -->
             </div>
 
         </div>
         <div class="row">
             <div id="resultinfo">
-            <!--
-            Name
-            Rating
-            Address
-            Phone
-            Description
-            Website
-            -->
+            <!-- Name , Rating ,Address , Phone , Description , Website -->
             </div>            
         </div>
         </div>
@@ -100,28 +92,20 @@ export default {
             
             
         },
-
         closeModal() {
             var modal = document.getElementById("searchResult");
             modal.style.display = "none";
         },
-
         async display(variable){
             let z = await getDocs(collection(db, "ThingToDo"))
-            
             let ind = 0
-            //let col = 0
-            
             this.clearAll()
-            
-            
             z.forEach((docs) => {
                 let yy = docs.data()
                 var container = document.getElementById(ind)
                 //container.innerHTML = ""
                 var name = (yy.Name)
                 var imageURL = (yy.ImageURL)
-                
                 var address = (yy.Address)
                 var contact = (yy.Contact)
                 var desc = (yy.Description)
