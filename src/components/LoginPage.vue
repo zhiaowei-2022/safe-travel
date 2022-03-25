@@ -46,12 +46,14 @@
 
     </table> -->
 
+
  <div class="container p-5">
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     User Login
-  </button> 
+  </button>  -->
 
+<a href="#exampleModal" data-bs-toggle="modal">Login</a>
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -169,22 +171,14 @@ export default {
           // const user = userCredential.user;
           // console.log(user.email)
           // console.log("signed in")
-          $('#exampleModal').hide()
-          $('.modal-backdrop').hide();
-          // $('.modal').modal('hide');
-          // $('body').removeClass('modal-open');
-// $('.modal-backdrop').remove();
-          // $('.modal').remove();
-          // $('.modal-backdrop').remove();
-          // $('body').removeClass( "modal-open" );
-
+          $('#exampleModal').modal('hide')
+          $('.modal-backdrop').modal('hide')
         })
         .catch((error) => {
           console.log(error.message)
           switch (error.code) {
             case "auth/invalid-email":
               this.loginMsg = "Invalid Email";
-              console.log(this.loginMsg)
               break;
             default:
               // alert("Incorrect Email/Password")
