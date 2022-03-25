@@ -1,15 +1,18 @@
 <template>
     <div id="nav">
-    <router-link to="/">Home</router-link> |
+    <!-- <router-link to="/">Home</router-link> | -->
     <router-link to="/loginview">Login</router-link> |
+    <!-- <LoginPage/> -->
     <router-link to="/registerview">Register</router-link> |
     <router-link to="/tryingstuffs">try</router-link> |
   </div>
-  <router-view/>
 
+  <NavBar/>
+  <router-view/>
 </template>
 
 <script>
+import NavBar from './components/NavBar.vue'
 // import LoginPage from './components/LoginPage.vue'
 // import RegisterPage from './components/RegisterPage.vue'
 
@@ -17,9 +20,9 @@
 export default {
   name: 'App',
   components: {
-    // RegisterPage,
+    NavBar,
     // LoginPage
-  }
+  },
 }
 </script>
 

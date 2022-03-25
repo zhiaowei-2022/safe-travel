@@ -41,7 +41,7 @@ const routes = [
         path: '/flightresults',
         name: 'FlightResults',
         component: FlightResults
-    },    
+    },
     {
         path: '/',
         name: 'HomeView',
@@ -62,6 +62,7 @@ const routes = [
         name: 'TryingStuffs',
         component: TryingStuffs
     },
+
 ]
 const router = createRouter({
     history: createWebHistory(),
