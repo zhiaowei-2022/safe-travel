@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
+  // Brandon and Havenesh
     apiKey: "AIzaSyAIeivunAW9Sjchj2DBPtW_hh6QOWuUjsA",
     authDomain: "testst-a016f.firebaseapp.com",
     projectId: "testst-a016f",
@@ -12,3 +13,13 @@ const firebaseConfig = {
   const firebaseApp = initializeApp(firebaseConfig);
   
   export default firebaseApp;
+  /*
+// Zhiao Wei and Estella
+  apiKey: "AIzaSyBBhVKLyxX5ZOFFKNtFUmVwy9z9rtO1A90",
+  authDomain: "safe-travel-1a5dd.firebaseapp.com",
+  projectId: "safe-travel-1a5dd",
+  storageBucket: "safe-travel-1a5dd.appspot.com",
+  messagingSenderId: "82496921353",
+  appId: "1:82496921353:web:400248e68cb852e0827dd8"
+};
+*/
