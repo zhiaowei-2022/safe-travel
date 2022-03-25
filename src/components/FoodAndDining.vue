@@ -21,34 +21,28 @@
   <br />
   <h2>Popular Dining</h2>
   <br />
-  <!--
-  <li v-for="item in items" :key="item">
-      {{ item.lang }}
-  </li>
-  -->
   <div class="container">
     <div class="row">
-      <div class="col"> <!-- v-for starts here -->
-        <figure>
-          <img src="https://www.thebestsingapore.com/wp-content/uploads/2018/09/The-Line-Seafood-Counter-1.jpg" alt="the line at shangri-la" />
-          <figcaption>The Line at Shangri-La Singapore</figcaption>
-        </figure>
+      <div class="col" v-for="cat in categories" :key="cat">
+        <div class="btn btn-primary" @click="goFilter(cat)">{{cat}}</div>
       </div>
-      <div class="col">
-        <figure>
-          <img src="https://nomaddicted.files.wordpress.com/2015/08/wpid-20150808_115842.jpg" alt="the cat cafe" />
-          <figcaption>The Cat Cafe</figcaption>
-        </figure>
-      </div>
-      <div class="col">
-        <figure>
-          <img src="https://www.gardensbythebay.com.sg/content/dam/gbb-2021/image/things-to-do/dine-and-shop/satay-by-the-bay/main/satay-by-the-bay-main.jpg" alt="satay by the bay" />
-          <figcaption>Satay by the Bay at Gardens by the Bay</figcaption>
-        </figure>
+    </div>
+  </div>
+  <br/><br/>
+  <div class="container">
+    <div>
+      <div class="row" v-for="row in database" :key="row">
+        <div class="col" v-for="item in row" :key="item">
+          <figure>
+            <img :src=item.ImageURL :alt=item.Name />
+            <figcaption>{{item.Name}}</figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../firebase.js";
@@ -58,9 +52,34 @@ const db = getFirestore(firebaseApp);
 
 export default {
     name: "FoodAndDining",
+    methods: {
+    // Read Firebase
+        async readFirebase() { // user in params
+            var z = await getDocs(collection(db, "FnB"));
+            let counter = 0
+            let container = []
+            z.forEach((doc) => {
+                let row = doc.data();
+                if (!this.categories.includes(row.Category)) {
+                  this.categories.push(row.Category)
+                }
+                container.push(row);
+                counter++;
+                if (counter % this.numberOfColumns == 0 || counter == z.length) {
+                  this.database.push(container);
+                  container = [];
+                }
+            })
+        },
+        goFilter(cat) {
+          console.log(cat);
+        }
+    },
     data() {
         return {
-
+          database: [],
+          categories: ["All"],
+          numberOfColumns: 3,
         }
     },
     mounted() {
@@ -74,37 +93,15 @@ export default {
               this.user = user;
           }    
         });
-
-        // Read Firebase
-        async function readFirebase() { // user in params
-            var z = await getDocs(collection(db, "FnB"));
-            z.forEach((doc) => {
-                let row = doc.data();
-                console.log(row);
-                /*
-                var address = row.Address;
-                var category = row.Category;
-                var contact = row.Contact;
-                var description = row.Description;
-                var imageURL = row.ImageURL;
-                var name = row.Name;
-                var rating = row.Rating;
-                var website = row.Website;
-                */
-            })
-        }
-        readFirebase()
-
+        this.readFirebase();
     },
-    methods: {
-
-    }
+    // modifying firebase database script here for filtering
 }
 </script>
 
 <style scoped>
 .food-and-dining {
-  background-image: url("~@/assets/food-bg.jpg");
+  background-image: url("https://www.causeandeffect.sg/assets/images/dwws-0538-e-berlin-2000x1363.jpg");
   height: 500px;
   padding-top: 100px;
 }
@@ -132,9 +129,10 @@ button {
 }
 
 img {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
 }
 
 .form-details {

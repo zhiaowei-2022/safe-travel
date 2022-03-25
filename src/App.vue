@@ -1,4 +1,5 @@
 <template>
+  <title> SafeTravel | Food and Dining </title>
   <NavBar/>
   <FoodAndDining/>
 </template>
