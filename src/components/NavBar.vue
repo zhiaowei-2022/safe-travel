@@ -16,7 +16,7 @@
                 <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/ThingsToDo">Things To Do</router-link></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/accomodationpage">Accommodation</router-link></a>
+                <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/accommodationpage">Accommodation</router-link></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/FoodAndDining">Food And Dining</router-link></a>

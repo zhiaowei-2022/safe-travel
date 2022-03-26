@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import FoodAndDining from '@/components/FoodAndDining.vue'
 import ThingsToDo from '@/components/ThingsToDo.vue'
-import AccomodationPage from '@/components/AccomodationPage.vue'
-import AccomodationResults from '@/components/AccomodationResults.vue'
+import AccommodationPage from '@/components/AccommodationPage.vue'
+import AccommodationResults from '@/components/AccommodationResults.vue'
 import BookFlight from '@/components/BookFlight.vue'
 import FlightResults from '@/components/FlightResults.vue'
 // import checkFB from '@/components/checkFB.vue'
@@ -23,14 +23,14 @@ const routes = [
         component: ThingsToDo
     },
     {
-        path: '/accomodationpage',
-        name: 'AccomodationPage',
-        component: AccomodationPage
+        path: '/accommodationpage',
+        name: 'AccommodationPage',
+        component: AccommodationPage
     },
     {
-        path: '/accomodationresults',
-        name: 'AccomodationResults',
-        component: AccomodationResults
+        path: '/accommodationresults',
+        name: 'AccommodationResults',
+        component: AccommodationResults
     },
     {
         path: '/bookflight',

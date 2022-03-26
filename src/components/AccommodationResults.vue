@@ -41,7 +41,7 @@
 
     <div v-if="database.length !== 0">
         <div v-for="hotel in database" v-bind:key="hotel.uid">
-            <AccomodationResult 
+            <AccommodationResult 
                 photo="mbs-singapore-cover.jpg"
                 :name="hotel.Name"
                 :rating="hotel.Rating"
@@ -55,7 +55,7 @@
     <div v-else>
         <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
         <h3>No Results Found</h3>
-        <h5>We could not find any accomodations that match your search.</h5> <br>
+        <h5>We could not find any accommodations that match your search.</h5> <br>
         <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
             Search Again
         </button>
@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import SearchInput from '@/template/AccomodationSearchInput.vue'
-import AccomodationResult from '@/template/AccomodationResult.vue'
+import SearchInput from '@/template/AccommodationSearchInput.vue'
+import AccommodationResult from '@/template/AccommodationResult.vue'
 import moment from 'moment'
 
 import { getAuth, onAuthStateChanged } from "firebase/auth"
@@ -74,11 +74,11 @@ import { getFirestore, collection, getDocs } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 
 export default {
-    name: 'AccomodationResults',
+    name: 'AccommodationResults',
 
     components: {
         SearchInput,
-        AccomodationResult
+        AccommodationResult
     },
     
     data() {

@@ -30,7 +30,7 @@
                 </div>
             </div>
             <br>
-            <button type="button" class="btn btn-primary" @click="searchAccomodations()">Search Accomodations</button>
+            <button type="button" class="btn btn-primary" @click="searchAccommodations()">Search Accommodations</button>
         </form>
         <br>
     </div> <br>
@@ -69,7 +69,7 @@
 
 <script>
 export default {
-    name:"AccomodationPage",
+    name:"AccommodationPage",
 
     data() {
         return {
@@ -82,12 +82,12 @@ export default {
     },
 
     methods: {
-        async searchAccomodations() {
+        async searchAccommodations() {
             if (this.hotelName != "" && this.checkInDate != "" && this.checkInDate != "") {
                 if (this.noOfGuests >= 1 && this.noOfRooms >= 1) {
                     if (this.checkOutDate > this.checkInDate) {
                         this.$router.push({
-                            name: "AccomodationResults", 
+                            name: "AccommodationResults", 
                             query: {
                                 hotelName: this.hotelName,
                                 checkInDate: this.checkInDate,
@@ -158,7 +158,7 @@ figcaption {
 }
 
 .input-hotel-details {
-    background-image: url("@/assets/accomodation-page.jpeg");
+    background-image: url("@/assets/accommodation-page.jpeg");
     width: 100%;
     height: 500px;
     padding-top: 80px;
