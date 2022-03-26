@@ -74,9 +74,7 @@ router.beforeEach((to, from, next) => {
       modalBackground.remove()
     }
     // do other stuff
-  
     next()
   })
-
 
 export default router

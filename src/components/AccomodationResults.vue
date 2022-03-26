@@ -12,8 +12,8 @@
             <SearchInput v-if="!manyRooms" :input = "room"/>
         </span>
 
-        <div>
-            <button class="btn btn-primary" name="submit" type="button" data-toggle="modal" data-bs-target="#exampleModal" data-target=".bd-example-modal-lg">
+        <div v-if="database.length !== 0">
+            <button class="btn btn-primary" id="modify" name="submit" type="button" data-toggle="modal" data-bs-target="#exampleModal" data-target=".bd-example-modal-lg">
                 Modify Search
             </button>
         </div>
@@ -39,18 +39,39 @@
         </div>
     </div>
 
-    <AccomodationResult photo="mbs-singapore-2.jpg" name="Marina Bay Sands, Singapore" rating="4.6" 
-        :checkInDate=resultsDisplay(checkInDate) :checkOutDate=resultsDisplay(checkOutDate) price="634"/>
-    <AccomodationResult photo="mandarin-orchard-singapore.jpeg" name="Mandarin Orchard, Singapore" rating="4.4"
-        :checkInDate=resultsDisplay(checkInDate) :checkOutDate=resultsDisplay(checkOutDate) price="496"/>
-    <AccomodationResult photo="hotel-g-singapore.jpeg" name="Hotel G, Singapore" rating="4.1"
-        :checkInDate=resultsDisplay(checkInDate) :checkOutDate=resultsDisplay(checkOutDate) price="133"/>
+    <div v-if="database.length !== 0">
+        <div v-for="hotel in database" v-bind:key="hotel.uid">
+            <AccomodationResult 
+                photo="mbs-singapore-cover.jpg"
+                :name="hotel.Name"
+                :rating="hotel.Rating"
+                :checkInDate=resultsDisplay(checkInDate) 
+                :checkOutDate=resultsDisplay(checkOutDate)
+                :price="hotel.Price"
+            />
+        </div>
+    </div>
+
+    <div v-else>
+        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
+        <h3>No Results Found</h3>
+        <h5>We could not find any accomodations that match your search.</h5> <br>
+        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
+            Search Again
+        </button>
+    </div>
 </template>
 
 <script>
 import SearchInput from '@/template/AccomodationSearchInput.vue'
 import AccomodationResult from '@/template/AccomodationResult.vue'
 import moment from 'moment'
+
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import firebaseApp from "@/firebase.js"
+import { getFirestore, collection, getDocs } from "firebase/firestore"
+
+const db = getFirestore(firebaseApp);
 
 export default {
     name: 'AccomodationResults',
@@ -62,6 +83,7 @@ export default {
     
     data() {
         return {
+            database: [],
             name: this.$route.query.hotelName,
             checkInDate: this.$route.query.checkInDate,
             checkOutDate: this.$route.query.checkOutDate,
@@ -78,6 +100,14 @@ export default {
         let jquery = document.createElement('script')
         jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
         document.head.appendChild(jquery)
+
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        });
+        this.display();
     },
 
     methods: {
@@ -87,17 +117,35 @@ export default {
 
         resultsDisplay(date) {
             return moment(date).format("ddd, D MMM YYYY");
+        },
+
+        async display() {
+            var docs = await getDocs(collection(db, "Accommodations"))
+
+            docs.forEach((doc) => {
+                let data = doc.data()
+                if (data.Name.toLowerCase().includes(this.name.toLowerCase())) {
+                    this.database.push(data)
+                }
+            })
         }
     }
 }
 </script>
 
 <style scoped>
+h3, h5 {
+    color: black;
+}
+
 button {
     background-color: rgb(0, 15, 92);
     border-color: rgb(0, 15, 92);
     color: white;
     font-weight: bold;
+}
+
+#modify {
     float: right;
     margin-top: 10px;
 }
@@ -111,5 +159,9 @@ img {
     width: 90%;
     border-radius: 20px;
     display: inline-block;
+}
+
+#no-results {
+    width: 10%;
 }
 </style>
