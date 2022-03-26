@@ -6,15 +6,15 @@
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="col col-lg-2">
-                    <img src="@/assets/mbs-singapore-2.jpg" alt="">
+                    <img :src="require(`@/assets/${photo}`)" alt="">
                 </div>
                 <div class="col" style="text-align:left">
                     <div class="hotel-name"> {{ name }} </div>
-                    <div class="hotel-body"> {{ rating }} </div>
+                    <div class="hotel-body"> {{ rating }} / 5</div>
                     <div class="hotel-body"> {{ checkInDate }} - {{ checkOutDate }}</div>
                 </div>
                 <div class="col col-lg-2">
-                    <div class="hotel-price"> From {{ price }} </div> <br>
+                    <div class="hotel-price"> From ${{ price }} </div> <br>
                     <button type="button" class="btn btn-link" style="background-color: rgb(0, 15, 95, 0)">Add to cart</button>
                 </div>
             </div>
@@ -30,10 +30,10 @@ export default {
     props: {
         photo: String,
         name: String,
-        rating: String,
+        rating: Number,
         checkInDate: String,
         checkOutDate: String,
-        price: String
+        price: Number
     }
 }
 </script>
