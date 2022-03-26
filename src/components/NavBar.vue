@@ -20,7 +20,8 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/FoodAndDining">Food And Dining</router-link></a>
-            </li>            
+            </li>
+                        
         </ul>
     </div>
   </div>

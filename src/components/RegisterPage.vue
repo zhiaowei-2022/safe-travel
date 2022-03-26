@@ -1,5 +1,8 @@
 <template>
-<div id="container">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<!-- <div id="container">
   <div id="content">
         <h1> Register for an account </h1>
         
@@ -69,8 +72,96 @@
           </table>
         </div>
         </div>
+        </div> -->
+
+
+<div id="holder">
+<div class="container">
+  <div class="title">
+    <h1> Register for an account </h1>
+  </div>
+
+  <div id="background">
+
+
+  <div class="field">
+    <div class="row justify-content-md-center">
+      <div class="col col-lg-1" style="text-align:right">
+        <strong><label for="email" id="credentials">Email: </label></strong>
+      </div>
+      <div class="col col-lg-3">
+        <input class="registerForm" v-model="email" @input="checkEmail()" type="email" placeholder="xyz@gmail.com">
+        <p v-if="checkingEmail" id="invalidCritera"> {{emailCriteria}} </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="row justify-content-md-center">
+      <div class="col col-lg-1" style="text-align:right">
+        <strong><label for="username" id="credentials">Username: </label></strong>
+      </div>
+      <div class="col col-lg-3">
+        <input class="registerForm" v-model="username" @input="checkUsername()" type="text" placeholder="xyz">
+        <p id="invalidCritera" v-if="checkingUsername"> {{usernameCriteria}} </p>
+      </div>
+      <!-- <div class="col col-lg-1">
+      </div> -->
+    </div>
+  </div>
+
+
+  <div class="field">
+    <div class="row justify-content-md-center">
+      <div class="col col-lg-1">
+        <strong><label for="password" id="credentials" style="text-align:right">Password: </label></strong> 
+      </div>
+      <div span class="col col-lg-3">
+        <input class="registerForm" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="*******">
+        <input class="registerForm" v-else v-model="password" @input="checkPassword()" type="password" placeholder="*******">
+        <div v-if="showPassword" @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px;">
+          <i id = "visibility" class="fa-solid fa-eye"></i></div>
+        <div v-else @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px">
+          <i id = "visibility" class="fa-solid fa-eye-slash"></i>
+        </div>
+        <p id="invalidCritera" v-if="checkingPassword" v-html="passwordCriteria"></p> 
+  
+      </div>
+
+      <!-- <div class="col col-md-auto">
+        <div v-if="showPassword" @click="toggleShow">
+          <i id = "visibility" class="fa-solid fa-eye"></i>
         </div>
 
+        <div v-else @click="toggleShow">
+          <i id = "visibility" class="fa-solid fa-eye-slash"></i>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+<div class="field">
+  <div class="row justify-content-md-center">
+    <div class="col col-lg-1">
+      </div>
+      <div class="col col-lg-3" style="text-align:center">
+      
+          <p id="login"> Already have an account? Login
+          <router-link to="/loginview">HERE</router-link> </p>
+          <router-view/> <br>
+              
+
+          <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>
+          <button type="button" v-else id ="invalidRegisterBtn"> REGISTER</button>
+          <br><br>
+          </div>
+
+  </div>
+</div>
+</div>
+</div>
+</div>
 
         
 </template>
@@ -105,6 +196,17 @@ export default {
     };
   },
   methods: {
+      mounted() {
+        // const auth = getAuth();
+        // onAuthStateChanged(auth, (user) => {
+        //     if (user) {
+        //         this.user = user;
+        //     }
+        // });
+        let jquery = document.createElement('script')
+        jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
+        document.head.appendChild(jquery)
+    },
     toggleShow() {
       if (this.showPassword == true) {
         this.showPassword = false
@@ -184,15 +286,15 @@ export default {
       this.criteriaArray[2] = false
       var numbers = /[0-9]/g;
       if (!this.password.match(numbers) && this.password.length < 8) {
-        this.passwordCriteria = "Invalid Password: At least 8 Characters with numeric number"
+        this.passwordCriteria = "Invalid Password:<br>At least 8 Characters with a Numeric Number"
         return true
       }
       else if (!this.password.match(numbers)) {
-        this.passwordCriteria = "Invalid Password: At least one numeric number"
+        this.passwordCriteria = "Invalid Password:<br>At least One Numeric Number"
         return true
       }
       else if (this.password.length < 8) {
-        this.passwordCriteria = "Invalid Password: At least 8 Characters"
+        this.passwordCriteria = "Invalid Password:<br>At least 8 Characters"
         return true
       }else{
         this.checkingPassword = false
@@ -264,45 +366,91 @@ export default {
 
 <style scoped>
     .registerForm {
-      width: 280px;
+      width: 90%;
       background-color: #f0f0f0;
-      height: 30px;
+      height: 35px;
       border-radius: 55px;
       border: 3px solid transparent;
       padding: 0;
       font-size: 15px;
       
-            
+    }
+
+    /* #holder {
+      background-image: url("../assets/parachute.jpg");
+        height: 100%;
+        padding-top: 100px;
+        padding-bottom: 50px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        
+        } */
+
+
+    #holder {
+    position: relative;
+    height: 100%;
+            padding-top: 100px;
+        padding-bottom: 50px;
+    text-align: center
+    
+    }
+
+    #holder:before {
+      content: ' ';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* height: 80.5vh; */
+      height: 100%;
+      background-image: url("../assets/parachute.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0.6;
+    }
+
+    .container {
+      position: relative;
+      height: 100%;
+    }
+
+    #credentials {
+      /* color:white; */
+      margin: 4px 0 0 0;
+    }
+
+    .field {
+      height: 100px;
+    }
+        #login {
+        font-size: 10px;
     }
 
     #invalidCritera {
       font-size: 10px;
-      width:300px;
+      width:90%;
       color: red;
       margin : 0px;
       padding : 0px;
-      margin: auto;
+      /* margin: auto; */
+      text-align:center;
     
     }
 
-    #login {
-        font-size: 10px;
+    .title {
+      padding: 0px 0px 50px 0px;
+      color: rgb(0, 15, 92);
     }
 
-
-    table{
-      height: 100%;
-      margin: auto;
-      
+    .label {
+      color: white;
     }
 
-    td{
-      height: 100px;
-      margin: 0px;
-      
-    }
-
-    #registerBtn, #invalidRegisterBtn {
+      #registerBtn, #invalidRegisterBtn {
       background-color: rgb(0, 15, 92);
       color: white;
       font-weight: bold;
@@ -322,50 +470,12 @@ export default {
     border-radius: 5px;
     box-shadow: 4px 4px;
     }
-    
-    #container {
-    position: relative;
-    height: 100%;
-    margin: 0;
-    text-align: center
-    
-    }
 
-    #container:before {
-      content: ' ';
-      display: block;
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 80.5vh;
-      background-image: url("../assets/parachute.jpg");
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      opacity: 0.6;
-    }
-
-    label {
-      color: black;
-      /* text-align: right; */
-      
-      
-    }
-
-    #content {
-      position: relative;
-            height: 100%;
-
-        /* height: 100vh;
-        width: 100%; */
-    }
-
-    h1 {
-      text-align: center;
-      margin: auto;
-      padding-bottom: 40px;
-      padding-top:30px;
+    .col{ 
+       /* background-color: gray; */
+      /* color: blue; */
+      text-align: left;
+      /* border: 1px solid black; */
     }
 
 

@@ -75,55 +75,92 @@
         </div> -->
 
 
-
+<div id="holder">
 <div class="container">
-  <h1> Register for an account </h1>
+  <div class="title">
+    <h1> Register for an account </h1>
+  </div>
 
+  <div id="background">
+
+
+  <div class="field">
+    <div class="row justify-content-md-center">
+      <div class="col col-lg-1" style="text-align:right">
+        <strong><label for="email" id="credentials">Email: </label></strong>
+      </div>
+      <div class="col col-lg-3">
+        <input class="registerForm" v-model="email" @input="checkEmail()" type="email" placeholder="xyz@gmail.com">
+        <p v-if="checkingEmail" id="invalidCritera"> {{emailCriteria}} </p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="row justify-content-md-center">
+      <div class="col col-lg-1" style="text-align:right">
+        <strong><label for="username" id="credentials">Username: </label></strong>
+      </div>
+      <div class="col col-lg-3">
+        <input class="registerForm" v-model="username" @input="checkUsername()" type="text" placeholder="xyz">
+        <p id="invalidCritera" v-if="checkingUsername"> {{usernameCriteria}} </p>
+      </div>
+      <!-- <div class="col col-lg-1">
+      </div> -->
+    </div>
+  </div>
+
+
+  <div class="field">
+    <div class="row justify-content-md-center">
+      <div class="col col-lg-1">
+        <strong><label for="password" id="credentials" style="text-align:right">Password: </label></strong> 
+      </div>
+      <div span class="col col-lg-3">
+        <input class="registerForm" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="*******">
+        <input class="registerForm" v-else v-model="password" @input="checkPassword()" type="password" placeholder="*******">
+        <div v-if="showPassword" @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px;">
+          <i id = "visibility" class="fa-solid fa-eye"></i></div>
+        <div v-else @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px">
+          <i id = "visibility" class="fa-solid fa-eye-slash"></i>
+        </div>
+        <p id="invalidCritera" v-if="checkingPassword" v-html="passwordCriteria"></p> 
+  
+      </div>
+
+      <!-- <div class="col col-md-auto">
+        <div v-if="showPassword" @click="toggleShow">
+          <i id = "visibility" class="fa-solid fa-eye"></i>
+        </div>
+
+        <div v-else @click="toggleShow">
+          <i id = "visibility" class="fa-solid fa-eye-slash"></i>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+<div class="field">
   <div class="row justify-content-md-center">
-    <div class="col-md-auto">
-      <strong><label for="email" >Email: </label></strong>
-    </div>
-    <div class="col-md-auto">
-      <input class="registerForm" v-model="email" @input="checkEmail()" type="email" placeholder="xyz@gmail.com">
-      <p v-if="checkingEmail" id="invalidCritera"> {{emailCriteria}} </p>
-    </div>
-  </div>
-
-
-  <div class="row">
-    <div class="col">
-      <strong><label for="username">Username: </label></strong>
-    </div>
-    <div class="col">
-      <input class="registerForm" v-model="username" @input="checkUsername()" type="text" placeholder="xyz">
-      <p id="invalidCritera" v-if="checkingUsername"> {{usernameCriteria}} </p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <strong><label for="password">Password: </label></strong>
-    </div>
-    <div class="col">
-      <input class="registerForm" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="*******">
-      <input class="registerForm" v-else v-model="password" @input="checkPassword()" type="password" placeholder="*******">
-      <p id="invalidCritera" v-if="checkingPassword"> {{passwordCriteria}} </p> 
-    </div>
-
-    <div class="col">
-      <div v-if="showPassword" @click="toggleShow">
-        <i id = "visibility" class="fa-solid fa-eye"></i>
+    <div class="col col-lg-1">
       </div>
+      <div class="col col-lg-3" style="text-align:center">
+      
+          <p id="login"> Already have an account? Login
+          <router-link to="/loginview">HERE</router-link> </p>
+          <router-view/> <br>
+              
 
-      <div v-else @click="toggleShow">
-        <i id = "visibility" class="fa-solid fa-eye-slash"></i>
-      </div>
-
-    </div>
+          <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>
+          <button type="button" v-else id ="invalidRegisterBtn"> REGISTER</button>
+          <br><br>
+          </div>
 
   </div>
-
-
+</div>
+</div>
+</div>
 </div>
 
         
@@ -249,15 +286,15 @@ export default {
       this.criteriaArray[2] = false
       var numbers = /[0-9]/g;
       if (!this.password.match(numbers) && this.password.length < 8) {
-        this.passwordCriteria = "Invalid Password: At least 8 Characters with numeric number"
+        this.passwordCriteria = "Invalid Password:<br>At least 8 Characters with a Numeric Number"
         return true
       }
       else if (!this.password.match(numbers)) {
-        this.passwordCriteria = "Invalid Password: At least one numeric number"
+        this.passwordCriteria = "Invalid Password:<br>At least One Numeric Number"
         return true
       }
       else if (this.password.length < 8) {
-        this.passwordCriteria = "Invalid Password: At least 8 Characters"
+        this.passwordCriteria = "Invalid Password:<br>At least 8 Characters"
         return true
       }else{
         this.checkingPassword = false
@@ -328,11 +365,118 @@ export default {
 </script>
 
 <style scoped>
+    .registerForm {
+      width: 90%;
+      background-color: #f0f0f0;
+      height: 35px;
+      border-radius: 55px;
+      border: 3px solid transparent;
+      padding: 0;
+      font-size: 15px;
+      
+    }
 
-.container {
-  margin-right: 180px;
-  margin-left: 180px;
-}
+    /* #holder {
+      background-image: url("../assets/parachute.jpg");
+        height: 100%;
+        padding-top: 100px;
+        padding-bottom: 50px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        
+        } */
+
+
+    #holder {
+    position: relative;
+    height: 100%;
+            padding-top: 100px;
+        padding-bottom: 50px;
+    text-align: center
+    
+    }
+
+    #holder:before {
+      content: ' ';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* height: 80.5vh; */
+      height: 100%;
+      background-image: url("../assets/parachute.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0.6;
+    }
+
+    .container {
+      position: relative;
+      height: 100%;
+    }
+
+    #credentials {
+      /* color:white; */
+      margin: 4px 0 0 0;
+    }
+
+    .field {
+      height: 100px;
+    }
+        #login {
+        font-size: 10px;
+    }
+
+    #invalidCritera {
+      font-size: 10px;
+      width:90%;
+      color: red;
+      margin : 0px;
+      padding : 0px;
+      /* margin: auto; */
+      text-align:center;
+    
+    }
+
+    .title {
+      padding: 0px 0px 50px 0px;
+      color: rgb(0, 15, 92);
+    }
+
+    .label {
+      color: white;
+    }
+
+      #registerBtn, #invalidRegisterBtn {
+      background-color: rgb(0, 15, 92);
+      color: white;
+      font-weight: bold;
+      width: 120px;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #invalidRegisterBtn {
+      background-color: #f0f0f0;
+      border:0;
+      color: grey;
+    }
+
+    #visibility:hover{
+    border-radius: 5px;
+    box-shadow: 4px 4px;
+    }
+
+    .col{ 
+       /* background-color: gray; */
+      /* color: blue; */
+      text-align: left;
+      /* border: 1px solid black; */
+    }
 
 
 </style>
