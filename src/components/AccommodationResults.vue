@@ -17,26 +17,6 @@
                 Modify Search
             </button>
         </div>
-
-        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    ...
-                <!-- <div class="modal-header">
-                    <h5 class="modal-title" id="myLargeModalLabel" style="font-weight:bold; font-size:30px;">
-                        Flight is unavailable :(
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Sorry, the flight that you are looking for is unavailable. Try searching again!
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div> -->
-                </div>
-            </div>
-        </div>
     </div>
 
     <div v-if="database.length !== 0">
@@ -48,6 +28,11 @@
                 :checkInDate=resultsDisplay(checkInDate) 
                 :checkOutDate=resultsDisplay(checkOutDate)
                 :price=round(hotel.Price)
+                :address="hotel.Address"
+                :phone="hotel.Phone"
+                :email="hotel.Email"
+                :description="hotel.Description"
+                :onclick="openModal"
             />
         </div>
     </div>
@@ -59,6 +44,21 @@
         <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
             Search Again
         </button>
+    </div>
+
+    <div id="hotelModal" class="modal">
+        <div class="modal-content">
+            <span class="close" v-on:click="closeModal()">&times;</span>
+            <div class="container">
+                <div class="row">
+                    <div id="photo"></div>
+                </div>
+                
+                <div class="row">
+                    <div id="hotelInfo"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -97,9 +97,9 @@ export default {
     },
 
     mounted() {
-        let jquery = document.createElement('script')
-        jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
-        document.head.appendChild(jquery)
+        // let jquery = document.createElement('script')
+        // jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
+        // document.head.appendChild(jquery)
 
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
@@ -132,7 +132,32 @@ export default {
                     this.database.push(data)
                 }
             })
-        }
+        },
+
+        openModal(name, rating, address, phone, email, description) {
+            console.log("open modal")
+            var modal = document.getElementById("hotelModal")
+
+            var photoinfo = document.getElementById("photo")
+            photoinfo.innerHTML = "<img src=@/assets/mbs-singapore.jpg>" 
+
+            var hotelinfo = document.getElementById("hotelInfo")
+            hotelinfo.innerHTML =
+                "<h4><b>" + name + "</b></h4>" +
+                "<h6><b>Rating:</b> " + rating + " / 5 <br></h6>" +
+                "<h6><b>Address:</b> " + address + "<br></h6>" +
+                "<h6><b>Phone:</b> " + phone + "<br></h6>" +
+                "<h6><b>Email:</b> " + email + "<br><br></h6>" +
+                description + "<br><br>" +
+                "<h6><b>Room Types:</b></h6>"
+                
+            modal.style.display = "block";
+        },
+
+        closeModal() {
+            var modal = document.getElementById("hotelModal");
+            modal.style.display = "none";
+        },
     }
 }
 </script>
@@ -168,5 +193,44 @@ img {
 
 #no-results {
     width: 10%;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  text-align: right;
+  padding-right: 15px;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#hotelInfo {
+    text-align: left;
+    color: black;
 }
 </style>

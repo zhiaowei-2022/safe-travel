@@ -2,7 +2,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     
-    <button type="button" class="btn btn-light">
+    <button type="button" class="btn btn-light" @click='onclick(name, rating, address, phone, email, description)'>
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="col col-lg-2">
@@ -34,7 +34,12 @@ export default {
         rating: Number,
         checkInDate: String,
         checkOutDate: String,
-        price: Number
+        price: String,
+        onclick: Function,
+        address: String,
+        phone: String,
+        email: String,
+        description: String,
     }
 }
 </script>
