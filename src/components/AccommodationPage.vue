@@ -41,7 +41,7 @@
         <div class="row">
             <div class="col">
                 <figure>
-                    <a href="https://www.theplazany.com/">
+                    <a href="https://www.theplazany.com/" target="_blank">
                         <img src="@/assets/the-plaza-ny.jpg" alt="">
                     </a>
                     <figcaption>The Plaza, New York</figcaption>
@@ -49,7 +49,7 @@
             </div>
             <div class="col">
                 <figure>
-                    <a href="https://www.marinabaysands.com/">
+                    <a href="https://www.marinabaysands.com/" target="_blank">
                         <img src="@/assets/mbs-singapore.jpg" alt="">
                     </a>
                     <figcaption>Marina Bay Sands, Singapore</figcaption>
@@ -57,7 +57,7 @@
             </div>
             <div class="col">
                 <figure>
-                    <a href="https://www.theshelbourne.com/">
+                    <a href="https://www.theshelbourne.com/" target="_blank">
                         <img src="@/assets/the-shelbourne-hotel-dublin.jpg" alt="">
                     </a>
                     <figcaption>The Shelbourne Hotel, Dublin</figcaption>

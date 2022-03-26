@@ -14,8 +14,9 @@
                     <div class="hotel-body"> {{ checkInDate }} - {{ checkOutDate }}</div>
                 </div>
                 <div class="col col-lg-2">
-                    <div class="hotel-price"> From ${{ price }} </div> <br>
-                    <button type="button" class="btn btn-link" style="background-color: rgb(0, 15, 95, 0)">Add to cart</button>
+                    <div class="hotel-price-text"> Price from </div>
+                    <div class="hotel-price"> ${{ price }} </div>
+                    <div class="hotel-price-text"> per night and room </div>
                 </div>
             </div>
         </div>
@@ -61,17 +62,16 @@ img {
 }
 
 .hotel-price {
-    background-color: rgb(0, 15, 95);
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    display: inline-block;
-    line-height: 100px;
     font-weight: bold;
-    color: white;
+    color: rgb(0, 15, 95);;
+    font-size: 25px;
+    text-align: right;
+}
+
+.hotel-price-text {
+    color: black;
+    text-align: right;
     font-size: 15px;
-    margin-top: 20px;
-    
 }
 
 button {

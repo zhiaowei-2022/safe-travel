@@ -47,7 +47,7 @@
                 :rating="hotel.Rating"
                 :checkInDate=resultsDisplay(checkInDate) 
                 :checkOutDate=resultsDisplay(checkOutDate)
-                :price="hotel.Price"
+                :price=round(hotel.Price)
             />
         </div>
     </div>
@@ -119,6 +119,10 @@ export default {
             return moment(date).format("ddd, D MMM YYYY");
         },
 
+        round(number) {
+            return number.toFixed(2);
+        },
+
         async display() {
             var docs = await getDocs(collection(db, "Accommodations"))
 
@@ -153,6 +157,7 @@ button {
 .search-field {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 
 img {
