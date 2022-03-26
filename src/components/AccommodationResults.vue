@@ -13,7 +13,7 @@
         </span>
 
         <div v-if="database.length !== 0">
-            <button class="btn btn-primary" id="modify" name="submit" type="button" data-toggle="modal" data-bs-target="#exampleModal" data-target=".bd-example-modal-lg">
+            <button class="btn btn-primary" id="modify" name="submit" type="button" @click="openSearchModal()">
                 Modify Search
             </button>
         </div>
@@ -32,7 +32,7 @@
                 :phone="hotel.Phone"
                 :email="hotel.Email"
                 :description="hotel.Description"
-                :onclick="openModal"
+                :onclick="openResultModal"
             />
         </div>
     </div>
@@ -48,7 +48,7 @@
 
     <div id="hotelModal" class="modal">
         <div class="modal-content">
-            <span class="close" v-on:click="closeModal()">&times;</span>
+            <span class="close" v-on:click="closeResultModal()">&times;</span>
             <div class="container">
                 <div class="row">
                     <div id="photo"></div>
@@ -58,6 +58,40 @@
                     <div id="hotelInfo"></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close" v-on:click="closeSearchModal()">&times;</span>
+
+            <form class="form-details">
+                <div class="form-group">
+                    <label for="hotelName" class="form-label">Destination Country/Hotel Name:</label>
+                    <input type="text" class="form-control" id="hotelName" v-model="name" required>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <label for="checkInDate" class="form-label">Check-in Date:</label>
+                        <input type="date" class="form-control" id="checkInDate" v-model="checkInDate" required>
+                    </div>
+                    <div class="col">
+                        <label for="checkOutDate" class="form-label">Check-out Date:</label>
+                        <input type="date" class="form-control" id="checkOutDate" v-model="checkOutDate" required>
+                    </div>
+                    <div class="col">
+                        <label for="noOfGuests" class="form-label">No. of Guest(s):</label>
+                        <input type="number" min="1" class="form-control" id="noOfGuests" v-model=this.$route.query.noOfGuests required>
+                    </div>
+                    <div class="col">
+                        <label for="noOfRooms" class="form-label">No. of Room(s):</label>
+                        <input type="number" min="1" class="form-control" id="noOfRooms" v-model=this.$route.query.noOfRooms required>
+                    </div>
+                </div>
+                <br>
+                <button type="button" class="btn btn-primary" @click="modifySearch()">Save Edits</button>
+            </form>
         </div>
     </div>
 </template>
@@ -134,7 +168,7 @@ export default {
             })
         },
 
-        openModal(name, rating, address, phone, email, description) {
+        openResultModal(name, rating, address, phone, email, description) {
             console.log("open modal")
             var modal = document.getElementById("hotelModal")
 
@@ -154,10 +188,24 @@ export default {
             modal.style.display = "block";
         },
 
-        closeModal() {
+        closeResultModal() {
             var modal = document.getElementById("hotelModal");
             modal.style.display = "none";
         },
+
+        openSearchModal() {
+            var modal = document.getElementById("searchModal")
+            modal.style.display = "block";
+        },
+
+        closeSearchModal() {
+            var modal = document.getElementById("searchModal");
+            modal.style.display = "none";
+        },
+
+        async modifySearch() {
+            this.closeSearchModal()
+        }
     }
 }
 </script>
