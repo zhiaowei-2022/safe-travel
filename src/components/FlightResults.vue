@@ -63,34 +63,49 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                        <label for="hotelName" class="form-label">Destination Country/Hotel Name:</label>
-                        <input type="text" class="form-control" id="hotelName" v-model="name" required>
+                        <label for="originCountry" class="title">Origin</label>
+                        <select name="originCountry" id="originCountry" class="form-select form-control" v-model="originCountry" aria-placeholder="Select Country">
+                                <option value="null">---- Select Country ----</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Melbourne">Melbourne</option>
+                                <option value="Germany">Germany</option>
+                        </select>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                        <label for="hotelName" class="form-label">Destination Country/Hotel Name:</label>
-                        <input type="text" class="form-control" id="hotelName" v-model="name" required>
+                        <label for="destinationCountry" class="title">Destination</label>
+                        <select name="destinationCountry" id="destinationCountry" class="form-select form-control" v-model="destinationCountry" aria-placeholder="Select Country">
+                                <option value="null">---- Select Country ----</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Melbourne">Melbourne</option>
+                                <option value="Germany">Germany</option>
+                        </select>
                         </div>
                     </div>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col">
-                        <label for="checkInDate" class="form-label">Check-in Date:</label>
-                        <input type="date" class="form-control" id="checkInDate" v-model="checkInDate" required>
+                        <label for="departureDate" class="form-label">Departure Date</label>
+                        <input id="departureDate" class="form-control" type="date" v-model="departureDate" required/>
                     </div>
                     <div class="col">
-                        <label for="checkOutDate" class="form-label">Check-out Date:</label>
-                        <input type="date" class="form-control" id="checkOutDate" v-model="checkOutDate" required>
+                        <label for="arrivalDate" class="form-label">Return Date</label>
+                        <input id="arrivalDate" class="form-control" type="date" v-model="arrivalDate" required/>
                     </div>
                     <div class="col">
-                        <label for="noOfGuests" class="form-label">No. of Guest(s):</label>
-                        <input type="number" min="1" class="form-control" id="noOfGuests" v-model=this.$route.query.noOfGuests required>
+                        <label  for="noOfPassengers" class="form-label">No of Passengers</label>
+                        <input id="noOfPassengers" min="1" class="form-control" type="number" placeholder="No. of Passenger(s)" v-model="noOfPassengers">
                     </div>
                     <div class="col">
-                        <label for="noOfRooms" class="form-label">No. of Room(s):</label>
-                        <input type="number" min="1" class="form-control" id="noOfRooms" v-model=this.$route.query.noOfRooms required>
+                        <label  class="form-label">Class</label>
+                        <select name="classType" class="form-select form-control" v-model="classType">
+                            <option value=null>---- Select Class ----</option>
+                            <option value="Economy Class">Economy Class</option>
+                            <option value="Business Class">Business Class</option>
+                            <option value="First Class">First Class</option>
+                        </select>
                     </div>
                 </div>
                 <br>
@@ -176,6 +191,10 @@ export default {
         closeSearchModal() {
             var modal = document.getElementById("searchModal");
             modal.style.display = "none";
+        },
+
+        async modifySearch() {
+
         },
     }
 }
