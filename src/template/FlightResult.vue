@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col col-lg-1">
-                <img src="@/assets/australian-airlines.jpeg" alt="">
+                <img :src="airlinePhoto" alt="">
             </div>
             <div class="col col-lg-3" style="text-align:left; margin-left: 50px">
                 <div class="flight-name"> {{ departureCountryId }} {{departureTime}}</div>
@@ -19,7 +19,7 @@
             <div class="col col-lg-3" style="text-align:left; margin-left: 50px">
                 <div class="flight-name"> {{ arrivalCountryId }} {{arrivalTime}}</div>
                 <div class="flight-body"> {{ arrivalCountryName }} </div>
-                <div class="flight-body"> {{ departureDate }}</div>
+                <div class="flight-body"> {{ arrivalDate }}</div>
             </div>
             <div class="col col-lg-2">
                 <div class="flight-price"> {{ price }} </div> <br>
@@ -34,6 +34,7 @@
 export default {
     name: "FlightResult",
     props: {
+        airlinePhoto: String,
         departureCountryId: String,
         departureCountryName: String,
         departureTime: Number,

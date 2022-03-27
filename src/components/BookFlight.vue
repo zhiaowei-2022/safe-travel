@@ -2,8 +2,6 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-
-      <button v-on:click="displayCountries()">displayCountries</button>
     
     <!-- Form for Book Flight Search Fields -->
     <div class="book-flight">
@@ -13,17 +11,24 @@
           <!-- Search field for origin country -->
           <div class="col">
            <label for="originCountry" class="title">Origin</label>
-           <!-- <input type="text" class="form-control" id="origin-country-input" placeholder="Enter origin country" v-model="originCountry" required> -->
-           <select name="originCountry" class="form-select form-control" v-model="listCountries" aria-placeholder="Select Country">
+           <select name="originCountry" id="originCountry" class="form-select form-control" v-model="originCountry" aria-placeholder="Select Country">
                 <option value="null">---- Select Country ----</option>
-                <option v-for="country in listCountries" 
-                v-bind:key="country.countryName"> {{ country.countryName }} </option>
+                <option value="Singapore">Singapore</option>
+                <option value="Melbourne">Melbourne</option>
+                <option value="Germany">Germany</option>
+                <!-- <option v-for="country in listCountries" 
+                v-bind:key="country.countryName"> {{ country.countryName }} </option> -->
            </select>
           </div>
           <!-- Search field for destination country -->
           <div class="col">
-            <label for="destination-country" class="title">Destination</label>
-            <input type="text" class="form-control" id="destination-country-input" placeholder="Enter destination country" v-model="destinationCountry" required>
+            <label for="destinationCountry" class="title">Destination</label>
+            <select name="destinationCountry" id="destinationCountry" class="form-select form-control" v-model="destinationCountry" aria-placeholder="Select Country">
+                <option value="null">---- Select Country ----</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Melbourne">Melbourne</option>
+                <option value="Germany">Germany</option>
+           </select>
            </div>
         </div>
         <br>
@@ -32,13 +37,13 @@
                 <div class="row">
                     <!-- Search field for departure date -->
                     <div class="col">
-                        <label for="departure-date" class="label">Departure Date</label>
-                        <input id="departure-date" class="form-control" type="date" v-model="departureDate" required/>
+                        <label for="departureDate" class="form-label">Departure Date</label>
+                        <input id="departureDate" class="form-control" type="date" v-model="departureDate" required/>
                     </div>
                     <!-- Search field for return date -->
                     <div class="col">
-                        <label for="return-date" class="label">Return Date</label>
-                        <input id="return-date" class="form-control" type="date" v-model="arrivalDate" required/>
+                        <label for="arrivalDate" class="form-label">Return Date</label>
+                        <input id="arrivalDate" class="form-control" type="date" v-model="arrivalDate" required/>
                     </div>
                 </div>
             </div>
@@ -46,17 +51,17 @@
                 <div class="row">
                     <!-- Search field for no of passengers -->
                     <div class="col">
-                        <label  class="label">No of Passengers</label>
-                        <input id="no-passengers" min="1" class="form-control" type="number" placeholder="No. of Passenger(s)" v-model="noOfPassengers">
+                        <label  for="noOfPassengers" class="form-label">No of Passengers</label>
+                        <input id="noOfPassengers" min="1" class="form-control" type="number" placeholder="No. of Passenger(s)" v-model="noOfPassengers">
                     </div>
                     <!-- Search field for class type -->
                     <div class="col">
-                        <label  class="label">Class</label>
+                        <label  class="form-label">Class</label>
                         <select name="classType" class="form-select form-control" v-model="classType">
                             <option value=null>---- Select Class ----</option>
-                            <option value="economyClass">Economy Class</option>
-                            <option value="businessClass">Business Class</option>
-                            <option value="firstClass">First Class</option>
+                            <option value="Economy Class">Economy Class</option>
+                            <option value="Business Class">Business Class</option>
+                            <option value="First Class">First Class</option>
                         </select>
                     </div>
                 </div>
@@ -102,21 +107,17 @@
 
 </template>
 <script>
-import firebaseApp from "../firebase.js";
-import { collection, getDocs, getFirestore, query, where } from "firebase/firestore"
 
-const db = getFirestore(firebaseApp);
 export default {
     name: "BookFlight",
     data() {
         return {
             originCountry: null,
-            destinationCountry: "",
+            destinationCountry: null,
             departureDate: "",
             arrivalDate: "",
             noOfPassengers: "",
             classType: null,
-            listCountries: this.displayCountries()
         }
     },
 
@@ -127,23 +128,24 @@ export default {
 
     },
     methods: {
-        async displayCountries() {
-            var listCountries = [];
-            const countries = collection(db, "FlightCountries");
-            const snapshot = await getDocs(countries);
-            snapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            // console.log(doc.id, " => ", doc.data());
-            listCountries.push(doc.data())
-            });
-            console.log(listCountries)
-            return listCountries;
-        },
+        
         async searchFlights() {
             if (this.originCountry != "" && this.destinationCountry != "" && this.departureDate != "" && this.arrivalDate != "" && this.classType != "") {
                 if (this.noOfPassengers >= 1) {
                     if (this.arrivalDate > this.departureDate) {
-                        this.isFlightSearchValid()
+                        this.$router.push({
+                            name: "FlightResults",
+                            query: {
+                                originCountry: this.originCountry,
+                                destinationCountry: this.destinationCountry,
+                                departureDate: this.departureDate,
+                                arrivalDate: this.arrivalDate,
+                                noOfPassengers: this.noOfPassengers,
+                                classType: this.classType,
+                                manyPassengers: this.noOfPassengers == 1 ? "" : true,
+                            },
+                    })
+                    console.log(this.originCountry);
                     }
                     else {
                         console.log("error in return date")
@@ -158,37 +160,8 @@ export default {
             else {
                     console.log("error, missing fields")
                     alert("There are missing fields.")
-            }
+            }}
         },
-
-        async isFlightSearchValid() {
-            // check if there is available flight in firebase
-            let flights = await getDocs(collection(db), "Flights") 
-            console.log(flights)
-            const q = query(flights, where("arrivalCountryName", "==", this.originCountry),
-            where("departureCountryName", "==", this.destinationCountry));
-            if (q != null) {
-                alert("have flights")
-            } else { // no flights available
-                alert("no flights")
-            }
-
-            // flight is available
-            // this.$router.push({
-            //                 name: "FlightResults",
-            //                 query: {
-            //                     originCountry: this.originCountry,
-            //                     destinationCountry: this.destinationCountry,
-            //                     departureDate: this.departureDate,
-            //                     arrivalDate: this.arrivalDate,
-            //                     noOfPassengers: this.noOfPassengers,
-            //                     classType: this.classType,
-            //                 }
-            // })
-
-            // flight is unavailable
-        }
-    }
 }
 </script>
 
