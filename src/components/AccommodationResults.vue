@@ -32,6 +32,8 @@
                 :phone="hotel.Phone"
                 :email="hotel.Email"
                 :description="hotel.Description"
+                :modalPhoto="hotel.ModalPhoto"
+                :rooms="hotel.RoomTypes"
                 :onclick="openResultModal"
             />
         </div>
@@ -56,6 +58,18 @@
                 
                 <div class="row">
                     <div id="hotelInfo"></div>
+                </div>
+
+                <div id="room">
+                    <!-- <div class="col">
+                        <div id="roomPhoto"></div>
+                    </div>
+                    <div class="col">
+                        <div id="roomInfo"></div>
+                    </div>
+                    <div class="col">
+                        <div id="roomPrice"></div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -90,7 +104,7 @@
                     </div>
                 </div>
                 <br>
-                <button type="button" class="btn btn-primary" @click="modifySearch()">Save Edits</button>
+                <button type="button" class="btn btn-primary" @click="modifySearch()">Save</button>
             </form>
         </div>
     </div>
@@ -168,13 +182,12 @@ export default {
             })
         },
 
-        openResultModal(photo, name, rating, address, phone, email, description) {
+        openResultModal(modalPhoto, name, rating, address, phone, email, description, rooms) {
             console.log("open modal")
             var modal = document.getElementById("hotelModal")
 
             var photoinfo = document.getElementById("photo")
-            photoinfo.innerHTML = "<img src='" + photo + " 'style='width:100%'>";
-            //photoinfo.innerHTML = "<img src=" + photo + ">";
+            photoinfo.innerHTML = "<img src='" + modalPhoto + " 'style='width:100%; overflow:hidden'><br><br>"
 
             var hotelinfo = document.getElementById("hotelInfo")
             hotelinfo.innerHTML =
@@ -185,23 +198,50 @@ export default {
                 "<h6><b>Email:</b> " + email + "<br><br></h6>" +
                 description + "<br><br>" +
                 "<h6><b>Room Types:</b></h6>"
+
+            var room = document.getElementById("room")
+
+            // var roomphoto = document.getElementById("roomPhoto")
+            // var roominfo = document.getElementById("roomInfo")
+            // var roomprice = document.getElementById("roomPrice")
+
+            for(let roomType of rooms) {
+                room.innerHTML += 
+                "<div class='row'>" + 
+                "<div class='col'>" + "<img src='" + roomType.RoomPhoto + " 'style='width:60%; overflow:hidden'><br><br></div>" + 
+                "<div class='col'>" + roomType.RoomName + "<br>" + 
+                    roomType.RoomDescription + "<br>" + 
+                    roomType.RoomFacilities + "<br></div>" +
+                "<div class='col'>" + roomType.RoomPrice + "</div>" + 
+                "</div>"
+
+                // roomphoto.innerHTML += "<img src='" + room.RoomPhoto + " 'style='width:80%; overflow:hidden'><br><br>"
+
+                // roominfo.innerHTML += 
+                // "<h6>" + room.RoomName+"</h6><br>" +
+                // "<h6>" + room.RoomDescription+"</h6><br>" + 
+                // "<h6>" + room.RoomFacilities+"</h6><br>"
+
+                // roomprice.innerHTML += 
+                // "<h6>" + room.RoomPrice + "</h6><br>"
+            }
                 
-            modal.style.display = "block";
+            modal.style.display = "block"
         },
 
         closeResultModal() {
             var modal = document.getElementById("hotelModal");
-            modal.style.display = "none";
+            modal.style.display = "none"
         },
 
         openSearchModal() {
             var modal = document.getElementById("searchModal")
-            modal.style.display = "block";
+            modal.style.display = "block"
         },
 
         closeSearchModal() {
             var modal = document.getElementById("searchModal");
-            modal.style.display = "none";
+            modal.style.display = "none"
         },
 
         async modifySearch() {
@@ -221,7 +261,7 @@ button {
     border-color: rgb(0, 15, 92);
     color: white;
     font-weight: bold;
-    float: right;
+    width: 150px;
 }
 
 #modify {
@@ -262,7 +302,7 @@ img {
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 75%;
 }
 
 .close {
