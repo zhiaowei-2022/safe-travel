@@ -156,7 +156,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            Sorry, please fill up both the Origin and Destination fields.
+            {{ errorMsg }}
             <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 120px; width: 120px">
         </div>
         <div class="modal-footer">
@@ -194,6 +194,7 @@ export default {
             invalid: false,
             displayInfo: false,
             countries: [],
+            errorMsg: "",
         }
     },
 
@@ -232,7 +233,13 @@ export default {
         async searchInfo() {
             var origin = document.getElementById("origin")
             var dest = document.getElementById("destination")
+
             if ((origin.value == "") || (dest.value == "")) {
+                this.errorMsg = "Sorry, please fill up both the Origin and Destination fields."
+                $('#exampleModal5').modal('show')
+            }
+            else if (origin.value == dest.value) {
+                this.errorMsg = "Sorry, Origin and Destination fields should be different."
                 $('#exampleModal5').modal('show')
             }
             else {
