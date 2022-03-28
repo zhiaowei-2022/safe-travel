@@ -173,7 +173,7 @@ export default {
                                     manyPassengers: this.noOfPassengers == 1 ? "" : true,
                                 },
                             })
-                        console.log(this.originCountry);
+                        console.log(typeof(this.isOneWay));
                         } else {
                             console.log("error in return date")
                             alert("Return Date must be after Departure Date.")

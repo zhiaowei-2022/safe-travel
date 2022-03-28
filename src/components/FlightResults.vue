@@ -9,7 +9,7 @@
             <FlightSearchInput :input="originCountry"/>
             <i class="bi bi-arrow-right"></i>
             <FlightSearchInput :input="destinationCountry"/>
-            <!-- <FlightSearchInput :input="searchDisplay(departureDate, arrivalDate)"/> -->
+            <FlightSearchInput :input="this.isOneWay == false ? searchDisplay(departureDate, arrivalDate) : departureDate"/>
             <FlightSearchInput v-if="manyPassengers" :input="passengers"/>
             <FlightSearchInput v-if="!manyPassengers" :input="passenger"/>
             <FlightSearchInput :input="classType"/>
@@ -46,16 +46,30 @@
         </div>
     </div>  
 
-    <div v-if="isOneWay == false">
-        <h2 v-if="isOneWay == false">Return - {{ destinationCountry }} to {{ originCountry }}</h2>
+    <div v-if="this.isOneWay == false"> 
         <br>
-
+        <h2>Return - {{ destinationCountry }} to {{ originCountry }}</h2>
+        <br>
+        <div v-if="database.length !== 0">
+            <div v-for="flight in returnDatabase" v-bind:key="flight.uid">
+                <FlightResult 
+                :airlinePhoto="flight.airlinePic"
+                :departureCountryId="flight.departureCountryId"
+                :departureCountryName="flight.departureCountryName"
+                :departureTime="timeDisplay(flight.departureDateTime.toDate().toLocaleTimeString())"
+                :departureDate="flight.departureDateTime.toDate().toDateString()" 
+                :arrivalCountryId="flight.arrivalCountryId"
+                :arrivalCountryName="flight.arrivalCountryName"
+                :arrivalTime="timeDisplay(flight.arrivalDateTime.toDate().toLocaleTimeString())"
+                :arrivalDate="flight.arrivalDateTime.toDate().toDateString()"
+                :duration="durationDisplay(flight.arrivalDateTime-flight.departureDateTime)"
+                :price="flight.price"
+                :airline="flight.airline" />
+            </div>
+        </div> 
     </div>
     
-
- 
-
-      <div v-if="database.length == 0">
+    <div v-if="database.length == 0">
         <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
         <h3>No Results Found</h3>
         <h5>We could not find any flights that match your search.</h5> <br>
@@ -144,11 +158,12 @@ export default {
     data() {
         return {
             database: [],
+            returnDatabase: [],
             originCountry: this.$route.query.originCountry,
             destinationCountry: this.$route.query.destinationCountry,
             departureDate: this.$route.query.departureDate,
             arrivalDate: this.$route.query.arrivalDate,
-            isOneWay: this.$route.query.isOneWay,
+            isOneWay: this.$route.query.isOneWay === "true",
             passenger: this.$route.query.noOfPassengers + " Passenger",
             passengers: this.$route.query.noOfPassengers + " Passengers",
             classType: this.$route.query.classType,
@@ -156,10 +171,10 @@ export default {
         }
     },
     mounted() {
-        if (this.isOneWay == true) {
+        if (this.isOneWay == true) { // one way flight
             this.isOneWayFlightSearchValid()
-            console.log(this.isOneWay)
-        } else {
+        } else { // return flight
+            this.isOneWayFlightSearchValid()
             this.isReturnFlightSearchValid()
         }
         
@@ -186,6 +201,10 @@ export default {
         },
 
         async isOneWayFlightSearchValid() {
+            console.log("im not here, neinei here")
+            console.log(this.destinationCountry)
+            console.log(this.originCountry)
+            console.log(this.departureDate)
               this.database = []
               const q = query(collection(db, "Flights"), where("departureCountryName", "==", this.originCountry), 
               where("arrivalCountryName", "==", this.destinationCountry),
@@ -195,22 +214,26 @@ export default {
               querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.data()
-                console.log(doc.id, " => ", doc.data());
+                //console.log(doc.id, " => ", doc.data());
                 this.database.push(data)
             });
         },
 
         async isReturnFlightSearchValid() {
-            this.database = []
-            const q = query(collection(db, "Flights"), where("departureCountryName", "==", this.originCountry), 
-              where("arrivalCountryName", "==", this.destinationCountry),
-              where("departureDateTime", "==", new Date(this.departureDate)))
+            console.log("im here")
+            console.log(this.destinationCountry)
+            console.log(this.originCountry)
+            console.log(this.arrivalDate)
+            this.returnDatabase = []
+            const q = query(collection(db, "Flights"), where("departureCountryName", "==", this.destinationCountry), 
+              where("arrivalCountryName", "==", this.originCountry),
+              where("departureDateTime", "==", new Date(this.arrivalDate)))
               const querySnapshot = await getDocs(q);
               querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.data()
-                // console.log(doc.id, " => ", doc.data());
-                this.database.push(data)
+                console.log(doc.id, " => ", doc.data());
+                this.returnDatabase.push(data)
             });
         },
                 
