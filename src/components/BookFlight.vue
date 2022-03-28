@@ -33,7 +33,8 @@
         </div>
         <br>
         <div class="row">
-            <div class="col">
+            <!-- for return flight -->
+            <div class="col" v-if="this.isOneWay == false">
                 <div class="row">
                     <!-- Search field for departure date -->
                     <div class="col">
@@ -44,6 +45,15 @@
                     <div class="col">
                         <label for="arrivalDate" class="form-label">Return Date</label>
                         <input id="arrivalDate" class="form-control" type="date" v-model="arrivalDate" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="col" v-if="this.isOneWay == true">
+                <div class="row">
+                    <!-- Search field for departure date -->
+                    <div class="col">
+                        <label for="departureDate" class="form-label">Departure Date</label>
+                        <input id="departureDate" class="form-control" type="date" v-model="departureDate" required/>
                     </div>
                 </div>
             </div>
@@ -67,6 +77,7 @@
                 </div>
             </div>  
         </div>
+
         <br>
         <div class="row g-lg-3">
             <div class="col">
@@ -80,7 +91,7 @@
             </div>
             <div class="col">
                 <label class="switch">
-                <input type="checkbox" checked>
+                <input type="checkbox" checked  v-model="isOneWay" @click="toggle">
                 <span class="slider round"></span>
                 </label>
                 <p style="color: white; margin-right:330px; margin-top:5px">One-way?</p>
@@ -88,6 +99,7 @@
         </div>
         </form>
     </div>
+
     <br>
     <h2>Popular Destination</h2>
     <br>
@@ -116,7 +128,6 @@
 
 </template>
 <script>
-
 export default {
     name: "BookFlight",
     data() {
@@ -127,6 +138,7 @@ export default {
             arrivalDate: "",
             noOfPassengers: "",
             classType: null,
+            isOneWay: false,
         }
     },
 
@@ -137,28 +149,51 @@ export default {
 
     },
     methods: {
-        
+        toggle() {
+        this.isOneWay = this.isOneWay ? false : true;
+        },
         async searchFlights() {
-            if (this.originCountry != "" && this.destinationCountry != "" && this.departureDate != "" && this.arrivalDate != "" && this.classType != "") {
+            console.log(this.departureDate)
+            console.log(this.arrivalDate)
+            console.log(this.isOneWay)
+            if (this.originCountry != "" && this.destinationCountry != "" && this.departureDate != "" && this.classType != "") { // empty field
                 if (this.noOfPassengers >= 1) {
-                    if (this.arrivalDate > this.departureDate) {
+                    if (this.arrivalDate != "") { // return flight
+                        if (this.arrivalDate > this.departureDate ) {
+                            this.$router.push({
+                                name: "FlightResults",
+                                query: {
+                                    originCountry: this.originCountry,
+                                    destinationCountry: this.destinationCountry,
+                                    departureDate: this.departureDate,
+                                    arrivalDate: this.arrivalDate,
+                                    isOneWay: this.isOneWay,
+                                    noOfPassengers: this.noOfPassengers,
+                                    classType: this.classType,
+                                    manyPassengers: this.noOfPassengers == 1 ? "" : true,
+                                },
+                            })
+                        console.log(this.originCountry);
+                        } else {
+                            console.log("error in return date")
+                            alert("Return Date must be after Departure Date.")
+                        }
+                        }
+                    else { // one way flight
+                    console.log("im here")
                         this.$router.push({
-                            name: "FlightResults",
-                            query: {
-                                originCountry: this.originCountry,
-                                destinationCountry: this.destinationCountry,
-                                departureDate: this.departureDate,
-                                arrivalDate: this.arrivalDate,
-                                noOfPassengers: this.noOfPassengers,
-                                classType: this.classType,
-                                manyPassengers: this.noOfPassengers == 1 ? "" : true,
-                            },
-                    })
-                    console.log(this.originCountry);
-                    }
-                    else {
-                        console.log("error in return date")
-                        alert("Return Date must be after Departure Date.")
+                                name: "FlightResults",
+                                query: {
+                                    originCountry: this.originCountry,
+                                    destinationCountry: this.destinationCountry,
+                                    departureDate: this.departureDate,
+                                    arrivalDate: "",
+                                    isOneWay: this.isOneWay,
+                                    noOfPassengers: this.noOfPassengers,
+                                    classType: this.classType,
+                                    manyPassengers: this.noOfPassengers == 1 ? "" : true,
+                                },
+                        })
                     }
                 }
                 else {
@@ -174,6 +209,7 @@ export default {
 }
 </script>
 
+<style src="@vueform/toggle/themes/default.css"></style>
 <style scoped>
     .book-flight {
         background-image: url("@/assets/popular-destination-background.jpg");
