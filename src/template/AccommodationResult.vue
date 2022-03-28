@@ -51,6 +51,7 @@ export default {
     background-color: rgb(0, 15, 95, 0);
     align-items: center;
     margin: 10px 0px;
+    color: black;
 }
 
 img {
@@ -61,11 +62,6 @@ img {
 .hotel-name {
     font-weight: bold;
     font-size: 25px;
-    color: black;
-}
-
-.hotel-body {
-    color: black;
 }
 
 .hotel-price {
@@ -76,7 +72,6 @@ img {
 }
 
 .hotel-price-text {
-    color: black;
     text-align: right;
     font-size: 15px;
 }

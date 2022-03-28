@@ -60,16 +60,29 @@
                     <div id="hotelInfo"></div>
                 </div>
 
-                <div id="room">
-                    <!-- <div class="col">
-                        <div id="roomPhoto"></div>
+                <div>
+                    <div v-for="roomType in roomDatabase" v-bind:key="roomType.roomName">
+                        <AccommodationRoom v-if="manyRooms"
+                            :photo="roomType.roomPhoto"
+                            :name="roomType.roomName"
+                            :description="roomType.roomDescription"
+                            :facilities="roomType.roomFacilities"
+                            :days="countDays(checkInDate, checkOutDate)"
+                            :nights="countNights(checkInDate, checkOutDate)"
+                            :rooms= "rooms"
+                            :price=round(calculatePrice(roomType.roomPrice))
+                        />
+                        <AccommodationRoom v-if="!manyRooms"
+                            :photo="roomType.roomPhoto"
+                            :name="roomType.roomName"
+                            :description="roomType.roomDescription"
+                            :facilities="roomType.roomFacilities"
+                            :days="countDays(checkInDate, checkOutDate)"
+                            :nights="countNights(checkInDate, checkOutDate)"
+                            :rooms= "room"
+                            :price=round(calculatePrice(roomType.roomPrice))
+                        />
                     </div>
-                    <div class="col">
-                        <div id="roomInfo"></div>
-                    </div>
-                    <div class="col">
-                        <div id="roomPrice"></div>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -113,6 +126,7 @@
 <script>
 import SearchInput from '@/template/AccommodationSearchInput.vue'
 import AccommodationResult from '@/template/AccommodationResult.vue'
+import AccommodationRoom from '@/template/AccommodationRoom.vue'
 import moment from 'moment'
 
 import { getAuth, onAuthStateChanged } from "firebase/auth"
@@ -126,12 +140,14 @@ export default {
 
     components: {
         SearchInput,
-        AccommodationResult
+        AccommodationResult,
+        AccommodationRoom
     },
     
     data() {
         return {
             database: [],
+            roomDatabase: [],
             name: this.$route.query.hotelName,
             checkInDate: this.$route.query.checkInDate,
             checkOutDate: this.$route.query.checkOutDate,
@@ -145,10 +161,6 @@ export default {
     },
 
     mounted() {
-        // let jquery = document.createElement('script')
-        // jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
-        // document.head.appendChild(jquery)
-
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -171,6 +183,23 @@ export default {
             return number.toFixed(2);
         },
 
+        countDays(date1, date2) {
+            var a = moment(date1)
+            var b = moment(date2)
+            return b.diff(a, 'days') + 1
+        },
+
+        countNights(date1, date2) {
+            var a = moment(date1)
+            var b = moment(date2)
+            return b.diff(a, 'days')
+        },
+
+        calculatePrice(price) {
+            var noOfNights = this.countNights(this.checkInDate, this.checkOutDate)
+            return price * this.$route.query.noOfRooms * noOfNights
+        },
+
         async display() {
             var docs = await getDocs(collection(db, "Accommodations"))
 
@@ -191,39 +220,24 @@ export default {
 
             var hotelinfo = document.getElementById("hotelInfo")
             hotelinfo.innerHTML =
-                "<h4><b>" + name + "</b></h4>" +
+                "<h3><b>" + name + "</b></h3>" +
                 "<h6><b>Rating:</b> " + rating + " / 5 <br></h6>" +
                 "<h6><b>Address:</b> " + address + "<br></h6>" +
                 "<h6><b>Phone:</b> " + phone + "<br></h6>" +
                 "<h6><b>Email:</b> " + email + "<br><br></h6>" +
                 description + "<br><br>" +
-                "<h6><b>Room Types:</b></h6>"
+                "<h5><b>Room Types:</b></h5>"
 
-            var room = document.getElementById("room")
+            this.roomDatabase = []
 
-            // var roomphoto = document.getElementById("roomPhoto")
-            // var roominfo = document.getElementById("roomInfo")
-            // var roomprice = document.getElementById("roomPrice")
-
-            for(let roomType of rooms) {
-                room.innerHTML += 
-                "<div class='row'>" + 
-                "<div class='col'>" + "<img src='" + roomType.RoomPhoto + " 'style='width:60%; overflow:hidden'><br><br></div>" + 
-                "<div class='col'>" + roomType.RoomName + "<br>" + 
-                    roomType.RoomDescription + "<br>" + 
-                    roomType.RoomFacilities + "<br></div>" +
-                "<div class='col'>" + roomType.RoomPrice + "</div>" + 
-                "</div>"
-
-                // roomphoto.innerHTML += "<img src='" + room.RoomPhoto + " 'style='width:80%; overflow:hidden'><br><br>"
-
-                // roominfo.innerHTML += 
-                // "<h6>" + room.RoomName+"</h6><br>" +
-                // "<h6>" + room.RoomDescription+"</h6><br>" + 
-                // "<h6>" + room.RoomFacilities+"</h6><br>"
-
-                // roomprice.innerHTML += 
-                // "<h6>" + room.RoomPrice + "</h6><br>"
+            for(let room of rooms) {
+                this.roomDatabase.push({
+                    roomPhoto: room.RoomPhoto,
+                    roomName: room.RoomName,
+                    roomDescription: room.RoomDescription,
+                    roomFacilities: room.RoomFacilities,
+                    roomPrice: room.RoomPrice
+                })
             }
                 
             modal.style.display = "block"
@@ -252,10 +266,6 @@ export default {
 </script>
 
 <style scoped>
-h3, h5 {
-    color: black;
-}
-
 button {
     background-color: rgb(0, 15, 92);
     border-color: rgb(0, 15, 92);
@@ -321,6 +331,10 @@ img {
 
 #hotelInfo {
     text-align: left;
+    color: black;
+}
+
+#room {
     color: black;
 }
 </style>
