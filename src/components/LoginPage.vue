@@ -205,21 +205,7 @@ export default {
         document.head.appendChild(jquery)
         
     },
-        
-    //   async function display(email) {
-    //     const docRef = doc(db, "Users", email);
-    //       const docSnap = await getDoc(docRef);
-
-    //       if (docSnap.exists()) {
-    //         console.log("Document data:", docSnap.data());
-    //         document.getElementById("displayUsername").innerHTML = docSnap.data().username
-    //       } else {
-    //         // doc.data() will be undefined in this case
-    //         console.log("No such document!");
-    //       }
-    //   }
-    // }
-
+  
 }
 </script>
 
