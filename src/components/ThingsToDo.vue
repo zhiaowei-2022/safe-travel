@@ -9,10 +9,10 @@
         <form class="form-details">
         <div class="row">
             <div class="col-lg-2">
-            <select name="country" class="form-select form-control">
-                <option value="sgp" selected>Singapore</option>
-                <option value="jpn">Japan</option>
-                <option value="tha">Thailand</option>
+            <select id="country" class="form-select form-control" v-on:change='changeData()'>
+                <option value="Singapore" selected>Singapore</option>
+                <option value="Japan">Japan</option>
+                <option value="Thailand">Thailand</option>
             </select>
             </div>
         </div>
@@ -96,10 +96,19 @@ export default {
             var modal = document.getElementById("searchResult");
             modal.style.display = "none";
         },
+        changeData(){
+            // console.log(document.getElementById('country').value)
+            // Change to a country specific Data
+            // Will not be implmemented at the time being
+            this.display();
+        },
         async display(variable){
-            let z = await getDocs(collection(db, "ThingToDo"))
+            var country = document.getElementById('country').value
+            //console.log(country)
+            let z = await getDocs(collection(db, "ThingToDo/" + country + "/Attractions"))
             let ind = 0
             this.clearAll()
+            // console.log(z)
             z.forEach((docs) => {
                 let yy = docs.data()
                 var container = document.getElementById(ind)
@@ -116,17 +125,11 @@ export default {
                     return;
                 }
                 else {
-                    if (variable === undefined || variable == 'overview') {
-
-    
-                        
+                    if (variable === undefined || variable == 'overview') {                        
                         container.innerHTML +=  "<figure id='"+name+"'>" 
                         + "<img src='"+ imageURL +"'style='width:100%'>"
                         + "<figcaption>" + name + " </figcaption>"
                         + "</figure>"  
-
-                        
-
                         ind+=1
                     }
                     else {
@@ -142,7 +145,6 @@ export default {
                     container.onclick = function() {
                             var modal = document.getElementById("searchResult");
                             console.log("getting modal");
-
                             // need to insert Information into Modal
                             var photoinfo = document.getElementById("photo")
                             photoinfo.innerHTML = 
