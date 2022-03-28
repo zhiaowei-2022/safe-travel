@@ -35,7 +35,7 @@
             :departureCountryId="flight.departureCountryId"
             :departureCountryName="flight.departureCountryName"
             :departureTime="timeDisplay(flight.departureDateTime.toDate().toLocaleTimeString())"
-            :departureDate="flight.departureDateTime.toDate().toDateString()"
+            :departureDate="flight.departureDateTime.toDate().toDateString()" 
             :arrivalCountryId="flight.arrivalCountryId"
             :arrivalCountryName="flight.arrivalCountryName"
             :arrivalTime="timeDisplay(flight.arrivalDateTime.toDate().toLocaleTimeString())"
@@ -171,7 +171,8 @@ export default {
 
         async isFlightSearchValid() {
               const q = query(collection(db, "Flights"), where("departureCountryName", "==", this.originCountry), 
-              where("arrivalCountryName", "==", this.destinationCountry))
+              where("arrivalCountryName", "==", this.destinationCountry),
+              where("departureDateTime", "==", new Date(this.departureDate)))
               
               const querySnapshot = await getDocs(q);
               querySnapshot.forEach((doc) => {
