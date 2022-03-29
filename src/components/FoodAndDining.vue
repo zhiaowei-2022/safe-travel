@@ -113,7 +113,6 @@ export default {
           counter++;
         } else {
           if (variable == row.Category) {
-            console.log(row);
             container.push(row);
             counter++;
           }
@@ -127,10 +126,6 @@ export default {
       if (container.length < this.numberOfColumns) {
         this.database.push(container);
       }
-    },
-    initModal() {
-      var modal = document.getElementById("searchResult");
-      modal.style.display = "block";
     },
     openModal(name, imageURL, rating, address, contact, desc, web) {
       var modal = document.getElementById("searchResult");
@@ -191,9 +186,6 @@ export default {
 
     this.readFirebase();
   },
-  beforeUpdate() {},
-  updated() {},
-  // modifying firebase database script here for filtering
 };
 </script>
 
