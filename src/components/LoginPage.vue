@@ -44,17 +44,17 @@
             </td>
         </tr>
 
-    </table> -->
+    </table> 
 
 
  <div class="container p-5">
-  <!-- Button trigger modal -->
-  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     User Login
-  </button>  -->
+  </button>  
 
 <a href="#exampleModal" data-bs-toggle="modal">Login</a>
-  <!-- Modal -->
+
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -114,7 +114,7 @@
   </div>
 </div>
 
-    <!-- Modal -->
+    
 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -133,12 +133,13 @@
     </div>
   </div>
 </div>     
-
+-->
 </template>
 
 <script>
+/*
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import * as $ from 'jquery'
+import $ from 'jquery'
 
 export default {
     name: 'LoginPage',
@@ -221,6 +222,7 @@ export default {
     // }
 
 }
+*/
 </script>
 
 <style scoped>
