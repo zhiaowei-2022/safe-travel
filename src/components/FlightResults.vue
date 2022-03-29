@@ -64,7 +64,8 @@
                 :arrivalDate="flight.arrivalDateTime.toDate().toDateString()"
                 :duration="durationDisplay(flight.arrivalDateTime-flight.departureDateTime)"
                 :price="flight.price"
-                :airline="flight.airline" />
+                :airline="flight.airline" 
+                :link="flight.link"/>
             </div>
         </div> 
     </div>
@@ -170,6 +171,7 @@ export default {
             manyPassengers: this.$route.query.manyPassengers,
         }
     },
+
     mounted() {
         if (this.isOneWay == true) { // one way flight
             this.isOneWayFlightSearchValid()
@@ -177,8 +179,8 @@ export default {
             this.isOneWayFlightSearchValid()
             this.isReturnFlightSearchValid()
         }
-        
     },
+
     methods: {
         searchDisplay(date1, date2) {
             return moment(date1).format("D MMM YYYY") + " - " + moment(date2).format("D MMM YYYY");
@@ -201,14 +203,13 @@ export default {
         },
 
         async isOneWayFlightSearchValid() {
-            console.log("im not here, neinei here")
-            console.log(this.destinationCountry)
-            console.log(this.originCountry)
-            console.log(this.departureDate)
-              this.database = []
+              var departureAfter = new Date(this.departureDate)
+              var departureBefore = new Date(this.departureDate)
+              departureAfter.setDate(departureAfter.getDate()+1)
               const q = query(collection(db, "Flights"), where("departureCountryName", "==", this.originCountry), 
               where("arrivalCountryName", "==", this.destinationCountry),
-              where("departureDateTime", "==", new Date(this.departureDate)))
+              where("departureDateTime", ">=", departureBefore),
+              where("departureDateTime", "<", departureAfter))
               
               const querySnapshot = await getDocs(q);
               querySnapshot.forEach((doc) => {
@@ -220,19 +221,20 @@ export default {
         },
 
         async isReturnFlightSearchValid() {
-            console.log("im here")
-            console.log(this.destinationCountry)
-            console.log(this.originCountry)
-            console.log(this.arrivalDate)
-            this.returnDatabase = []
+            var arrivalAfter = new Date(this.arrivalDate)
+            var arrivalBefore = new Date(this.arrivalDate)
+            arrivalAfter.setDate(arrivalAfter.getDate()+1)
+            console.log(arrivalBefore)
+            console.log(arrivalAfter)
             const q = query(collection(db, "Flights"), where("departureCountryName", "==", this.destinationCountry), 
               where("arrivalCountryName", "==", this.originCountry),
-              where("departureDateTime", "==", new Date(this.arrivalDate)))
+              where("departureDateTime", ">=", arrivalBefore),
+              where("departureDateTime", "<", arrivalAfter))
               const querySnapshot = await getDocs(q);
               querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.data()
-                console.log(doc.id, " => ", doc.data());
+                console.log("im here" + doc.id + "=>" + doc.data());
                 this.returnDatabase.push(data)
             });
         },
