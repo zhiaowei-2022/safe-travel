@@ -3,6 +3,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
+    
+
     <div class="ThingsToDo">
         <h1>Things To Do</h1>
         <h3>Explore attractions, tours and more</h3>
@@ -12,7 +14,7 @@
             <select id="country" class="form-select form-control" v-on:change='changeData()'>
                 <option value="Singapore" selected>Singapore</option>
                 <option value="Japan">Japan</option>
-                <option value="Thailand">Thailand</option>
+                <option value="Melbourne">Melbourne</option>
             </select>
             </div>
         </div>
@@ -20,12 +22,12 @@
     </div>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" style="padding-top:10px">
             <div class="col" id="overview"><button v-on:click='display("overview")'>Overview</button></div>
             <div class="col" id="Museum"><button v-on:click='display("Museum")'>Museum & Galleries</button></div>
-            <div class="col" id="WTP"><button v-on:click='display("WTP")'>Water & Themed Park</button></div>
+            <div class="col" id="WTP"><button v-on:click='display("Water & Themed Park")'>Water & Themed Park</button></div>
             <div class="col" id="Thrill"><button v-on:click='display("Thrill")'>Thrill Activities</button></div>
-            <div class="col" id="AquaZoo"><button v-on:click='display("AquaZoo")'>Aquarium & Zoos</button></div>
+            <div class="col" id="AquaZoo"><button v-on:click='display("Aquarium & Zoo")'>Aquarium & Zoos</button></div>
         </div>
     </div>
     <br><br>
@@ -105,7 +107,7 @@ export default {
         async display(variable){
             var country = document.getElementById('country').value
             //console.log(country)
-            let z = await getDocs(collection(db, "ThingToDo/" + country + "/Attractions"))
+            let z = await getDocs(collection(db, "ThingToDo/Attractions/" + country ))
             let ind = 0
             this.clearAll()
             // console.log(z)
@@ -126,8 +128,8 @@ export default {
                 }
                 else {
                     if (variable === undefined || variable == 'overview') {                        
-                        container.innerHTML +=  "<figure id='"+name+"'>" 
-                        + "<img src='"+ imageURL +"'style='width:100%'>"
+                        container.innerHTML +=  "<figure id='"+name+"' >" 
+                        + "<img class='srphotos' src='"+ imageURL +"'style='width:100%;height:200px;padding:10px'>"
                         + "<figcaption>" + name + " </figcaption>"
                         + "</figure>"  
                         ind+=1
@@ -135,8 +137,8 @@ export default {
                     else {
                         var category = (yy.Category)
                         if (variable == category) {
-                            container.innerHTML +=  "<figure id='"+name+"'>" 
-                            + "<img src='"+ imageURL +" 'style='width:100%'>"
+                            container.innerHTML +=  "<figure id='"+name+"' >" 
+                            + "<img class='srphotos' src='"+ imageURL +" 'style='width:100%;height:200px;padding:10px'>"
                             + "<figcaption>" + name + " </figcaption>"
                             + "</figure>" 
                             ind+=1
@@ -148,7 +150,9 @@ export default {
                             // need to insert Information into Modal
                             var photoinfo = document.getElementById("photo")
                             photoinfo.innerHTML = 
-                                "<img src='"+ imageURL +" 'style='width:100%'>" 
+                                "<img src='"+ imageURL +" 'style='position:relative;width:100%;padding:10px'>" +
+                                "<img src='@/assets/emptyStar.png' style='position:relative; top:10%; left:40%'>" 
+                                
                                 
                             var resultbox = document.getElementById("resultinfo")
                             resultbox.innerHTML =
