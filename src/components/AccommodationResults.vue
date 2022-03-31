@@ -71,6 +71,7 @@
                             :nights="countNights(checkInDate, checkOutDate)"
                             :rooms= "rooms"
                             :price=round(calculatePrice(roomType.roomPrice))
+                            :link="roomType.roomLink"
                         />
                         <AccommodationRoom v-if="!manyRooms"
                             :photo="roomType.roomPhoto"
@@ -81,6 +82,7 @@
                             :nights="countNights(checkInDate, checkOutDate)"
                             :rooms= "room"
                             :price=round(calculatePrice(roomType.roomPrice))
+                            :link="roomType.roomLink"
                         />
                     </div>
                 </div>
@@ -236,7 +238,8 @@ export default {
                     roomName: room.RoomName,
                     roomDescription: room.RoomDescription,
                     roomFacilities: room.RoomFacilities,
-                    roomPrice: room.RoomPrice
+                    roomPrice: room.RoomPrice,
+                    roomLink: room.RoomLink
                 })
             }
                 

@@ -15,9 +15,7 @@
             <div class="col col-lg-2">
                 <div class="booking-details"> {{ days }}D{{nights}}N, {{ rooms }} </div>
                 <div class="room-price"> ${{ price }} </div>
-                <button class="btn btn-primary" name="submit" type="button" onclick="">
-                    Add to cart
-                </button>
+                <a class="btn btn-primary" :href="link" target="_blank"> Book now </a>
             </div>
         </div>
     </div>
@@ -33,11 +31,11 @@ export default {
         name: String,
         description: String,
         facilities: String,
-        days: String,
-        nights: String,
+        days: Number,
+        nights: Number,
         rooms: String,
         price: String,
-        manyRooms: String,
+        link: String,
     }
 }
 </script>
@@ -66,7 +64,7 @@ img {
     font-size: 25px;
 }
 
-button {
+button, a {
     background-color: rgb(0, 15, 92);
     border-color: rgb(0, 15, 92);
     color: white;
