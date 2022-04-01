@@ -374,7 +374,7 @@ export default {
 </style>
 
 
-// adding data
+// adding data FOR HOMEPAGE
 
 <template>
   <button v-on:click="add()"> x </button>

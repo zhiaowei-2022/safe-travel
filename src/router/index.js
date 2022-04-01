@@ -11,7 +11,6 @@ import RegisterView from '@/views/RegisterView.vue'
 import HomeView from '@/views/HomeView.vue'
 import TryingStuffs from '@/components/TryingStuffs.vue'
 
-
 const routes = [
     {
         path: '/FoodAndDining',
@@ -73,20 +72,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     // remove modal backdrop if one exists
     let modalBackground = document.querySelector('.modal-backdrop')
-    let modal = document.querySelector('.modal')
-    // console.log(modal)
-    
-
-    // let modals = document.querySelector('.modal')
+ 
     if (modalBackground) {
-        console.log(modalBackground)
         modalBackground.remove()
-        // (document.body).removeClass("modal-open");
     }
 
-    if (modal) {
-        // modal.remove()
-    }
+
     // do other stuff
   
     next()

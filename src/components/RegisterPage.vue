@@ -104,7 +104,7 @@
       </div>
       <div class="col col-lg-3">
         <input class="registerForm" v-model="username" @input="checkUsername()" type="text" placeholder="xyz">
-        <p id="invalidCritera" v-if="checkingUsername"> {{usernameCriteria}} </p>
+        <p id="invalidCritera" v-if="checkingUsername" v-html="usernameCriteria"></p>
       </div>
       <!-- <div class="col col-lg-1">
       </div> -->
@@ -126,7 +126,6 @@
           <i id = "visibility" class="fa-solid fa-eye-slash"></i>
         </div>
         <p id="invalidCritera" v-if="checkingPassword" v-html="passwordCriteria"></p> 
-  
       </div>
 
       <!-- <div class="col col-md-auto">
@@ -275,6 +274,10 @@ export default {
         this.usernameCriteria = "Invalid Username: Cannot be empty"
         return true
       } 
+      else if (this.username.length > 15) {
+        this.usernameCriteria = "Invalid Username:<br>Cannot be longer than 15 characters"
+        return true
+      }
       else {
         this.checkingUsername = false
         this.criteriaArray[1] = true
@@ -316,7 +319,7 @@ export default {
 
 
         if (x == false && y == false && z == false) {
-          alert("Registering for " + username)
+          // alert("Registering for " + username)
 
           try {
             const docRef = await setDoc(doc(db, "Users", email), {
@@ -324,9 +327,10 @@ export default {
                 username: username, 
                 password: password, 
                 favourites: {},
-                previousPurchases: {},
-                paymentMethod: {}
-
+                gender: "others",
+                nation: "",
+                phone_num: 0,
+                display_picture: "",
             })
 
             console.log(docRef)
@@ -340,7 +344,7 @@ export default {
                 updateProfile(auth.currentUser, {
                   displayName: username
                   }).then(() => {
-                    console.log("displayName set")
+                    // console.log("displayName set")
                     this.$router.push({name: 'HomeView'})
                   }).catch((error) => {
                     console.log(error.message)
@@ -426,8 +430,9 @@ export default {
     .field {
       height: 100px;
     }
-        #login {
-        font-size: 10px;
+
+    #login {
+      font-size: 10px;
     }
 
     #invalidCritera {
@@ -450,7 +455,7 @@ export default {
       color: white;
     }
 
-      #registerBtn, #invalidRegisterBtn {
+    #registerBtn, #invalidRegisterBtn {
       background-color: rgb(0, 15, 92);
       color: white;
       font-weight: bold;
@@ -466,10 +471,10 @@ export default {
       color: grey;
     }
 
-    #visibility:hover{
+    /* #visibility:hover{
     border-radius: 5px;
     box-shadow: 4px 4px;
-    }
+    } */
 
     .col{ 
        /* background-color: gray; */

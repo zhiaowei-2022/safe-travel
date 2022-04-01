@@ -3,7 +3,32 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
-  <div id="logged">
+  <div id="logged" style="border: 1px solid">
+    <div id="nav" style="padding: 0 20px 0 20px">
+      <div class="container">
+      <!-- <ul class="nav nav-pills " style="position:absolute; top:0; right: 2%; margin: 10px;"> -->
+        <ul class="nav nav-pills" >
+        <li class="nav">
+            <img src="@/assets/sad.png" alt="sad face" style="height: 40px;">
+        </li>
+
+        <li class="nav-item justify-content-end">
+            <a class="nav-link" id="TryingStuffs"><router-link style="text-decoration: none; color: inherit;" to="/tryingstuffs">try</router-link></a>
+        </li>
+        <li class="nav-item">
+          <div v-if="user">
+            <a class="nav-link" href="#" v-on:click="signOut()" style="text-decoration: none; color: inherit;">Log Out</a>
+          </div>
+          <div v-else>
+            <a class="nav-link" href="#" v-on:click="openModal()" data-bs-toggle="modal">Login</a>
+          </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/registerview">Register</router-link></a>
+        </li>
+      </ul>
+    </div>
+    </div>
     <div id="nav" class="border border-1">
         <ul class="nav nav-pills">
             <li class="nav-item">
@@ -21,20 +46,12 @@
             <li class="nav-item">
                 <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/FoodAndDining">Food And Dining</router-link></a>
             </li>
-            <li class="nav-item">
-              <div v-if="user">
-                <!-- <button class="nav-link" style="text-decoration: none; color: inherit;" v-on:click="signOut()"> <strong>Log Out</strong></button> -->
-                <a class="nav-link" href="#" v-on:click="signOut()" style="text-decoration: none; color: inherit;">Log Out</a>
-              </div>
-              <div v-else>
-                <a class="nav-link" href="#" v-on:click="openModal()" data-bs-toggle="modal">Login</a>
-              </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/registerview">Register</router-link></a>
-            </li>
         </ul>
     </div>
+
+
+
+
   </div>
 
 
@@ -121,6 +138,8 @@
     </div>
   </div>
 </div>   
+
+
 </template>
 
 <script>
@@ -199,10 +218,14 @@ export default {
         });   
     },
 
-    signOut() {
+    async signOut() {
         const auth = getAuth();
         const user = auth.currentUser;
         signOut(auth, user)
+        console.log(this.$router.currentRoute._value.name)
+        if ((this.$router.currentRoute._value.name) == "TryingStuffs") {
+          await this.$router.push({name: 'HomeView'})
+        }
         this.$router.go()
 
     },
@@ -222,6 +245,8 @@ export default {
     let jquery = document.createElement("script");
     jquery.setAttribute("src", "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js");
     document.head.appendChild(jquery);
+
+
   },
 
 };
@@ -229,8 +254,12 @@ export default {
 
 <style scoped>
 #nav {
-    padding: 20px;
+    /* padding: 20px; */
     text-align: center;
+        /* position: fixed; */
+    /* position: -webkit-sticky; */
+    /* margin: 0 0 100px 0; */
+    /* top: 0; */
 }
 
 #nav a {
