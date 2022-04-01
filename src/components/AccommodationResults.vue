@@ -79,7 +79,10 @@
 
     <div id="searchModal" class="modal">
         <div class="modal-content">
-            <span class="close" v-on:click="closeSearchModal()">&times;</span>
+            <div class="modal-header">
+                <h2 style="font-weight:bold">Modify Your Search</h2>
+                <span class="close" v-on:click="closeSearchModal()">&times;</span>
+            </div> <br>
 
             <form class="form-details">
                 <div class="form-group">
@@ -315,6 +318,14 @@ img {
   height: 100%;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
+}
+
+.modal-header {
+  padding: 2px 16px;
+  /* background-color: rgb(0, 15, 92); */
+  color: rgb(0, 15, 92);
+  display: flex;
+  align-items: center;
 }
 
 .modal-content {
