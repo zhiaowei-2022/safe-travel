@@ -6,10 +6,8 @@
         <span class="search-field">
             <SearchInput :input = "name"/>
             <SearchInput :input = "searchDisplay(checkInDate, checkOutDate)"/>
-            <SearchInput v-if="manyGuests" :input = "guests"/>
-            <SearchInput v-if="!manyGuests" :input = "guest"/>
-            <SearchInput v-if="manyRooms" :input = "rooms"/>
-            <SearchInput v-if="!manyRooms" :input = "room"/>
+            <SearchInput :input = "displayGuests(noOfGuests)"/>
+            <SearchInput :input = "displayRooms(noOfRooms)"/>
         </span>
 
         <div v-if="database.length !== 0">
@@ -62,25 +60,14 @@
 
                 <div>
                     <div v-for="roomType in roomDatabase" v-bind:key="roomType.roomName">
-                        <AccommodationRoom v-if="manyRooms"
+                        <AccommodationRoom
                             :photo="roomType.roomPhoto"
                             :name="roomType.roomName"
                             :description="roomType.roomDescription"
                             :facilities="roomType.roomFacilities"
                             :days="countDays(checkInDate, checkOutDate)"
                             :nights="countNights(checkInDate, checkOutDate)"
-                            :rooms= "rooms"
-                            :price=round(calculatePrice(roomType.roomPrice))
-                            :link="roomType.roomLink"
-                        />
-                        <AccommodationRoom v-if="!manyRooms"
-                            :photo="roomType.roomPhoto"
-                            :name="roomType.roomName"
-                            :description="roomType.roomDescription"
-                            :facilities="roomType.roomFacilities"
-                            :days="countDays(checkInDate, checkOutDate)"
-                            :nights="countNights(checkInDate, checkOutDate)"
-                            :rooms= "room"
+                            :rooms="displayRooms(noOfRooms)"
                             :price=round(calculatePrice(roomType.roomPrice))
                             :link="roomType.roomLink"
                         />
@@ -97,25 +84,25 @@
             <form class="form-details">
                 <div class="form-group">
                     <label for="hotelName" class="form-label">Destination Country/Hotel Name:</label>
-                    <input type="text" class="form-control" id="hotelName" v-model="name" required>
+                    <input type="text" class="form-control" id="hotelName" v-model="newName" required>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col">
                         <label for="checkInDate" class="form-label">Check-in Date:</label>
-                        <input type="date" class="form-control" id="checkInDate" v-model="checkInDate" required>
+                        <input type="date" class="form-control" id="checkInDate" v-model="newCheckInDate" required>
                     </div>
                     <div class="col">
                         <label for="checkOutDate" class="form-label">Check-out Date:</label>
-                        <input type="date" class="form-control" id="checkOutDate" v-model="checkOutDate" required>
+                        <input type="date" class="form-control" id="checkOutDate" v-model="newCheckOutDate" required>
                     </div>
                     <div class="col">
                         <label for="noOfGuests" class="form-label">No. of Guest(s):</label>
-                        <input type="number" min="1" class="form-control" id="noOfGuests" v-model=this.$route.query.noOfGuests required>
+                        <input type="number" min="1" class="form-control" id="noOfGuests" v-model="newNoOfGuests" required>
                     </div>
                     <div class="col">
                         <label for="noOfRooms" class="form-label">No. of Room(s):</label>
-                        <input type="number" min="1" class="form-control" id="noOfRooms" v-model=this.$route.query.noOfRooms required>
+                        <input type="number" min="1" class="form-control" id="noOfRooms" v-model="newNoOfRooms" required>
                     </div>
                 </div>
                 <br>
@@ -150,15 +137,18 @@ export default {
         return {
             database: [],
             roomDatabase: [],
+
             name: this.$route.query.hotelName,
             checkInDate: this.$route.query.checkInDate,
             checkOutDate: this.$route.query.checkOutDate,
-            guest: this.$route.query.noOfGuests + " Guest",
-            guests: this.$route.query.noOfGuests + " Guests",
-            room: this.$route.query.noOfRooms + " Room",
-            rooms: this.$route.query.noOfRooms + " Rooms",
-            manyGuests: this.$route.query.manyGuests,
-            manyRooms: this.$route.query.manyRooms,
+            noOfGuests: this.$route.query.noOfGuests,
+            noOfRooms: this.$route.query.noOfRooms,
+
+            newName: this.$route.query.hotelName,
+            newCheckInDate: this.$route.query.checkInDate,
+            newCheckOutDate: this.$route.query.checkOutDate,
+            newNoOfGuests: this.$route.query.noOfGuests,
+            newNoOfRooms: this.$route.query.noOfRooms
         }
     },
 
@@ -180,6 +170,14 @@ export default {
         resultsDisplay(date) {
             return moment(date).format("ddd, D MMM YYYY");
         },
+        
+        displayGuests(guests) {
+            return guests == 1 ? guests + " Guest" : guests + " Guests"
+        },
+
+        displayRooms(rooms) {
+            return rooms == 1 ? rooms + " Room" : rooms + " Rooms" 
+        },
 
         round(number) {
             return number.toFixed(2);
@@ -199,10 +197,11 @@ export default {
 
         calculatePrice(price) {
             var noOfNights = this.countNights(this.checkInDate, this.checkOutDate)
-            return price * this.$route.query.noOfRooms * noOfNights
+            return price * this.noOfRooms * noOfNights
         },
 
         async display() {
+            this.database = []
             var docs = await getDocs(collection(db, "Accommodations"))
 
             docs.forEach((doc) => {
@@ -211,6 +210,7 @@ export default {
                     this.database.push(data)
                 }
             })
+            console.log(this.database)
         },
 
         openResultModal(modalPhoto, name, rating, address, phone, email, description, rooms) {
@@ -262,7 +262,14 @@ export default {
         },
 
         async modifySearch() {
+            this.name = this.newName
+            this.checkInDate = this.newCheckInDate
+            this.checkOutDate = this.newCheckOutDate
+            this.noOfGuests = this.newNoOfGuests
+            this.noOfRooms = this.newNoOfRooms
+            // this.$router.go()
             this.closeSearchModal()
+            this.display()
         }
     }
 }
@@ -339,5 +346,12 @@ img {
 
 #room {
     color: black;
+}
+
+label {
+    color: black;
+    float: left;
+    text-align: left;
+    font-weight: bold;
 }
 </style>

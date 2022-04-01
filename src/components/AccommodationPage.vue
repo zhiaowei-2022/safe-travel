@@ -94,8 +94,6 @@ export default {
                                 checkOutDate: this.checkOutDate,
                                 noOfGuests: this.noOfGuests,
                                 noOfRooms: this.noOfRooms,
-                                manyGuests: this.noOfGuests == 1 ? "" : true,
-                                manyRooms: this.noOfRooms == 1 ? "" : true
                             }
                         })
                     } else {
