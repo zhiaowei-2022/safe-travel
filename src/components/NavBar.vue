@@ -13,6 +13,12 @@
           <a class="nav-link" id="TryingStuffs"><router-link style="text-decoration: none; color: inherit;" to="/tryingstuffs">try</router-link></a>
       </li>
 
+      <li class="nav-item" >
+        <div v-if="user" id = "UP">
+          <a class="nav-link" id="UserProfile"><router-link style="text-decoration: none; color: inherit;" to="/userprofile"><em> {{username}} </em> </router-link></a>
+        </div>
+      </li>
+
       <li class="nav-item" id = "login">
         <div v-if="user">
           <a class="nav-link" id="LogOut" href="#" v-on:click="signOut()">Log Out</a>
@@ -22,8 +28,11 @@
         </div>
       </li>
 
+
       <li class="nav-item">
+        <div v-if="!user">
           <a class="nav-link" id="RegisterView"><router-link style="text-decoration: none; color: inherit;" to="/registerview">Register</router-link></a>
+        </div>
       </li>
     </ul>
   </nav>
@@ -230,7 +239,7 @@ export default {
         const user = auth.currentUser;
         signOut(auth, user)
         console.log(this.$router.currentRoute._value.name)
-        if ((this.$router.currentRoute._value.name) == "TryingStuffs") {
+        if ((this.$router.currentRoute._value.name) == "UserProfile") {
           await this.$router.push({name: 'HomeView'})
         }
         this.$router.go()
@@ -244,6 +253,7 @@ export default {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 this.user = user;
+                this.username = user.displayName
             }
         });
     let jquery = document.createElement("script");
@@ -268,9 +278,22 @@ export default {
       $("#AccomodationPage").removeClass("active")
       $("#TryingStuffs").removeClass("active")
       $("#RegisterView").removeClass("active")
+      $("#UserProfile").removeClass("active")
 
+      console.log($(this))
+
+    if (($(this).children().children()[0].id) == "UserProfile") {
+      $(this).children().children().addClass('active')
+    }
+    else {
       $(this).children().addClass('active')
       // $(this).removeClass('active');   
+
+    }
+    
+      // console.log($(this).children().children()[0].id)
+
+
     })
 
   },

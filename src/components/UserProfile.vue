@@ -1,0 +1,446 @@
+<template>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+
+<div id="whole">
+
+  <div class="container">
+    <div class="title">
+      <h1> Edit Profile </h1>
+    </div>
+
+      
+    <div class="row justify-content-md-center">
+      <div class="col col-lg-1">
+        <img src="@\assets\sad.png" alt="Italian Trulli" style="height:200px;width:200px;"><br>
+        
+
+      </div>
+
+      <div class="col col-lg" style="">
+
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2" style="text-align:right">
+            <strong><label for="username" id="credentials">Username: </label></strong>
+          </div>
+          <div class="col col-lg-5">
+            <!-- <input class="accountForm" id="username" v-model="username" type="text"> -->
+            <input class="accountForm" id="username" :placeholder= "actualUsername">
+          </div>
+        </div>
+
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2" style="text-align:right">
+            <strong><label for="email" id="credentials">Email: </label></strong>
+          </div>
+          <div class="col col-lg-5">
+            <input class="accountForm" :value= "actualEmail" readonly>
+          </div>
+        </div>
+ 
+        <!-- <div class="row justify-content-md-center">
+          <div class="col col-lg-2" style="text-align:right">
+            <strong><label for="username" id="credentials">Username: </label></strong>
+          </div>
+          <div class="col col-lg-5">
+            <input class="accountForm" id="username" v-model="username" type="text">
+          </div>
+        </div> -->
+
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2" style="text-align:right">
+            <strong><label for="phone" id="credentials">Phone Number: </label></strong>
+          </div>
+          <div class="col col-lg-5">
+            <input class="accountForm" v-model="phone" id="phone" type="number" :placeholder= "actualPhone">
+          </div>
+        </div>
+
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2" style="text-align:right">
+            <strong><label for="password" id="credentials">Password: </label></strong>
+          </div>
+          <div class="col col-lg-5">
+            <input class="accountForm" :value= "actualPassword" type="password" readonly>
+            <button data-bs-toggle="modal" id="pwModalBtn" data-bs-target="#changePwModal">Change</button>
+          </div>
+        </div>
+
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2" style="text-align:right">
+            <strong><label for="gender" id="credentials">Gender: </label></strong>
+          </div>
+          <div class="col col-lg-5">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="male" value="male">
+              <label class="form-check-label" for="male">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+              <label class="form-check-label" for="female">Female</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="others" value="others">
+              <label class="form-check-label" for="others">Others</label>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2" style="text-align:right">
+            <strong><label for="nation" id="credentials">Nationality: </label></strong>
+          </div>
+          <div class="col col-lg-5">
+            <input class="accountForm" v-model="nation" id="nation" :placeholder= "actualNation" type="text">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col" style="text-align:center">
+        <br>
+        <button id="saveBtn" @click="save()"> Save </button>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="changePwModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="exampleModalLabel">Change Password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" v-on:click="resetForm()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+  <div class="container">
+   <div class="field">
+    <div class="row justify-content-md-center">
+      <div class="col col-lg-5" style="text-align:right;">
+        <strong><label for="password" id="credentials" style="margin: 2px 0 0 0 0;">Current Password: </label></strong> 
+      </div>
+      <div span class="col col-lg-7">
+        <input class="passwordForm" v-if="showPassword" v-model="password" type="">
+        <input class="passwordForm" v-else v-model="password" type="password">
+        <div v-if="showPassword" @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px;">
+          <i id = "visibility" class="fa-solid fa-eye"></i></div>
+        <div v-else @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px">
+          <i id = "visibility" class="fa-solid fa-eye-slash"></i>
+        </div>
+        <!-- <p id="invalidCritera" v-if="checkingPassword" v-html="passwordCriteria"></p>  -->
+      </div>
+    </div>
+   </div>
+
+   <div class="field">
+    <div class="row justify-content-md-center">
+      <div class="col col-lg-5" style="text-align:right;">
+        <strong><label for="password" id="credentials" style="margin: 2px 0 0 0 0;">New Password: </label></strong> 
+      </div>
+      <div span class="col col-lg-7">
+        <input class="passwordForm" id="passwordForm" v-if="showNewPassword" v-model="newPassword" type="">
+        <input class="passwordForm" id="passwordForm" v-else v-model="newPassword" type="password">
+        <div v-if="showNewPassword" @click="toggleShowNew" style="display:inline-block; margin: 7px 0 0 5px;">
+          <i id = "visibility" class="fa-solid fa-eye"></i></div>
+        <div v-else @click="toggleShowNew" style="display:inline-block; margin: 7px 0 0 5px">
+          <i id = "visibility" class="fa-solid fa-eye-slash"></i>
+        </div>
+        <p id="newPasswordCriteria">Note: At least 8 Characters with 1 Numeric Number</p> 
+      </div>
+    </div>
+   </div>
+
+   <div class="field">
+  <div class="row justify-content-md-center">
+      <div class="col" style="text-align:center">
+        <br>
+  
+          <button type="button" id="changeBtn" v-on:click="changePw()">Change</button>
+          </div>
+
+  </div>
+</div>
+
+
+  </div>
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="changePwModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1" style="font-weight:bold; font-size:30px;">
+          {{ passwordTitle }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" v-on:click="resetForm()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ passwordMsg }}
+        <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 120px">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#changePwModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Password Form</button>
+      </div>
+    </div>
+  </div>
+</div>    
+
+        
+</template>
+
+<script>
+import firebaseApp from '../firebase.js';
+import {getFirestore} from "firebase/firestore"
+import {doc, getDoc, updateDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import * as $ from 'jquery'
+
+
+const db = getFirestore(firebaseApp);
+
+export default {
+
+  data() {
+    return {
+      showPassword: false,
+      showNewPassword: false,
+      user: false,
+      actualUsername: "",
+      actualEmail: "",
+      actualPhone: "",
+      actualPassword: "",
+      actualGender: "",
+      actualNation:"",
+      password: "",
+      newPassword: "",
+      passwordMsg: "",
+      passwordTitle: "",
+    };
+  },
+
+  mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user
+        var userEmail = this.user.email
+        const docRef = doc(db, "Users", userEmail);
+        getDoc(docRef).then((docSnap) => {
+          this.actualUsername = docSnap.data().username
+          this.actualPhone = docSnap.data().phone_num
+          this.actualPassword = docSnap.data().password
+          this.actualEmail = docSnap.data().email
+          this.actualGender = docSnap.data().gender
+          this.actualNation = docSnap.data().nation
+          document.getElementById(this.actualGender).checked = true
+          })
+      }
+    });
+    
+    let jquery = document.createElement('script')
+    jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
+  },
+
+  methods: {
+    async save() {
+      const userRef = doc(db, 'Users', this.actualEmail);
+
+      let newUsername = document.getElementById("username").value
+      newUsername = (newUsername == "" ? this.actualUsername : newUsername)
+
+      let newPhone = document.getElementById("phone").value
+      // console.log(newPhone)
+      newPhone = (newPhone == 0 ? this.actualPhone : newPhone)
+
+      let newGender = $('input[name=gender]:checked').val()
+
+      let newNation = document.getElementById("nation").value
+      // console.log(newPhone)
+      newNation = (newNation == "" ? this.actualNation : newNation)
+
+      let updatedPassword = (this.newPassword == "" ? this.actualPassword : this.newPassword)
+
+      await updateDoc(userRef, {
+        username: newUsername,
+        phone_num: newPhone,
+        gender: newGender,
+        nation: newNation,
+        password: updatedPassword,
+      })
+      this.$router.go()    
+    },
+
+    resetForm() {
+      this.showPassword = false
+      this.showNewPassword = false
+      this.password = ""
+      this.newPassword = ""
+    },
+      
+    toggleShow() {
+      if (this.showPassword == true) {
+        this.showPassword = false
+      } else{
+        this.showPassword = true
+      }
+    },
+
+    toggleShowNew() {
+      if (this.showNewPassword == true) {
+        this.showNewPassword = false
+      } else{
+        this.showNewPassword = true
+      }
+    },
+
+    changePw() {
+      var numbers = /[0-9]/g;
+      if (this.password != (this.actualPassword)) {
+        this.passwordTitle = "Invalid Current Password"
+        this.passwordMsg = "Current Password does not match"
+        $('#changePwModal').modal('hide')
+        $('.modal-backdrop').modal('hide')
+        // $('#exampleModal').modal('hide')
+        $('#changePwModal1').modal('toggle')
+        
+      }
+      else if (!this.newPassword.match(numbers) && this.password.length < 8) {
+        this.passwordTitle = "Invalid New Password"
+        this.passwordMsg = "New Password should have at least 8 Characters with 1 Numeric Number"
+          $('#changePwModal').modal('hide')
+          $('.modal-backdrop').modal('hide')
+          // $('#exampleModal').modal('hide')
+          $('#changePwModal1').modal('toggle')
+
+      }
+      else if (!this.newPassword.match(numbers)) {
+        this.passwordTitle = "Invalid New Password"
+        this.passwordMsg = "New Password should have at least 1 Numeric Number"
+        $('#changePwModal').modal('hide')
+        $('.modal-backdrop').modal('hide')
+        // $('#exampleModal').modal('hide')
+        $('#changePwModal1').modal('toggle')
+
+      }
+      else if (this.newPassword.length < 8) {
+        this.passwordTitle = "Invalid New Password"
+        this.passwordMsg = "New Password should have at least 8 Characters"
+        $('#changePwModal').modal('hide')
+        $('.modal-backdrop').modal('hide')
+        // $('#exampleModal').modal('hide')
+        $('#changePwModal1').modal('toggle')
+      }
+      else {
+        console.log("changing pw")
+        this.save()
+
+      }
+
+    },
+  }
+
+  }
+
+
+</script>
+
+<style scoped>
+  .col{ 
+      /* background-color: gray; */
+    /* color: blue; */
+    /* text-align: left; */
+    border: 1px solid black;
+    text-align: left;
+    /* height:100px; */
+  }
+
+  .accountForm {
+    width: 80%;
+    background-color: #f0f0f0;
+    height: 35px;
+    border-radius: 55px;
+    border: 3px solid transparent;
+    padding: 0;
+    font-size: 15px;
+    margin: 10px 10px 10px 0;
+  
+  }
+
+  .passwordForm {
+    width: 80%;
+    background-color: #f0f0f0;
+    height: 35px;
+    border-radius: 55px;
+    border: 3px solid transparent;
+    margin: 9px 0 0 0;
+    font-size: 15px;
+    align-content: left;   
+  }
+
+
+  input[type="radio"]{
+    margin: 20px 10px 0 0;
+  }
+
+  label {
+    margin: 14px 0 10px 0;
+  }
+
+  /* .passwordForm {
+    max-width: 190px;
+    width: 100%;
+    background-color: #f0f0f0;
+    height: 30px;
+    border-radius: 55px;
+    border: 3px solid transparent;
+    padding: 0 0.4rem;
+    font-size: 15px;
+    margin: 20px auto;
+        
+} */
+
+  #changeBtn, #saveBtn {
+      background-color: rgb(0, 15, 92);
+      color: white;
+      font-weight: bold;
+      width: 120px;
+      height: 50px;
+      align-items: center;
+  }
+
+  #pwModalBtn {
+    background-color: lightskyblue;
+    display: inline-block;
+    height: 30px; 
+    width: 50px; 
+    font-size: 10px; 
+    margin: 0 0 0 10px;
+  }
+
+  #newPasswordCriteria {
+    font-size: 8px;
+    margin: 0 0 0 8px;
+  }
+
+
+
+
+
+</style>

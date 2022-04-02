@@ -10,6 +10,7 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import HomeView from '@/views/HomeView.vue'
 import TryingStuffs from '@/components/TryingStuffs.vue'
+import UserProfile from '@/components/UserProfile.vue'
 
 const routes = [
     {
@@ -58,6 +59,11 @@ const routes = [
         component: LoginView
     },
     {
+        path: '/userprofile',
+        name: 'UserProfile',
+        component: UserProfile
+    },
+    {
         path: '/tryingstuffs',
         name: 'TryingStuffs',
         component: TryingStuffs
@@ -67,7 +73,7 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
-    linkActiveClass: "active"
+    // linkActiveClass: "active"
 })
 
 router.beforeEach((to, from, next) => {
