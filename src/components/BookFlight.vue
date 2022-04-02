@@ -16,6 +16,7 @@
                 <option value="Singapore">Singapore</option>
                 <option value="Melbourne">Melbourne</option>
                 <option value="Germany">Germany</option>
+                <option value="Bangkok">Bangkok</option>
                 <!-- <option v-for="country in listCountries" 
                 v-bind:key="country.countryName"> {{ country.countryName }} </option> -->
            </select>
@@ -28,6 +29,7 @@
                 <option value="Singapore">Singapore</option>
                 <option value="Melbourne">Melbourne</option>
                 <option value="Germany">Germany</option>
+                <option value="Bangkok">Bangkok</option>
            </select>
            </div>
         </div>
@@ -103,33 +105,34 @@
     <br>
     <h2>Popular Destination</h2>
     <br>
+
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <figure>
-                    <img class="img-responsive" src="@/assets/osaka-japan.jpg" alt="picture of Osaka, Japan">
-                    <figcaption>Osaka, Japan</figcaption>
-                </figure>
-            </div>
-            <div class="col">
-                <figure>
-                    <img src="@/assets/berlin-germany.jpg" alt="picture of Berlin, Germany">
-                    <figcaption>Berlin, Germany</figcaption>
-                </figure>
-            </div>
-            <div class="col">
-                <figure>
-                    <img src="@/assets/paris-france.jpg" alt="picture of Paris, France">
-                    <figcaption>Paris, France</figcaption>
-                </figure>
+        <div v-if="database.length !== 0">
+            <div v-for="destinations in database" v-bind:key="destinations.uid">
+                <div class="row">
+                    <div class="col" v-for="destination in destinations" v-bind:key="destination.uid">
+                        <PopularDestination
+                        :image="destination.image"
+                        :altText="destination.altText"
+                        :countryName="destination.countryName"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 </template>
 <script>
+import firebaseApp from "@/firebase.js"
+import { getFirestore, collection, getDocs, query } from "firebase/firestore"
+import PopularDestination from '@/template/PopularDestination.vue'
+const db = getFirestore(firebaseApp);
 export default {
     name: "BookFlight",
+    components: {
+        PopularDestination,
+    },
     data() {
         return {
             originCountry: null,
@@ -139,6 +142,7 @@ export default {
             noOfPassengers: "",
             classType: null,
             isOneWay: false,
+            database: []
         }
     },
 
@@ -146,12 +150,39 @@ export default {
       let jquery = document.createElement('script')
       jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
       document.head.appendChild(jquery)
-
+      this.getPopularDestinations()
     },
     methods: {
+
         toggle() {
         this.isOneWay = this.isOneWay ? false : true;
         },
+
+        async getPopularDestinations() {
+            const q = query(collection(db, "PopularDestination"))
+              const querySnapshot = await getDocs(q);
+              querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+                let data = doc.data()
+                this.database.push(data)
+                }
+            );
+            this.database = this.groupArr(this.database, 3)
+            console.log(this.database)
+        },
+
+        groupArr(data, n) {
+            var group = [];
+            for (var i = 0, j = 0; i < data.length; i++) {
+                if (i >= n && i % n === 0)
+                    j++;
+                group[j] = group[j] || [];
+                group[j].push(data[i])
+            }
+            return group;
+        },
+
         async searchFlights() {
             console.log(this.departureDate)
             console.log(this.arrivalDate)

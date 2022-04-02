@@ -42,7 +42,9 @@
             :arrivalDate="flight.arrivalDateTime.toDate().toDateString()"
             :duration="durationDisplay(flight.arrivalDateTime-flight.departureDateTime)"
             :price="flight.price"
-            :airline="flight.airline" />
+            :airline="flight.airline"
+            :link="flight.link"/>
+
         </div>
     </div>  
 
@@ -73,7 +75,16 @@
     <div v-if="database.length == 0">
         <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
         <h3>No Results Found</h3>
-        <h5>We could not find any flights that match your search.</h5> <br>
+        <h5>We could not find any departure flights that match your search.</h5> <br>
+        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
+            Search Again
+        </button>
+    </div>
+
+    <div v-if="returnDatabase.length == 0">
+        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
+        <h3>No Results Found</h3>
+        <h5>We could not find any return flights that match your search.</h5> <br>
         <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
             Search Again
         </button>
@@ -88,22 +99,24 @@
                     <div class="col">
                         <div class="form-group">
                         <label for="originCountry" class="title">Origin</label>
-                        <select name="originCountry" id="originCountry" class="form-select form-control" v-model="originCountry" aria-placeholder="Select Country">
+                        <select name="originCountry" id="originCountry" class="form-select form-control" v-model="newOriginCountry" aria-placeholder="Select Country">
                                 <option value="null">---- Select Country ----</option>
                                 <option value="Singapore">Singapore</option>
                                 <option value="Melbourne">Melbourne</option>
                                 <option value="Germany">Germany</option>
+                                <option value="Bangkok">Bangkok</option>
                         </select>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                         <label for="destinationCountry" class="title">Destination</label>
-                        <select name="destinationCountry" id="destinationCountry" class="form-select form-control" v-model="destinationCountry" aria-placeholder="Select Country">
+                        <select name="destinationCountry" id="destinationCountry" class="form-select form-control" v-model="newDestinationCountry" aria-placeholder="Select Country">
                                 <option value="null">---- Select Country ----</option>
                                 <option value="Singapore">Singapore</option>
                                 <option value="Melbourne">Melbourne</option>
                                 <option value="Germany">Germany</option>
+                                <option value="Bangkok">Bangkok</option>
                         </select>
                         </div>
                     </div>
@@ -112,19 +125,19 @@
                 <div class="row">
                     <div class="col">
                         <label for="departureDate" class="form-label">Departure Date</label>
-                        <input id="departureDate" class="form-control" type="date" v-model="departureDate" required/>
+                        <input id="departureDate" class="form-control" type="date" v-model="newDepartureDate" required/>
                     </div>
-                    <div class="col">
+                    <div class="col"  v-if="this.isOneWay == false">
                         <label for="arrivalDate" class="form-label">Return Date</label>
-                        <input id="arrivalDate" class="form-control" type="date" v-model="arrivalDate" required/>
+                        <input id="arrivalDate" class="form-control" type="date" v-model="newArrivalDate" required/>
                     </div>
                     <div class="col">
                         <label  for="noOfPassengers" class="form-label">No of Passengers</label>
-                        <input id="noOfPassengers" min="1" class="form-control" type="number" placeholder="No. of Passenger(s)" v-model="noOfPassengers">
+                        <input id="noOfPassengers" min="1" class="form-control" type="number" placeholder="No. of Passenger(s)" v-model="newNoOfPassengers">
                     </div>
                     <div class="col">
                         <label  class="form-label">Class</label>
-                        <select name="classType" class="form-select form-control" v-model="classType">
+                        <select name="classType" class="form-select form-control" v-model="newClassType">
                             <option value=null>---- Select Class ----</option>
                             <option value="Economy Class">Economy Class</option>
                             <option value="Business Class">Business Class</option>
@@ -147,6 +160,8 @@ import moment from 'moment'
 
 import firebaseApp from "@/firebase.js"
 import { getFirestore, collection, getDocs, query, where } from "firebase/firestore"
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 
 const db = getFirestore(firebaseApp);
 
@@ -169,6 +184,7 @@ export default {
             passengers: this.$route.query.noOfPassengers + " Passengers",
             classType: this.$route.query.classType,
             manyPassengers: this.$route.query.manyPassengers,
+            user : false,
         }
     },
 
@@ -179,6 +195,13 @@ export default {
             this.isOneWayFlightSearchValid()
             this.isReturnFlightSearchValid()
         }
+        
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        });
     },
 
     methods: {
@@ -215,7 +238,7 @@ export default {
               querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.data()
-                //console.log(doc.id, " => ", doc.data());
+                console.log(doc.id, " => ", doc.data());
                 this.database.push(data)
             });
         },
@@ -234,7 +257,7 @@ export default {
               querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.data()
-                console.log("im here" + doc.id + "=>" + doc.data());
+                // console.log("im here" + doc.id + "=>" + doc.data());
                 this.returnDatabase.push(data)
             });
         },
@@ -250,7 +273,19 @@ export default {
         },
 
         async modifySearch() {
-
+            this.originCountry = this.newOriginCountry
+            this.destinationCountry = this.newDestinationCountry
+            this.departureDate = this.newDepartureDate
+            this.arrivalDate = this.newArrivalDate
+            this.noOfPassengers = this.newNoOfPassengers
+            this.classType = this.newClassType
+            this.database = []
+            this.returnDatabase = []
+            this.isOneWayFlightSearchValid()
+            if (this.isOneWay == false) { // return flight
+                this.isReturnFlightSearchValid()
+            }
+            this.closeSearchModal()
         },
     }
 }
