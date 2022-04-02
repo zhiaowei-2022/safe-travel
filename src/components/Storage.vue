@@ -446,36 +446,3 @@ export default {
 <style>
 
 </style>
-
-
-  <div id="logged" style="border: 1px solid">
-    <nav id="nav" style="padding: 0 0px 0 0px">
-      <div class="container">
-        <img src="@/assets/sad.png" alt="sad face" style="height: 40px;">
-      <!-- <ul class="nav nav-pills " style="position:absolute; top:0; right: 2%; margin: 10px;"> -->
-        <ul class="nav nav-pills" >
-        <!-- <li class="nav" style="position: relative; right: 400%;"> -->
-        <!--
-        <li class="nav">
-            <img src="@/assets/sad.png" alt="sad face" style="height: 40px;">
-        </li>
-        -->
-          <li class="nav-item justify-content-end">
-              <a class="nav-link" id="TryingStuffs"><router-link style="text-decoration: none; color: inherit;" to="/tryingstuffs">try</router-link></a>
-          </li>
-
-          <li class="nav-item">
-            <div v-if="user">
-              <a class="nav-link" href="#" v-on:click="signOut()" style="text-decoration: none; color: inherit;">Log Out</a>
-            </div>
-            <div v-else>
-              <a class="nav-link" href="#" v-on:click="openModal()" data-bs-toggle="modal">Login</a>
-            </div>
-          </li>
-
-          <li class="nav-item">
-              <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/registerview">Register</router-link></a>
-          </li>
-        </ul>
-      </div>
-    </nav>

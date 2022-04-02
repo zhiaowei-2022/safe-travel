@@ -146,9 +146,9 @@
       </div>
       <div class="col col-lg-3" style="text-align:center">
       
-          <p id="login"> Already have an account? Login
-          <router-link to="/loginview">HERE</router-link> </p>
-          <router-view/> <br>
+          <strong><p id="login"> Already have an account? Login
+          <router-link to="/loginview" style="color:rgb(1, 1, 87)">HERE</router-link> </p>
+          <router-view/></strong> <br>
               
 
           <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>
@@ -330,7 +330,7 @@ export default {
                 gender: "others",
                 nation: "",
                 phone_num: 0,
-                display_picture: "",
+                display_pic: "https://firebasestorage.googleapis.com/v0/b/project-59f96.appspot.com/o/safe_travel_logo.png?alt=media&token=466c01bd-a43e-48c2-baca-581db06253a0",
             })
 
             console.log(docRef)
@@ -342,10 +342,11 @@ export default {
                 console.log(user)
 
                 updateProfile(auth.currentUser, {
-                  displayName: username
+                  displayName: username,
                   }).then(() => {
-                    // console.log("displayName set")
-                    this.$router.push({name: 'HomeView'})
+                    this.$router.push({name: 'HomeView'}).then(() => {
+                    this.$router.go()
+                  })
                   }).catch((error) => {
                     console.log(error.message)
                   });
@@ -410,7 +411,7 @@ export default {
       width: 100%;
       /* height: 80.5vh; */
       height: 100%;
-      background-image: url("../assets/parachute.jpg");
+      background-image: url("../assets/balloon.jpg");
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -432,7 +433,8 @@ export default {
     }
 
     #login {
-      font-size: 10px;
+      font-size: 12px;
+      color: black;
     }
 
     #invalidCritera {

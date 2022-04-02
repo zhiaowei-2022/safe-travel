@@ -6,7 +6,7 @@
   <div class="container-fluid m-0 p-0" style="position: absolute; top: 0;">
   <nav id = "nav" class="navbar navbar-expand-lg mx-0 px-5">
     <div class="container-fluid">
-      <img src="@/assets/sad.png" alt="sad face" style="height: 40px;">
+      <img src="@/assets/safe_travel_logo.png" style="height: 50px;">
     </div>
     <ul class="nav me-auto mb-2 mb-lg-0 nav-pills justify-content-end" style="width:500px">
       <li class="nav-item justify-content-end">
@@ -14,7 +14,7 @@
       </li>
 
       <li class="nav-item" >
-        <div v-if="user" id = "UP">
+        <div v-if="user">
           <a class="nav-link" id="UserProfile"><router-link style="text-decoration: none; color: inherit;" to="/userprofile"><em> {{username}} </em> </router-link></a>
         </div>
       </li>
@@ -238,7 +238,7 @@ export default {
         const auth = getAuth();
         const user = auth.currentUser;
         signOut(auth, user)
-        console.log(this.$router.currentRoute._value.name)
+        // console.log(this.$router.currentRoute._value.name)
         if ((this.$router.currentRoute._value.name) == "UserProfile") {
           await this.$router.push({name: 'HomeView'})
         }
@@ -249,28 +249,31 @@ export default {
   },
 
   mounted() {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                this.user = user;
-                this.username = user.displayName
-            }
-        });
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+        this.username = user.displayName
+      }
+    });
     let jquery = document.createElement("script");
     jquery.setAttribute("src", "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js");
     document.head.appendChild(jquery);
 
     
-    var current = (this.$router.currentRoute)
+    // var current = (this.$router.currentRoute)
     
-    $(document).ready(function() {
-      var page_name = current['_value']['name']
-      document.getElementById(page_name).classList.toggle("active")
+    // $(document).ready(function() {
+    //   var page_name = current['_value']['name']
+    //   if (page_name != "UserProfile") {
+    //     console.log(document.getElementById(page_name))
+    //     document.getElementById(page_name).classList.toggle("active")
+    //   }
 
-    });
+    // });
 
-    
-    $('.nav li').click(function(){
+
+    $('.nav li').click(function() {
       $("#HomeView").removeClass("active")
       $("#BookFlight").removeClass("active")
       $("#ThingsToDo").removeClass("active")
@@ -280,7 +283,7 @@ export default {
       $("#RegisterView").removeClass("active")
       $("#UserProfile").removeClass("active")
 
-      console.log($(this))
+      // console.log($(this))
 
     if (($(this).children().children()[0].id) == "UserProfile") {
       $(this).children().children().addClass('active')
@@ -295,15 +298,23 @@ export default {
 
 
     })
+    
 
   },
+  updated() {
+    this.$nextTick(() => {
+      var current = (this.$router.currentRoute)
+      var page_name = current['_value']['name']
+      document.getElementById(page_name).classList.toggle("active")
+    })
+  }
 
 };
 </script>
 
 <style scoped>
 #nav {
-  /* padding: 20px; */
+  padding: 20px;
   text-align: center;
       /* position: fixed; */
   /* position: -webkit-sticky; */

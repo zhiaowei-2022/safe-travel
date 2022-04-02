@@ -4,75 +4,73 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
 
+<br>
 <div id="whole">
 
   <div class="container">
     <div class="title">
       <h1> Edit Profile </h1>
+      <br>
     </div>
 
       
-    <div class="row justify-content-md-center">
-      <div class="col col-lg-1">
-        <img src="@\assets\sad.png" alt="Italian Trulli" style="height:200px;width:200px;"><br>
+    <div class="row">
+      <div class="col col-lg-3 justify-content-end">
+        <img :src="DPurl" style="height:200px;width:200px; border-radius:50%; margin-bottom:20px; margin-left:60px;"/>
+        <input style="display:none" ref="uploadDP" type="file" @change="onFileSelected">
+        <button @click="$refs.uploadDP.click()" style="height:25px;width:200px; text-align:center; font-size: 12px; background-color: lightskyblue; margin-left:60px;">Change Display Picture</button>
+        
+        
+        <br>
         
 
       </div>
 
       <div class="col col-lg" style="">
 
-        <div class="row justify-content-md-center">
+        <div class="row" style="padding-left:10%;">
           <div class="col col-lg-2" style="text-align:right">
             <strong><label for="username" id="credentials">Username: </label></strong>
           </div>
-          <div class="col col-lg-5">
-            <!-- <input class="accountForm" id="username" v-model="username" type="text"> -->
+          <div class="col col-lg-6">
             <input class="accountForm" id="username" :placeholder= "actualUsername">
           </div>
         </div>
 
-        <div class="row justify-content-md-center">
+        <div class="row" style="padding-left:10%;">
           <div class="col col-lg-2" style="text-align:right">
             <strong><label for="email" id="credentials">Email: </label></strong>
           </div>
-          <div class="col col-lg-5">
+          <div class="col col-lg-6">
             <input class="accountForm" :value= "actualEmail" readonly>
           </div>
         </div>
- 
-        <!-- <div class="row justify-content-md-center">
-          <div class="col col-lg-2" style="text-align:right">
-            <strong><label for="username" id="credentials">Username: </label></strong>
-          </div>
-          <div class="col col-lg-5">
-            <input class="accountForm" id="username" v-model="username" type="text">
-          </div>
-        </div> -->
 
-        <div class="row justify-content-md-center">
+
+        <div class="row" style="padding-left:10%;">
           <div class="col col-lg-2" style="text-align:right">
             <strong><label for="phone" id="credentials">Phone Number: </label></strong>
           </div>
-          <div class="col col-lg-5">
+          <div class="col col-lg-6">
             <input class="accountForm" v-model="phone" id="phone" type="number" :placeholder= "actualPhone">
           </div>
         </div>
 
-        <div class="row justify-content-md-center">
+        <div class="row" style="padding-left:10%;">
           <div class="col col-lg-2" style="text-align:right">
             <strong><label for="password" id="credentials">Password: </label></strong>
           </div>
-          <div class="col col-lg-5">
+          <div class="col col-lg-6">
             <input class="accountForm" :value= "actualPassword" type="password" readonly>
-            <button data-bs-toggle="modal" id="pwModalBtn" data-bs-target="#changePwModal">Change</button>
+            <button data-bs-toggle="modal" id="changeBtn" data-bs-target="#changePwModal">Change</button>
           </div>
         </div>
 
-        <div class="row justify-content-md-center">
+        <div class="row" style="padding-left:10%;">
           <div class="col col-lg-2" style="text-align:right">
             <strong><label for="gender" id="credentials">Gender: </label></strong>
           </div>
-          <div class="col col-lg-5">
+          <div class="col col-lg-6">
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="gender" id="male" value="male">
               <label class="form-check-label" for="male">Male</label>
@@ -89,11 +87,11 @@
           </div>
         </div>
 
-        <div class="row justify-content-md-center">
+        <div class="row" style="padding-left:10%;">
           <div class="col col-lg-2" style="text-align:right">
             <strong><label for="nation" id="credentials">Nationality: </label></strong>
           </div>
-          <div class="col col-lg-5">
+          <div class="col col-lg-6">
             <input class="accountForm" v-model="nation" id="nation" :placeholder= "actualNation" type="text">
           </div>
         </div>
@@ -163,8 +161,7 @@
   <div class="row justify-content-md-center">
       <div class="col" style="text-align:center">
         <br>
-  
-          <button type="button" id="changeBtn" v-on:click="changePw()">Change</button>
+          <button type="button" id="changePwBtn" v-on:click="changePw()">Change</button>
           </div>
 
   </div>
@@ -209,8 +206,10 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore} from "firebase/firestore"
 import {doc, getDoc, updateDoc} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, updateProfile, updatePassword } from "firebase/auth";
 import * as $ from 'jquery'
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 
 
 const db = getFirestore(firebaseApp);
@@ -232,6 +231,8 @@ export default {
       newPassword: "",
       passwordMsg: "",
       passwordTitle: "",
+      DPurl: "",
+      DP: "",
     };
   },
 
@@ -249,6 +250,8 @@ export default {
           this.actualEmail = docSnap.data().email
           this.actualGender = docSnap.data().gender
           this.actualNation = docSnap.data().nation
+          this.DPurl = docSnap.data().display_pic
+          // console.log(this.DP)
           document.getElementById(this.actualGender).checked = true
           })
       }
@@ -259,6 +262,33 @@ export default {
   },
 
   methods: {
+    async onFileSelected(event) {
+      this.DP = event.target.files[0]
+      // console.log(this.DP)
+      const storage = getStorage()
+      const profileRef = ref(storage, this.DP.name);
+      const uploadTask = uploadBytesResumable(profileRef, this.DP);
+      uploadTask.on('state_changed', (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        console.log(snapshot)
+      }, (error) => {
+        // Handle unsuccessful uploads  
+        console.log(error)
+      }, () => {
+        // Handle successful uploads on complete
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', this.DPurl =  downloadURL);
+          this.save()
+
+        });
+      });
+    },
+
+
+
+
+
+
     async save() {
       const userRef = doc(db, 'Users', this.actualEmail);
 
@@ -283,7 +313,32 @@ export default {
         gender: newGender,
         nation: newNation,
         password: updatedPassword,
+        display_pic: this.DPurl
       })
+
+      const auth = getAuth();
+      await updateProfile(auth.currentUser, {
+        displayName: newUsername,
+      }).then(() => {
+        console.log("updated displayname");
+        // console.log(updatedPassword)
+        console.log(auth.currentUser);
+      }).catch((error) => {
+        console.log(error);
+      });
+
+      await updatePassword(auth.currentUser, updatedPassword).then(() => {
+        // Update successful.
+        console.log("updated pass");
+        console.log(updatedPassword)
+        console.log(auth.currentUser);
+      }).catch((error) => {
+        // An error ocurred
+        // ...
+        console.log(error);
+      });
+
+
       this.$router.go()    
     },
 
@@ -366,7 +421,7 @@ export default {
       /* background-color: gray; */
     /* color: blue; */
     /* text-align: left; */
-    border: 1px solid black;
+    /* border: 1px solid black; */
     text-align: left;
     /* height:100px; */
   }
@@ -416,7 +471,7 @@ export default {
         
 } */
 
-  #changeBtn, #saveBtn {
+  #changePwBtn, #saveBtn {
       background-color: rgb(0, 15, 92);
       color: white;
       font-weight: bold;
@@ -425,7 +480,7 @@ export default {
       align-items: center;
   }
 
-  #pwModalBtn {
+  #changeBtn {
     background-color: lightskyblue;
     display: inline-block;
     height: 30px; 
