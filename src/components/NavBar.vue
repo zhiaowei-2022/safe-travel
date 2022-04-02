@@ -3,65 +3,72 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
-  <div id="logged" style="border: 1px solid">
-    <div id="nav" style="padding: 0 20px 0 20px">
-      <div class="container">
-      <!-- <ul class="nav nav-pills " style="position:absolute; top:0; right: 2%; margin: 10px;"> -->
-        <ul class="nav nav-pills" >
-        <li class="nav">
-            <img src="@/assets/sad.png" alt="sad face" style="height: 40px;">
-        </li>
+  <div class="container-fluid m-0 p-0" style="position: absolute; top: 0;">
+  <nav id = "nav" class="navbar navbar-expand-lg mx-0 px-5">
+    <div class="container-fluid">
+      <img src="@/assets/sad.png" alt="sad face" style="height: 40px;">
+    </div>
+    <ul class="nav me-auto mb-2 mb-lg-0 nav-pills justify-content-end" style="width:500px">
+      <li class="nav-item justify-content-end">
+          <a class="nav-link" id="TryingStuffs"><router-link style="text-decoration: none; color: inherit;" to="/tryingstuffs">try</router-link></a>
+      </li>
 
-        <li class="nav-item justify-content-end">
-            <a class="nav-link" id="TryingStuffs"><router-link style="text-decoration: none; color: inherit;" to="/tryingstuffs">try</router-link></a>
-        </li>
-        <li class="nav-item">
-          <div v-if="user">
-            <a class="nav-link" href="#" v-on:click="signOut()" style="text-decoration: none; color: inherit;">Log Out</a>
-          </div>
-          <div v-else>
-            <a class="nav-link" href="#" v-on:click="openModal()" data-bs-toggle="modal">Login</a>
-          </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/registerview">Register</router-link></a>
-        </li>
-      </ul>
-    </div>
-    </div>
-    <div id="nav" class="border border-1">
+      <li class="nav-item" id = "login">
+        <div v-if="user">
+          <a class="nav-link" id="LogOut" href="#" v-on:click="signOut()">Log Out</a>
+        </div>
+        <div v-else>
+          <a class="nav-link" href="#" id="LogIn" data-bs-toggle="collapse" v-on:click="openModal()">Login</a>
+        </div>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link" id="RegisterView"><router-link style="text-decoration: none; color: inherit;" to="/registerview">Register</router-link></a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<br>
+
+
+
+
+
+
+    <div id="nav" class="border border-1" style="position: relative">
         <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/">Home</router-link></a>
+            <li class="nav-item navi">
+                <a class="nav-link" id = "HomeView"><router-link style="text-decoration: none; color: inherit;" to="/">Home</router-link></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/bookflight">Book Flights</router-link></a>
+                <a class="nav-link" id = "BookFlight"><router-link style="text-decoration: none; color: inherit;" to="/bookflight">Book Flights</router-link></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/ThingsToDo">Things To Do</router-link></a>
+                <a class="nav-link" id = "ThingsToDo"><router-link style="text-decoration: none; color: inherit;" to="/ThingsToDo">Things To Do</router-link></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/accomodationpage">Accommodation</router-link></a>
+                <a class="nav-link" id = "AccomodationPage"><router-link style="text-decoration: none; color: inherit;" to="/accomodationpage">Accommodation</router-link></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/FoodAndDining">Food And Dining</router-link></a>
+                <a class="nav-link" id = "FoodAndDining"><router-link style="text-decoration: none; color: inherit;" to="/FoodAndDining">Food And Dining</router-link></a>
             </li>
         </ul>
     </div>
 
 
 
+  <!-- </div> -->
 
-  </div>
+
 
 
   <!-- Modal -->  
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-danger" id="exampleModalLabel">Login Form</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" v-on:click="closeModal()"></button>
         </div>
         <div class="modal-body">
           <form>
@@ -98,13 +105,9 @@
                   <td></td>
                   <td>
                     <p id="registerlink"> New to Safe Travel? Sign up 
-                      <a v-on:click="navToRegPage()">HERE</a>
+                      <a href="#" v-on:click="navToRegPage()">HERE</a>
                     </p> 
-                    <!-- <router-view/> -->
                     <br>
-                
-                <!-- <a class="nav-link"><router-link style="text-decoration: none; color: inherit;" to="/bookflight">Book Flights</router-link></a> -->
-
                     <button type="button" id="loginBtn" v-on:click="Login()"> Login </button>
                   </td>
                 </tr>
@@ -116,7 +119,7 @@
       </div>
     </div>
   </div>
-<!-- </div> -->
+
 
 
     <!-- Modal -->
@@ -133,7 +136,7 @@
         <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 120px">
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#exampleModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to login</button>
+        <button class="btn btn-primary" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to login</button>
       </div>
     </div>
   </div>
@@ -143,7 +146,6 @@
 </template>
 
 <script>
-// import LoginModal from '@/components/LoginModal.vue'
 import * as $ from 'jquery'
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 
@@ -174,7 +176,7 @@ export default {
     },
 
     navToRegPage() {
-      $('#exampleModal').modal('hide')
+      $('#loginModal').modal('hide')
       $('body').removeClass('modal-open');
       $('.modal-backdrop').modal('hide')
 
@@ -186,10 +188,15 @@ export default {
       $('body').removeClass('modal-open');
       $('.modal-backdrop').remove()
 
+      var name = this.$router.currentRoute._value.name
+      document.getElementById(name).classList.toggle("active")
+
     },
 
     openModal() {
-      $('#exampleModal').modal('show')
+      $('#loginModal').modal('show')
+      //  $('.modal-backdrop').show()
+
     },
 
     Login() {
@@ -198,7 +205,7 @@ export default {
       const auth = getAuth();
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-          $('#exampleModal').modal('hide')
+          $('#loginModal').modal('hide')
           $('body').removeClass('modal-open');
           $('.modal-backdrop').remove()
         })
@@ -213,7 +220,7 @@ export default {
               this.loginMsg = "Incorrect Email/Password";
               break;
           }
-          $('#exampleModal').modal('hide')
+          $('#loginModal').modal('hide')
           $('#exampleModal1').modal('toggle')
         });   
     },
@@ -232,9 +239,6 @@ export default {
     
   },
 
-
-
-
   mounted() {
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
@@ -246,6 +250,28 @@ export default {
     jquery.setAttribute("src", "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js");
     document.head.appendChild(jquery);
 
+    
+    var current = (this.$router.currentRoute)
+    
+    $(document).ready(function() {
+      var page_name = current['_value']['name']
+      document.getElementById(page_name).classList.toggle("active")
+
+    });
+
+    
+    $('.nav li').click(function(){
+      $("#HomeView").removeClass("active")
+      $("#BookFlight").removeClass("active")
+      $("#ThingsToDo").removeClass("active")
+      $("#FoodAndDining").removeClass("active")
+      $("#AccomodationPage").removeClass("active")
+      $("#TryingStuffs").removeClass("active")
+      $("#RegisterView").removeClass("active")
+
+      $(this).children().addClass('active')
+      // $(this).removeClass('active');   
+    })
 
   },
 
@@ -254,59 +280,71 @@ export default {
 
 <style scoped>
 #nav {
-    /* padding: 20px; */
-    text-align: center;
-        /* position: fixed; */
-    /* position: -webkit-sticky; */
-    /* margin: 0 0 100px 0; */
-    /* top: 0; */
+  /* padding: 20px; */
+  text-align: center;
+      /* position: fixed; */
+  /* position: -webkit-sticky; */
+  /* margin: 0 0 100px 0; */
+  /* top: 0; */
+  
 }
 
 #nav a {
-    font-weight: bold;
+  font-weight: bold;
+  
+}
+
+.nav-link {
+  padding: 8px 16px 8px 16px;
 }
 
 
-    .signInForm {
-            max-width: 190px;
-            width: 100%;
-            background-color: #f0f0f0;
-            height: 30px;
-            border-radius: 55px;
-            border: 3px solid transparent;
-            padding: 0 0.4rem;
-            font-size: 15px;
-            margin: 20px auto;
-            
-    }
+.signInForm {
+  max-width: 190px;
+  width: 100%;
+  background-color: #f0f0f0;
+  height: 30px;
+  border-radius: 55px;
+  border: 3px solid transparent;
+  padding: 0 0.4rem;
+  font-size: 15px;
+  margin: 20px auto;
+}
 
 
-    #registerlink {
-        font-size: 10px;
-    }
 
-    table{
-      margin-left:auto;
-      margin-right:auto;
-      text-align: right;
+#registerlink {
+  font-size: 10px;
+}
 
-    }
-    td{
-      padding-left:10px;
-    }
+table{
+  margin-left:auto;
+  margin-right:auto;
+  text-align: right;
 
-    label {
-      color: black;
-    }
+}
+td{
+  padding-left:10px;
+}
 
-    #loginBtn {
-      background-color: rgb(0, 15, 92);
-      color: white;
-      font-weight: bold;
-      width: 120px;
-      height: 50px;
-      align-items: center;
-    }
+label {
+  color: black;
+}
+
+#loginBtn {
+  background-color: rgb(0, 15, 92);
+  color: white;
+  font-weight: bold;
+  width: 120px;
+  height: 50px;
+  align-items: center;
+}
+
+html,body{
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
+}
 
 
 

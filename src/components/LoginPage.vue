@@ -98,8 +98,9 @@
                   <td>
                     <p id="registerlink"> New to Safe Travel? Sign up 
                       <router-link to="/registerview">HERE</router-link> 
-                    </p> <router-view/>
+                    </p> <router-view/> 
                     <br>
+                    
                     
                     <button type="button" id="loginBtn" v-on:click="Login()"> Login </button>
                   </td>
