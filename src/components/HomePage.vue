@@ -202,17 +202,17 @@ export default {
                         qtOrigin.innerHTML = 
                         "<h4><i class='fa-solid fa-plane-arrival fa-flip-horizontal fa-xs'></i>" +
                         "<strong>" +  " On return to " + origin.value  + "</strong></h4> <br>" +
-                        "Fully Vaccinated: Quarrantine <strong>" + originSnap.data().Vaxxed  + "</strong><br>" +
-                        "Non-Fully Vaccinated: Quarrantine <strong>" + originSnap.data().NonVaxxed + "</strong><br><br>" +
-                        "<a  class='btn btn-info' href=" + originSnap.data().QuarrantineLink + ">See detailed Quarratine Information</a>";
+                        "Fully Vaccinated: Quarantine <strong>" + originSnap.data().Vaxxed  + "</strong><br>" +
+                        "Non-Fully Vaccinated: Quarantine <strong>" + originSnap.data().NonVaxxed + "</strong><br><br>" +
+                        "<a  class='btn btn-info' href=" + originSnap.data().QuarrantineLink + ">See detailed Quarantine Information</a>";
 
                         // COVID IN ORIGIN
                         covidOrigin.innerHTML = 
                         "<h4><i class='fa-solid fa-virus-covid fa-xs'></i>" +
                         "<strong> Covid Information in " + origin.value + "</strong></h4> <br>" +
                         "Daily cases: <strong>" + originSnap.data().DailyCases + "</strong><br>" +
-                        "Weekly cases: <strong>" + originSnap.data().WeeklyCases + "</strong><br>" +
-                        "Mask Rule: " + "<br><br>" +
+                        "7-Day Average: <strong>" + originSnap.data().WeeklyCases + "</strong><br>" +
+                        "Mask Rule: <strong>" + originSnap.data().Mask + "</strong><br><br>" +
                         "<a class='btn btn-info' href=" + originSnap.data().CovidLink + ">See detailed Covid Status</a>";
                 } 
                 else {
@@ -233,17 +233,17 @@ export default {
                     qtDest.innerHTML = 
                     "<h4><i class='fa-solid fa-plane-arrival fa-xs'></i>" +
                     "<strong>" +  " On arrival to " + dest.value  + "</strong></h4>" + "<br>" +
-                    "Fully Vaccinated: Quarrantine <strong>" + destSnap.data().Vaxxed  + "</strong><br>" +
-                    "Non-Fully Vaccinated: Quarrantine <strong>" + destSnap.data().NonVaxxed + "</strong><br> <br>" +
-                    "<a class='btn btn-info' href=" + destSnap.data().QuarrantineLink + ">See detailed Quarratine Information</a>";
+                    "Fully Vaccinated: Quarantine <strong>" + destSnap.data().Vaxxed  + "</strong><br>" +
+                    "Non-Fully Vaccinated: Quarantine <strong>" + destSnap.data().NonVaxxed + "</strong><br> <br>" +
+                    "<a class='btn btn-info' href=" + destSnap.data().QuarrantineLink + ">See detailed Quarantine Information</a>";
 
                     // COVID IN DEST
                     covidDest.innerHTML = 
                     "<h4><i class='fa-solid fa-virus-covid fa-xs'></i>" +
                     "<strong> Covid Information in " + dest.value + "</strong></h4> <br>" +
                     "Daily cases: <strong>" + destSnap.data().DailyCases + "</strong><br>" +
-                    "Weekly cases: <strong>" + destSnap.data().WeeklyCases + "</strong><br>" +
-                    "Mask Rule: " + "<br><br>" +
+                    "7-Day Average: <strong>" + destSnap.data().WeeklyCases + "</strong><br>" +
+                    "Mask Rule: <strong>" + destSnap.data().Mask + "</strong><br><br>" +
                     "<a class='btn btn-info' href=" + destSnap.data().CovidLink + ">See detailed Covid Status</a>";
 
                     // VISA
