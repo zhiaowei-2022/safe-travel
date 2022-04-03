@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: "AccomodationSearchInput",
+    name: "AccommodationSearchInput",
     props: {
         input: String
     }

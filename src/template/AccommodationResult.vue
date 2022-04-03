@@ -2,20 +2,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     
-    <button type="button" class="btn btn-light">
+    <button type="button" class="btn btn-light" @click='onclick(modalPhoto, name, rating, address, phone, email, description, rooms)'>
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="col col-lg-2">
-                    <img src="@/assets/mbs-singapore-2.jpg" alt="">
+                    <img :src="photo" alt="">
                 </div>
                 <div class="col" style="text-align:left">
                     <div class="hotel-name"> {{ name }} </div>
-                    <div class="hotel-body"> {{ rating }} </div>
+                    <div class="hotel-body"> {{ rating }} / 5</div>
                     <div class="hotel-body"> {{ checkInDate }} - {{ checkOutDate }}</div>
                 </div>
                 <div class="col col-lg-2">
-                    <div class="hotel-price"> From {{ price }} </div> <br>
-                    <button type="button" class="btn btn-link" style="background-color: rgb(0, 15, 95, 0)">Add to cart</button>
+                    <div class="hotel-price-text"> Price from </div>
+                    <div class="hotel-price"> ${{ price }} </div>
+                    <div class="hotel-price-text"> per night and room </div>
                 </div>
             </div>
         </div>
@@ -26,14 +27,21 @@
 
 <script>
 export default {
-    name: "AccomodationResult",
+    name: "AccommodationResult",
     props: {
         photo: String,
         name: String,
-        rating: String,
+        rating: Number,
         checkInDate: String,
         checkOutDate: String,
-        price: String
+        price: String,
+        onclick: Function,
+        address: String,
+        phone: String,
+        email: String,
+        description: String,
+        modalPhoto: String,
+        rooms: Array,
     }
 }
 </script>
@@ -43,6 +51,7 @@ export default {
     background-color: rgb(0, 15, 95, 0);
     align-items: center;
     margin: 10px 0px;
+    color: black;
 }
 
 img {
@@ -53,25 +62,18 @@ img {
 .hotel-name {
     font-weight: bold;
     font-size: 25px;
-    color: black;
-}
-
-.hotel-body {
-    color: black;
 }
 
 .hotel-price {
-    background-color: rgb(0, 15, 95);
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    display: inline-block;
-    line-height: 100px;
     font-weight: bold;
-    color: white;
+    color: rgb(0, 15, 95);;
+    font-size: 25px;
+    text-align: right;
+}
+
+.hotel-price-text {
+    text-align: right;
     font-size: 15px;
-    margin-top: 20px;
-    
 }
 
 button {
