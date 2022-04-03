@@ -267,7 +267,7 @@ export default {
       this.DP = event.target.files[0]
       // console.log(this.DP)
       const storage = getStorage()
-      const profileRef = ref(storage, this.DP.name);
+      const profileRef = ref(storage, "UsersDP/" + this.actualEmail + "/" + this.DP.name);
       const uploadTask = uploadBytesResumable(profileRef, this.DP);
       uploadTask.on('state_changed', (snapshot) => {
         // Observe state change events such as progress, pause, and resume
@@ -427,7 +427,7 @@ export default {
       /* background-color: gray; */
     /* color: blue; */
     /* text-align: left; */
-    border: 1px solid black;
+    /* border: 1px solid black; */
     text-align: left;
     /* height:100px; */
   }

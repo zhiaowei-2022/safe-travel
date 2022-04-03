@@ -17,14 +17,14 @@ export default {
   methods: {
   async add() {
     try {
-      const docRef = await setDoc(doc(db, "Origin", "Malaysia"), {
-        Name: "Malaysia",
-        Vaxxed: "REQUIRED", 
+      const docRef = await setDoc(doc(db, "Origin", "Singapore"), {
+        Name: "Singapore",
+        Vaxxed: "NOT REQUIRED", 
         NonVaxxed: "REQUIRED", 
-        DailyCases: "1000",
-        WeeklyCases: "5000",
-        CovidLink: "https://www.google.com",
-        QuarrantineLink:"https://www.google.com"
+        DailyCases: "4,563",
+        WeeklyCases: "5,549",
+        CovidLink: "https://ourworldindata.org/explorers/coronavirus-data-explorer?facet=none&uniformYAxis=0&Metric=Confirmed+cases&Interval=New+per+day&Relative+to+Population=false&Color+by+test+positivity=false&country=~SGP",
+        QuarrantineLink:"https://safetravel.ica.gov.sg/arriving/overview#vaccination"
 
       })
       console.log(docRef)
@@ -39,16 +39,16 @@ export default {
   },
     async add2() {
     try {
-      const docRef2 = await setDoc(doc(db, "Origin", "Malaysia", "Destination", "Singapore"), {
-        Name: "Singapore",
-        Vaxxed: "REQUIRED", 
+      const docRef2 = await setDoc(doc(db, "Origin", "Singapore", "Destination", "Austrialia"), {
+        Name: "Austrialia",
+        Vaxxed: "NOT REQUIRED", 
         NonVaxxed: "REQUIRED", 
-        DailyCases: "2000",
-        WeeklyCases: "3000",
-        CovidLink: "https://www.google.com",
-        QuarrantineLink:"https://www.google.com",
-        VisaLink: "https://www.google.com",
-        Visa: "NOT REQUIRED"
+        DailyCases: "48,097",
+        WeeklyCases: "57,293",
+        CovidLink: "https://ourworldindata.org/explorers/coronavirus-data-explorer?facet=none&uniformYAxis=0&Metric=Confirmed+cases&Interval=New+per+day&Relative+to+Population=false&Color+by+test+positivity=false&country=~AUS",
+        QuarrantineLink:"https://singapore.embassy.gov.au/sing/COVIDINFORMATION.html",
+        VisaLink: "https://singapore.embassy.gov.au/sing/Visas_and_Migration.html",
+        Visa: "REQUIRED"
 
       })
       console.log(docRef2)
