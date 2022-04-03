@@ -47,7 +47,7 @@
 
 
 
-    <!-- <div v-if="displayInfo"> -->
+    <div v-if="displayInfo">
         <h2>Covid Status</h2>
         <br>
     <div class="container">
@@ -86,7 +86,7 @@
             </div>
         </div>
     </div>
-    <!-- </div> -->
+    </div>
     
 
 <br>
