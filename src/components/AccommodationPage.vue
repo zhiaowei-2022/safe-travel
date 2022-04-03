@@ -38,29 +38,16 @@
     <div class="container">
         <h2>Popular Hotels</h2>
         
-        <div class="row">
-            <div class="col">
+        <div class="row" v-for="row in database" :key="row">
+            <div class="col-4" v-for="hotel in row" :key="hotel">
                 <figure>
-                    <a href="https://www.theplazany.com/" target="_blank">
-                        <img src="@/assets/the-plaza-ny.jpg" alt="">
+                    <a :href="hotel.Link" target="_blank">
+                        <img
+                            :src="hotel.Photo"
+                            alt="Unable to load photo."
+                        />
                     </a>
-                    <figcaption>The Plaza, New York</figcaption>
-                </figure>
-            </div>
-            <div class="col">
-                <figure>
-                    <a href="https://www.marinabaysands.com/" target="_blank">
-                        <img src="@/assets/mbs-singapore.jpg" alt="">
-                    </a>
-                    <figcaption>Marina Bay Sands, Singapore</figcaption>
-                </figure>
-            </div>
-            <div class="col">
-                <figure>
-                    <a href="https://www.theshelbourne.com/" target="_blank">
-                        <img src="@/assets/the-shelbourne-hotel-dublin.jpg" alt="">
-                    </a>
-                    <figcaption>The Shelbourne Hotel, Dublin</figcaption>
+                    <figcaption>{{ hotel.Name }}, {{ hotel.City }}</figcaption>
                 </figure>
             </div>
         </div>
@@ -68,6 +55,12 @@
 </template>
 
 <script>
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import firebaseApp from "@/firebase.js"
+import { getFirestore, collection, getDocs } from "firebase/firestore"
+
+const db = getFirestore(firebaseApp);
+
 export default {
     name:"AccommodationPage",
 
@@ -78,7 +71,20 @@ export default {
             checkOutDate: "",
             noOfGuests: "",
             noOfRooms: "",
+
+            database: [],
+            noOfCols: 3,
         }
+    },
+
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        });
+        this.display();
     },
 
     methods: {
@@ -108,7 +114,23 @@ export default {
                 console.log("error, missing fields")
                 alert("There are missing fields.")
             }
-        }
+        },
+
+        async display() {
+            var docs = await getDocs(collection(db, "PopularAccommodations"))
+            let counter = 0;
+            let row = [];
+
+            docs.forEach((doc) => {
+                let data = doc.data();
+                row.push(data);
+                counter++;
+                if (counter % this.noOfCols == 0 || counter == docs.size) {
+                    this.database.push(row);
+                    row = [];
+                }
+            });
+        },
     }
 }
 </script>
