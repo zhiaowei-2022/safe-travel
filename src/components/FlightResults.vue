@@ -4,17 +4,19 @@
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     
-     <div class="search-field">
-        <FlightSearchInput input="Melbourne"/>
-        <i class="bi bi-arrow-right"></i>
-        <FlightSearchInput input="Singapore"/>
-        <FlightSearchInput input="14 Feb 2022 - 21 Feb 2022"/>
-        <FlightSearchInput input="2 Passengers"/>
-        <FlightSearchInput input="Economy Class"/>
+    <div class="container-fluid" style="margin-bottom: 50px">
+        <span class="search-field">
+            <FlightSearchInput :input="originCountry"/>
+            <i class="bi bi-arrow-right"></i>
+            <FlightSearchInput :input="destinationCountry"/>
+            <FlightSearchInput :input="this.isOneWay == false ? searchDisplay(departureDate, arrivalDate) : departureDate"/>
+            <FlightSearchInput v-if="manyPassengers" :input="passengers"/>
+            <FlightSearchInput v-if="!manyPassengers" :input="passenger"/>
+            <FlightSearchInput :input="classType"/>
+        </span>
     </div>
-    <br>
     <div class="form-group">
-        <div>
+        <div v-if="database.length !== 0" @click="openSearchModal()">
             <button class="btn btn-primary pull-right" name="submit" type="submit">
                 Modify Search
             </button>
@@ -22,63 +24,278 @@
     </div>
     <br>
 
-    <h2>Depart - Melbourne to Singapore</h2>
+    <h2>Depart - {{ originCountry }} to {{ destinationCountry }}</h2>
 
     <br>
-    <FlightResult departureCountryId="MEL"
-        departureCountryName="Melbourne"
-        departureTime="08:00"
-        departureDate="14 Feb 2022 (Mon)"
-        arrivalCountryId="SIN"
-        arrivalCountryName="Singapore"
-        arrivalTime="18:40"
-        arrivalDate="14 Feb 2022 (Tues)"
-        duration="7 hr 40 mins"
-        price="SGD 425"
-        airline="Qantas Airlines"/>
-    <FlightResult departureCountryId="MEL"
-        departureCountryName="Melbourne"
-        departureTime="08:00"
-        departureDate="14 Feb 2022 (Mon)"
-        arrivalCountryId="SIN"
-        arrivalCountryName="Singapore"
-        arrivalTime="18:40"
-        arrivalDate="14 Feb 2022 (Tues)"
-        duration="7 hr 40 mins"
-        price="SGD 425"
-        airline="Qantas Airlines"/>
-    <FlightResult departureCountryId="MEL"
-        departureCountryName="Melbourne"
-        departureTime="08:00"
-        departureDate="14 Feb 2022 (Mon)"
-        arrivalCountryId="SIN"
-        arrivalCountryName="Singapore"
-        arrivalTime="18:40"
-        arrivalDate="14 Feb 2022 (Tues)"
-        duration="7 hr 40 mins"
-        price="SGD 425"
-        airline="Qantas Airlines"/>
-     
+
+    <div v-if="database.length !== 0">
+        <div v-for="flight in database" v-bind:key="flight.uid">
+            <FlightResult 
+            :airlinePhoto="flight.airlinePic"
+            :departureCountryId="flight.departureCountryId"
+            :departureCountryName="flight.departureCountryName"
+            :departureTime="timeDisplay(flight.departureDateTime.toDate().toLocaleTimeString())"
+            :departureDate="flight.departureDateTime.toDate().toDateString()" 
+            :arrivalCountryId="flight.arrivalCountryId"
+            :arrivalCountryName="flight.arrivalCountryName"
+            :arrivalTime="timeDisplay(flight.arrivalDateTime.toDate().toLocaleTimeString())"
+            :arrivalDate="flight.arrivalDateTime.toDate().toDateString()"
+            :duration="durationDisplay(flight.arrivalDateTime-flight.departureDateTime)"
+            :price="flight.price"
+            :airline="flight.airline"
+            :link="flight.link"/>
+
+        </div>
+    </div>  
+
+    <div v-if="this.isOneWay == false"> 
+        <br>
+        <h2>Return - {{ destinationCountry }} to {{ originCountry }}</h2>
+        <br>
+        <div v-if="database.length !== 0">
+            <div v-for="flight in returnDatabase" v-bind:key="flight.uid">
+                <FlightResult 
+                :airlinePhoto="flight.airlinePic"
+                :departureCountryId="flight.departureCountryId"
+                :departureCountryName="flight.departureCountryName"
+                :departureTime="timeDisplay(flight.departureDateTime.toDate().toLocaleTimeString())"
+                :departureDate="flight.departureDateTime.toDate().toDateString()" 
+                :arrivalCountryId="flight.arrivalCountryId"
+                :arrivalCountryName="flight.arrivalCountryName"
+                :arrivalTime="timeDisplay(flight.arrivalDateTime.toDate().toLocaleTimeString())"
+                :arrivalDate="flight.arrivalDateTime.toDate().toDateString()"
+                :duration="durationDisplay(flight.arrivalDateTime-flight.departureDateTime)"
+                :price="flight.price"
+                :airline="flight.airline" 
+                :link="flight.link"/>
+            </div>
+        </div> 
+    </div>
+    
+    <div v-if="database.length == 0">
+        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
+        <h3>No Results Found</h3>
+        <h5>We could not find any departure flights that match your search.</h5> <br>
+        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
+            Search Again
+        </button>
+    </div>
+
+    <div v-if="returnDatabase.length == 0">
+        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
+        <h3>No Results Found</h3>
+        <h5>We could not find any return flights that match your search.</h5> <br>
+        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
+            Search Again
+        </button>
+    </div>
+
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close" v-on:click="closeSearchModal()">&times;</span>
+
+            <form class="form-details">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                        <label for="originCountry" class="title">Origin</label>
+                        <select name="originCountry" id="originCountry" class="form-select form-control" v-model="newOriginCountry" aria-placeholder="Select Country">
+                                <option value="null">---- Select Country ----</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Melbourne">Melbourne</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Bangkok">Bangkok</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                        <label for="destinationCountry" class="title">Destination</label>
+                        <select name="destinationCountry" id="destinationCountry" class="form-select form-control" v-model="newDestinationCountry" aria-placeholder="Select Country">
+                                <option value="null">---- Select Country ----</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Melbourne">Melbourne</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Bangkok">Bangkok</option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <label for="departureDate" class="form-label">Departure Date</label>
+                        <input id="departureDate" class="form-control" type="date" v-model="newDepartureDate" required/>
+                    </div>
+                    <div class="col"  v-if="this.isOneWay == false">
+                        <label for="arrivalDate" class="form-label">Return Date</label>
+                        <input id="arrivalDate" class="form-control" type="date" v-model="newArrivalDate" required/>
+                    </div>
+                    <div class="col">
+                        <label  for="noOfPassengers" class="form-label">No of Passengers</label>
+                        <input id="noOfPassengers" min="1" class="form-control" type="number" placeholder="No. of Passenger(s)" v-model="newNoOfPassengers">
+                    </div>
+                    <div class="col">
+                        <label  class="form-label">Class</label>
+                        <select name="classType" class="form-select form-control" v-model="newClassType">
+                            <option value=null>---- Select Class ----</option>
+                            <option value="Economy Class">Economy Class</option>
+                            <option value="Business Class">Business Class</option>
+                            <option value="First Class">First Class</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <button type="button" class="btn btn-primary" @click="modifySearch()">Save Edits</button>
+            </form>
+        </div>
+    </div>
 
 </template>
 
 <script>
 import FlightSearchInput from '@/template/FlightSearchInput.vue'
 import FlightResult from '@/template/FlightResult.vue'
+import moment from 'moment'
+
+import firebaseApp from "@/firebase.js"
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore"
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+
+const db = getFirestore(firebaseApp);
 
 export default {
     name: 'FlightResults',
     components: {
         FlightSearchInput,
         FlightResult
+    },
+    data() {
+        return {
+            database: [],
+            returnDatabase: [],
+            originCountry: this.$route.query.originCountry,
+            destinationCountry: this.$route.query.destinationCountry,
+            departureDate: this.$route.query.departureDate,
+            arrivalDate: this.$route.query.arrivalDate,
+            isOneWay: this.$route.query.isOneWay === "true",
+            passenger: this.$route.query.noOfPassengers + " Passenger",
+            passengers: this.$route.query.noOfPassengers + " Passengers",
+            classType: this.$route.query.classType,
+            manyPassengers: this.$route.query.manyPassengers,
+            user : false,
+        }
+    },
+
+    mounted() {
+        if (this.isOneWay == true) { // one way flight
+            this.isOneWayFlightSearchValid()
+        } else { // return flight
+            this.isOneWayFlightSearchValid()
+            this.isReturnFlightSearchValid()
+        }
+        
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        });
+    },
+
+    methods: {
+        searchDisplay(date1, date2) {
+            return moment(date1).format("D MMM YYYY") + " - " + moment(date2).format("D MMM YYYY");
+        },
+
+        resultsDisplay(date) {
+            return moment(date).format("ddd, D MMM YYYY");
+        },
+
+        timeDisplay(time) {
+            return moment(time, "hh:mm:ss").format("hh:mm");
+        },
+
+        durationDisplay(sec) {
+            return moment({}).seconds(sec).format("H") + " hours " + moment({}).seconds(sec).format("mm") + " mins";
+        },
+
+        getYear(timeStamp) {
+            return moment(timeStamp.toDate().toDateString(), "dd/mm/yyyy").format("yyyy")
+        },
+
+        async isOneWayFlightSearchValid() {
+              var departureAfter = new Date(this.departureDate)
+              var departureBefore = new Date(this.departureDate)
+              departureAfter.setDate(departureAfter.getDate()+1)
+              const q = query(collection(db, "Flights"), where("departureCountryName", "==", this.originCountry), 
+              where("arrivalCountryName", "==", this.destinationCountry),
+              where("departureDateTime", ">=", departureBefore),
+              where("departureDateTime", "<", departureAfter))
+              
+              const querySnapshot = await getDocs(q);
+              querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                let data = doc.data()
+                console.log(doc.id, " => ", doc.data());
+                this.database.push(data)
+            });
+        },
+
+        async isReturnFlightSearchValid() {
+            var arrivalAfter = new Date(this.arrivalDate)
+            var arrivalBefore = new Date(this.arrivalDate)
+            arrivalAfter.setDate(arrivalAfter.getDate()+1)
+            console.log(arrivalBefore)
+            console.log(arrivalAfter)
+            const q = query(collection(db, "Flights"), where("departureCountryName", "==", this.destinationCountry), 
+              where("arrivalCountryName", "==", this.originCountry),
+              where("departureDateTime", ">=", arrivalBefore),
+              where("departureDateTime", "<", arrivalAfter))
+              const querySnapshot = await getDocs(q);
+              querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                let data = doc.data()
+                // console.log("im here" + doc.id + "=>" + doc.data());
+                this.returnDatabase.push(data)
+            });
+        },
+                
+        openSearchModal() {
+            var modal = document.getElementById("searchModal")
+            modal.style.display = "block";
+        },
+
+        closeSearchModal() {
+            var modal = document.getElementById("searchModal");
+            modal.style.display = "none";
+        },
+
+        async modifySearch() {
+            this.originCountry = this.newOriginCountry
+            this.destinationCountry = this.newDestinationCountry
+            this.departureDate = this.newDepartureDate
+            this.arrivalDate = this.newArrivalDate
+            this.noOfPassengers = this.newNoOfPassengers
+            this.classType = this.newClassType
+            this.database = []
+            this.returnDatabase = []
+            this.isOneWayFlightSearchValid()
+            if (this.isOneWay == false) { // return flight
+                this.isReturnFlightSearchValid()
+            }
+            this.closeSearchModal()
+        },
     }
 }
 </script>
 
 <style scoped>
     .search-field {
-        display: flex;
-        justify-content: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
     }
     .search-result {
         text-align: left;
@@ -108,12 +325,39 @@ export default {
     color: white;
     font-weight: bold;
     float: right;
-    margin-right: 60px;
     margin-top: 10px;
     }
     img {
     width: 90%;
     border-radius: 50%;
     display: inline-block;
+    }
+    #no-results {
+    width: 10%;
+    }
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    }
+    .close {
+    color: #aaa;
+    text-align: right;
+    padding-right: 15px;
+    font-size: 35px;
+    font-weight: bold;
     }
 </style>
