@@ -47,102 +47,47 @@
 
 
 
-    <div v-if="displayInfo">
+    <!-- <div v-if="displayInfo"> -->
         <h2>Covid Status</h2>
         <br>
     <div class="container">
-    
         <div class="row">
             <div class="col">
-                <figure style="background-color: rgb(1, 1, 87); margin: auto; color: white; border-radius:10px; padding: 30px;">
-                    <div id ="qtDest" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 10px"></div>
+                <figure style="margin: auto; color: white;">
+                    <div id ="qtDest" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
                     <hr>
-                    <div id ="qtOrigin" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 10px"></div>
+                    <div id ="covidDest" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
+                    
 
 
                 </figure>
             </div>
             <div class="col">
-                <figure style="background-color: rgb(1, 1, 87); margin: auto; color: white; border-radius:10px; padding: 30px;">
-                     <div id ="covidDest" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 10px"></div>
+                <figure style="margin: auto; color: white;">
+                     <div id ="qtOrigin" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
                     <hr>
-                    <div id ="covidOrigin" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 10px"></div>
+                    <div id ="covidOrigin" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
                 </figure>
             </div>
         </div>
     </div> 
-    <br>
+    <br> <br>
 
     <div style="text-align:center; margin:auto;">
         <h2 style="text-align:center; margin:auto;">Visa Entry</h2>
         <br>
-        </div>
+    </div>
     <div class="container">
         <div class = "row">
             <div class="col">
-                <figure style="background-color:rgb(1, 1, 87); color: white; border-radius:10px; width: 40%; margin:auto; padding: 30px;">
-                    <div id="visaDest" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 10px"></div>
+                <figure style="color: white; margin:auto; ">
+                    <div id="visaDest" style="width: 40%; margin:auto; border-radius: 20px"></div>
                 </figure>
             </div>
         </div>
     </div>
-    </div>
+    <!-- </div> -->
     
-
-
-    <!-- <div v-if="displayInfo">
-    <div class="form-details">
-        <h3 style="color:lightskyblue;"> COVID </h3>
-    <table class="table table-dark table-bordered" style="border-radius: 10px; overflow: hidden;" >
-  <tbody>
-    <tr>
-      <td class="col-6">
-          <div id ="qtDest">
-          </div>
-          </td>
-      <td>
-          <div id="covidDest">
-          </div>
-      </td>
-    </tr>
-  </tbody>
-  <tbody>
-    <tr>
-        <td>
-            <div id= "qtOrigin">
-            </div>
-        </td>
-        <td>
-            <div id= "covidOrigin">
-            </div>
-        </td>
-    </tr>
-  </tbody>
-</table>
-</div>
-<br>
-
-    <div class="form-detail">
-        <h3 style="color:lightskyblue;"> VISA ENTRY </h3>
-    <table class="table table-dark table-bordered" style="border-radius: 10px; overflow: hidden;" >
-  <tbody>
-    <tr>
-      <td>
-          <div id="visaDest">
-          </div>
-          
-          </td>
-    </tr>
-  </tbody>
-
-</table>
-</div>
-
-
-<br>
-
-
-</div> -->
 
 <br>
 
@@ -210,6 +155,8 @@ export default {
         document.head.appendChild(jquery)
         this.dropdown()
 
+
+
         
     },
 
@@ -253,20 +200,20 @@ export default {
                 if (originSnap.exists()) {
                     // QUARRANTINE IN ORIGIN
                         qtOrigin.innerHTML = 
-                        "<i class='fa-solid fa-plane-arrival fa-flip-horizontal'></i>" +
-                        "<strong>" +  " On return to " + origin.value  + "</strong> <br> <br>" +
-                        "Fully Vaccinated:" + originSnap.data().Vaxxed  + "<br>" +
-                        "Non-Fully Vaccinated:" + originSnap.data().NonVaxxed + "<br><br>" +
-                        "<a href=" + originSnap.data().QuarrantineLink + ">See detailed Quarratine Information</a>"+ "<br><br>";
+                        "<h4><i class='fa-solid fa-plane-arrival fa-flip-horizontal fa-xs'></i>" +
+                        "<strong>" +  " On return to " + origin.value  + "</strong></h4> <br>" +
+                        "Fully Vaccinated: Quarrantine <strong>" + originSnap.data().Vaxxed  + "</strong><br>" +
+                        "Non-Fully Vaccinated: Quarrantine <strong>" + originSnap.data().NonVaxxed + "</strong><br><br>" +
+                        "<a  class='btn btn-info' href=" + originSnap.data().QuarrantineLink + ">See detailed Quarratine Information</a>";
 
                         // COVID IN ORIGIN
                         covidOrigin.innerHTML = 
-                        "<i class='fa-solid fa-virus-covid'></i>" +
-                        "<strong> Covid Information in " + origin.value + "</strong> <br> <br>" +
-                        "Daily cases: " + originSnap.data().DailyCases + "<br>" +
-                        "Weekly cases: " + originSnap.data().WeeklyCases + "<br>" +
+                        "<h4><i class='fa-solid fa-virus-covid fa-xs'></i>" +
+                        "<strong> Covid Information in " + origin.value + "</strong></h4> <br>" +
+                        "Daily cases: <strong>" + originSnap.data().DailyCases + "</strong><br>" +
+                        "Weekly cases: <strong>" + originSnap.data().WeeklyCases + "</strong><br>" +
                         "Mask Rule: " + "<br><br>" +
-                        "<a href=" + originSnap.data().CovidLink + ">See detailed Covid Status</a><br>";
+                        "<a class='btn btn-info' href=" + originSnap.data().CovidLink + ">See detailed Covid Status</a>";
                 } 
                 else {
                     // doc.data() will be undefined in this case
@@ -283,26 +230,28 @@ export default {
                 
                 if (destSnap.exists()) {
                     // QUARRANTINE IN DEST
-                    qtDest.innerHTML = "<i class='fa-solid fa-plane-arrival'></i>" +
-                    "<strong>" +  " On arrival to " + dest.value  + "</strong>" + "<br><br>" +
-                    "Fully Vaccinated:" + destSnap.data().Vaxxed  + "<br>" +
-                    "Non-Fully Vaccinated:" + destSnap.data().NonVaxxed + "<br> <br>" +
-                    "<a href=" + destSnap.data().QuarrantineLink + ">See detailed Quarratine Information</a><br><br>";
+                    qtDest.innerHTML = 
+                    "<h4><i class='fa-solid fa-plane-arrival fa-xs'></i>" +
+                    "<strong>" +  " On arrival to " + dest.value  + "</strong></h4>" + "<br>" +
+                    "Fully Vaccinated: Quarrantine <strong>" + destSnap.data().Vaxxed  + "</strong><br>" +
+                    "Non-Fully Vaccinated: Quarrantine <strong>" + destSnap.data().NonVaxxed + "</strong><br> <br>" +
+                    "<a class='btn btn-info' href=" + destSnap.data().QuarrantineLink + ">See detailed Quarratine Information</a>";
 
                     // COVID IN DEST
                     covidDest.innerHTML = 
-                    "<i class='fa-solid fa-virus-covid'></i>" +
-                    "<strong> Covid Information in " + dest.value + "</strong> <br> <br>" +
-                    "Daily cases: " + destSnap.data().DailyCases + "<br>" +
-                    "Weekly cases: " + destSnap.data().WeeklyCases + "<br>" +
+                    "<h4><i class='fa-solid fa-virus-covid fa-xs'></i>" +
+                    "<strong> Covid Information in " + dest.value + "</strong></h4> <br>" +
+                    "Daily cases: <strong>" + destSnap.data().DailyCases + "</strong><br>" +
+                    "Weekly cases: <strong>" + destSnap.data().WeeklyCases + "</strong><br>" +
                     "Mask Rule: " + "<br><br>" +
-                    "<a href=" + destSnap.data().CovidLink + ">See detailed Covid Status</a><br>";
+                    "<a class='btn btn-info' href=" + destSnap.data().CovidLink + ">See detailed Covid Status</a>";
 
                     // VISA
                     visaDest.innerHTML = 
-                    "<strong>" + origin.value + " to "  + dest.value + "</strong> <br> <br>" +
-                    "Visa Entry is " + destSnap.data().Visa + "<br><br>" +
-                    "<a href=" + destSnap.data().VisaLink + ">See detailed Visa Entry Requirement</a>";
+                    "<h4><i class='fa-solid fa-passport fa-xs'></i>" +
+                    "<strong> " + origin.value + " to "  + dest.value + "</strong> </h4> <br>" +
+                    "Visa Entry: <strong>" + destSnap.data().Visa + "</strong><br><br>" +
+                    "<a class='btn btn-info' href=" + destSnap.data().VisaLink + ">See detailed Visa Entry Requirement</a>";
                 } 
                 else {
                     // doc.data() will be undefined in this case
@@ -377,6 +326,19 @@ export default {
     option{
         color: black;
     }
+
+    #visaDest, #covidDest, #covidOrigin, #qtOrigin, #qtDest {
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+
+        background-color: rgb(1, 1, 87);;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        /* box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px; */
+
+    }
+
 
 
 

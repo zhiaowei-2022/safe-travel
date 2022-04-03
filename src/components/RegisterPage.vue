@@ -2,77 +2,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-<!-- <div id="container">
-  <div id="content">
-        <h1> Register for an account </h1>
-        
-        <div>
-          <table border = '0'>
-            <tr>
-              <td>
-                <strong><label for="email" >Email: </label></strong>
-                <p style="font-size:10px;">&nbsp;</p>
-              </td>
-              <td>
-                <input class="registerForm" v-model="email" @input="checkEmail()" type="email" placeholder="xyz@gmail.com">
-                <p v-if="checkingEmail" id="invalidCritera"> {{emailCriteria}} </p>
-                <p v-else id="invalidCritera">&nbsp;</p>
-                
-
-              </td>
-            </tr>
-            
-            <tr>
-              <td>
-                <strong><label for="username">Username: </label></strong>
-                <p style="font-size:7px;">&nbsp;</p>
-              </td>
-              <td>
-                  <input class="registerForm" v-model="username" @input="checkUsername()" type="text" placeholder="xyz">
-                  <p id="invalidCritera" v-if="checkingUsername"> {{usernameCriteria}} </p>
-                  <p v-else id="invalidCritera">&nbsp;</p>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <strong><label for="password">Password: </label></strong>
-                <p style="font-size:10px;">&nbsp;</p>
-              </td>
-              <td>
-                <input class="registerForm" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="*******">
-                <input class="registerForm" v-else v-model="password" @input="checkPassword()" type="password" placeholder="*******">
-                <p id="invalidCritera" v-if="checkingPassword"> {{passwordCriteria}} </p> 
-                <p v-else id="invalidCritera">&nbsp;</p>
-                
-              </td>
-              <td>
-                <div v-if="showPassword" @click="toggleShow">
-                  <i id = "visibility" class="fa-solid fa-eye"></i>
-                  <p></p>
-                </div>
-                <div v-else @click="toggleShow">
-                    <i id = "visibility" class="fa-solid fa-eye-slash"></i>
-                    <p></p>
-                  </div>
-              </td>
-            </tr>
-
-            <tr>
-              <td></td>
-              <td>
-                <p id="login"> Already have an account? Login
-                  <router-link to="/loginview">HERE</router-link> </p>
-                  <router-view/> <br>
-
-                <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>
-                <button type="button" v-else id ="invalidRegisterBtn"> REGISTER</button>
-                </td>
-            </tr>
-          </table>
-        </div>
-        </div>
-        </div> -->
 
 
 <div id="holder">
@@ -106,8 +35,6 @@
         <input class="registerForm" v-model="username" @input="checkUsername()" type="text" placeholder="xyz">
         <p id="invalidCritera" v-if="checkingUsername" v-html="usernameCriteria"></p>
       </div>
-      <!-- <div class="col col-lg-1">
-      </div> -->
     </div>
   </div>
 
@@ -128,15 +55,7 @@
         <p id="invalidCritera" v-if="checkingPassword" v-html="passwordCriteria"></p> 
       </div>
 
-      <!-- <div class="col col-md-auto">
-        <div v-if="showPassword" @click="toggleShow">
-          <i id = "visibility" class="fa-solid fa-eye"></i>
-        </div>
 
-        <div v-else @click="toggleShow">
-          <i id = "visibility" class="fa-solid fa-eye-slash"></i>
-        </div>
-      </div> -->
     </div>
   </div>
 
