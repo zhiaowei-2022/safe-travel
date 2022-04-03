@@ -2,7 +2,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     
-    <div class="container-fluid" style="margin-bottom: 60px">
+    <div class="container" style="margin-bottom: 60px">
         <span class="search-field">
             <SearchInput :input = "name"/>
             <SearchInput :input = "searchDisplay(checkInDate, checkOutDate)"/>
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <div v-if="database.length !== 0">
+    <div class="container" v-if="database.length !== 0">
         <div v-for="hotel in database" v-bind:key="hotel.uid">
             <AccommodationResult 
                 :photo="hotel.CoverPhoto"
@@ -111,6 +111,16 @@
                 <br>
                 <button type="button" class="btn btn-primary" @click="modifySearch()">Save</button>
             </form>
+        </div>
+    </div>
+
+    <div id="errorModal" class="modal">
+        <div class="modal-content" id="error-modal-content">
+            <div id="errorMsg"></div>
+            <img id="no-results" src="@/assets/sad.png" alt=""/> <br>
+            <button class="btn btn-primary" name="submit" type="button" @click="closeErrorModal()">
+                Search Again
+            </button>
         </div>
     </div>
 </template>
@@ -265,14 +275,37 @@ export default {
         },
 
         async modifySearch() {
-            this.name = this.newName
-            this.checkInDate = this.newCheckInDate
-            this.checkOutDate = this.newCheckOutDate
-            this.noOfGuests = this.newNoOfGuests
-            this.noOfRooms = this.newNoOfRooms
-            this.closeSearchModal()
-            this.display()
-        }
+            var modal = document.getElementById("errorModal");
+            var error = document.getElementById("errorMsg")
+
+            if (this.newName != "" && this.newCheckInDate != "" && this.newCheckOutDate != "") {
+                if (this.newNoOfGuests >= 1 && this.newNoOfRooms >= 1) {
+                    if (this.newCheckOutDate > this.newCheckInDate) {
+                        this.name = this.newName
+                        this.checkInDate = this.newCheckInDate
+                        this.checkOutDate = this.newCheckOutDate
+                        this.noOfGuests = this.newNoOfGuests
+                        this.noOfRooms = this.newNoOfRooms
+                        this.closeSearchModal()
+                        this.display()
+                    } else {
+                        modal.style.display = "block"
+                        error.innerHTML = "<h5><b> Please ensure that the check-out date is after the check-in date. </b></h5>"
+                    }
+                } else {
+                    modal.style.display = "block"
+                    error.innerHTML = "<h5><b> Please ensure that the number of guests and rooms is a positive number. </b></h5>"
+                }
+            } else {
+                modal.style.display = "block"
+                error.innerHTML = "<h5><b> Please fill up all fields to start searching. </b></h5>"
+            }
+        },
+
+        closeErrorModal() {
+            var modal = document.getElementById("errorModal");
+            modal.style.display = "none"
+        },
     }
 }
 </script>
@@ -321,7 +354,6 @@ img {
 
 .modal-header {
   padding: 2px 16px;
-  /* background-color: rgb(0, 15, 92); */
   color: rgb(0, 15, 92);
   display: flex;
   align-items: center;
@@ -329,10 +361,19 @@ img {
 
 .modal-content {
   background-color: #fefefe;
+  color: black;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 75%;
+}
+
+#error-modal-content {
+    margin: 16% auto;
+    width: 50%;
+    height: 300px;
+    align-items: center;
+    justify-content: center;
 }
 
 .close {

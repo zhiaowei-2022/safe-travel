@@ -35,6 +35,16 @@
         <br>
     </div> <br>
 
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <div id="errorMsg"></div>
+            <img id="no-results" src="@/assets/sad.png" alt=""/> <br>
+            <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                Search Again
+            </button>
+        </div>
+    </div>
+
     <div class="container">
         <h2>Popular Hotels</h2>
 
@@ -43,10 +53,12 @@
                 <div class="col-lg-2">
                 <select name="country" class="form-select form-select-sm" v-model="category" @change="display()">
                     <option value="All" selected>All</option>
-                    <option value="Singapore">Singapore</option>
-                    <option value="Japan">Japan</option>
-                    <option value="Thailand">Thailand</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Canada">Canada</option>
                     <option value="Ireland">Ireland</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="Thailand">Thailand</option>
                     <option value="United States">United States</option>
                 </select>
                 </div>
@@ -105,7 +117,10 @@ export default {
 
     methods: {
         async searchAccommodations() {
-            if (this.hotelName != "" && this.checkInDate != "" && this.checkInDate != "") {
+            var modal = document.getElementById("errorModal");
+            var error = document.getElementById("errorMsg")
+
+            if (this.hotelName != "" && this.checkInDate != "" && this.checkOutDate != "") {
                 if (this.noOfGuests >= 1 && this.noOfRooms >= 1) {
                     if (this.checkOutDate > this.checkInDate) {
                         this.$router.push({
@@ -119,16 +134,16 @@ export default {
                             }
                         })
                     } else {
-                        console.log("error in check out date")
-                        alert("Check-out Date must be after Check-in Date.")
+                        modal.style.display = "block"
+                        error.innerHTML = "<h5><b> Please ensure that the check-out date is after the check-in date. </b></h5>"
                     }
                 } else {
-                    console.log("error, not a positive number")
-                    alert("Number of Guests and Rooms must be a positive number.")
+                    modal.style.display = "block"
+                    error.innerHTML = "<h5><b> Please ensure that the number of guests and rooms is a positive number. </b></h5>"
                 }
             } else {
-                console.log("error, missing fields")
-                alert("There are missing fields.")
+                modal.style.display = "block"
+                error.innerHTML = "<h5><b> Please fill up all fields to start searching. </b></h5>"
             }
         },
 
@@ -152,7 +167,12 @@ export default {
                 }
             })
             this.database.push(row)
-        }
+        },
+
+        closeErrorModal() {
+            var modal = document.getElementById("errorModal");
+            modal.style.display = "none"
+        },
     }
 }
 </script>
@@ -178,6 +198,14 @@ button {
     color: black;
     font-weight: bold;
     float: right;
+}
+
+#errorBtn {
+    background-color: rgb(0, 15, 92);
+    border-color: rgb(0, 15, 92);
+    color: white;
+    font-weight: bold;
+    width: 150px;
 }
 
 img {
@@ -211,5 +239,33 @@ label {
     float: left;
     text-align: left;
     font-weight: bold;
+}
+
+#no-results {
+    width: 10%;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  color: black;
+  margin: 15% auto;
+  padding: 10px;
+  border: 1px solid #888;
+  width: 50%;
+  height: 300px;
+  align-items: center;
+  justify-content: center;
 }
 </style>
