@@ -249,7 +249,7 @@ export default {
                 gender: "others",
                 nation: "",
                 phone_num: 0,
-                display_pic: "https://firebasestorage.googleapis.com/v0/b/project-59f96.appspot.com/o/safe_travel_logo.png?alt=media&token=466c01bd-a43e-48c2-baca-581db06253a0",
+                display_pic: "https://firebasestorage.googleapis.com/v0/b/safe-travel-1a5dd.appspot.com/o/UsersDP%2FNewAccount%2Fhappyface.jpg?alt=media&token=cb95d3d8-e87c-45a4-a632-9a649405c8bf",
             })
 
             console.log(docRef)
