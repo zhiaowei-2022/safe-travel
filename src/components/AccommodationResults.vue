@@ -270,7 +270,6 @@ export default {
             this.checkOutDate = this.newCheckOutDate
             this.noOfGuests = this.newNoOfGuests
             this.noOfRooms = this.newNoOfRooms
-            // this.$router.go()
             this.closeSearchModal()
             this.display()
         }

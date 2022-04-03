@@ -37,6 +37,21 @@
 
     <div class="container">
         <h2>Popular Hotels</h2>
+
+        <form class="container" style="margin-left: 10px;">
+            <div class="row">
+                <div class="col-lg-2">
+                <select name="country" class="form-select form-select-sm" v-model="category" @change="display()">
+                    <option value="All" selected>All</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Thailand">Thailand</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="United States">United States</option>
+                </select>
+                </div>
+            </div>
+        </form> <br>
         
         <div class="row" v-for="row in database" :key="row">
             <div class="col-4" v-for="hotel in row" :key="hotel">
@@ -74,6 +89,7 @@ export default {
 
             database: [],
             noOfCols: 3,
+            category: "All"
         }
     },
 
@@ -117,20 +133,26 @@ export default {
         },
 
         async display() {
+            this.database = []
+
             var docs = await getDocs(collection(db, "PopularAccommodations"))
             let counter = 0;
-            let row = [];
+            let row = []
 
             docs.forEach((doc) => {
                 let data = doc.data();
-                row.push(data);
-                counter++;
-                if (counter % this.noOfCols == 0 || counter == docs.size) {
-                    this.database.push(row);
-                    row = [];
+                if (data.Country === this.category || this.category === "All") {
+                    row.push(data)
+                    counter++
                 }
-            });
-        },
+                
+                if (counter % this.noOfCols == 0) {
+                    this.database.push(row)
+                    row = []
+                }
+            })
+            this.database.push(row)
+        }
     }
 }
 </script>
