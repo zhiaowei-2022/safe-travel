@@ -133,31 +133,39 @@ export default {
             var favbut = document.getElementById("favbut");
             favbut.innerHTML = "";
             var delbut = document.createElement("button")
-            console.log(this.favourites)
-            for(var index = 0; index < this.favourites.length; index++) {
-                
-                for (var val = 0; val < this.favourites[index].length; val++) {
-
-                    if (this.favourites[index][val]["Name"] == name) {
-                            delbut.className = "btn btn-danger"
-                            delbut.id = String(name)
-                            delbut.innerHTML = "Remove from Favourites"
-                            delbut.onclick = function () {
-                                console.log("removeFav(name)")
-                            } 
-                            favbut.append(delbut) 
-                            break;
-                        } else {
-                            delbut.className = "btn btn-danger"
-                            delbut.id = String(name)
-                            delbut.innerHTML = "Add to Favourites"
-                            delbut.onclick = function () {
-                                console.log("addFav(name)")
-                            } 
-                            favbut.append(delbut) 
-                        }
+            if(this.favourites.length == 1 && this.favourites[0].length !== undefined){
+                for(var index = 0; index < this.favourites.length; index++) {
+                    for (var val = 0; val < this.favourites[index].length; val++) {
+                        if (this.favourites[index][val]["Name"] == name) {
+                                delbut.className = "btn btn-danger"
+                                delbut.id = String(name)
+                                delbut.innerHTML = "Remove from Favourites"
+                                delbut.onclick = function () {
+                                    console.log("removeFav(name)")
+                                } 
+                                favbut.append(delbut) 
+                                break;
+                            } else {
+                                delbut.className = "btn btn-danger"
+                                delbut.id = String(name)
+                                delbut.innerHTML = "Add to Favourites"
+                                delbut.onclick = function () {
+                                    console.log("addFav(name)")
+                                } 
+                                favbut.append(delbut) 
+                            }
+                    }
                 }
+            } else {
+                delbut.className = "btn btn-danger"
+                delbut.id = String(name)
+                delbut.innerHTML = "Add to Favourites"
+                delbut.onclick = function () {
+                    console.log("addFav(name)")
+                } 
+                favbut.append(delbut) 
             }
+            
             var resultbox = document.getElementById("resultinfo");
             resultbox.innerHTML =
                 "<h4><b>" +
@@ -255,6 +263,7 @@ export default {
         onAuthStateChanged(auth, (user) => {
         if (user) {
             this.user = user;
+            console.log(user.email)
             this.readUserFirebase();
         } else {
             this.favourites = [];
