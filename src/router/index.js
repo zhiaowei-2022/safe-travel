@@ -10,8 +10,8 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import HomeView from '@/views/HomeView.vue'
 import TryingStuffs from '@/components/TryingStuffs.vue'
+import FavouritePage from '@/components/FavouritePage.vue'
 import UserProfile from '@/components/UserProfile.vue'
-
 const routes = [
     {
         path: '/FoodAndDining',
@@ -68,7 +68,11 @@ const routes = [
         name: 'TryingStuffs',
         component: TryingStuffs
     },
-
+    {
+        path: '/favouritepage',
+        name: 'FavouritePage',
+        component: FavouritePage
+    },
 ]
 const router = createRouter({
     history: createWebHistory(),

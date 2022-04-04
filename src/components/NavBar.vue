@@ -15,6 +15,12 @@
 
       <li class="nav-item" >
         <div v-if="user">
+          <a class="nav-link" id="FavouritePage"><router-link style="text-decoration: none; color: inherit;" to="/favouritepage"><em> Favourites </em> </router-link></a>
+        </div>
+      </li>
+
+      <li class="nav-item" >
+        <div v-if="user">
           <a class="nav-link" id="UserProfile"><router-link style="text-decoration: none; color: inherit;" to="/userprofile"><em> {{username}} </em> </router-link></a>
         </div>
       </li>
