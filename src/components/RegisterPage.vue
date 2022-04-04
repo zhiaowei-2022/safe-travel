@@ -44,12 +44,11 @@
           &nbsp;</p>
     </div>
   </div>
-  <br><br>
   <strong><p id="login"> Already have an account? Login
   <router-link to="/loginview" style="color:rgb(1, 1, 87)">HERE</router-link> </p>
-  <router-view/></strong> <br>
+  <router-view/></strong>
       
-
+  <br>
   <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>
   <button type="button" v-else id ="invalidRegisterBtn"> REGISTER</button>
 </form>
@@ -422,7 +421,7 @@ export default {
     }
 
     #invalidCritera {
-      font-size: 10px;
+      font-size: px;
       width:90%;
       color: red;
       margin : 0px;
@@ -493,18 +492,15 @@ export default {
 
   #photo {
     padding: 20px;
-  background-image: url("../assets/hotair.jpg");
-        background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      /* opacity: 0.4; */
+    background-image: url("@/assets/background 3.jpeg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .col-form-label {
-    /* border: 1px solid black; */
     text-align: right;
-    margin-top: 1px;
-    font-size: 15px;
+    font-size: 20px;
     color: black;
     font-weight: bold;
   }
