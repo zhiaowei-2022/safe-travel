@@ -129,8 +129,8 @@ export default {
             var favbut = document.getElementById("favbut");
             favbut.innerHTML = "";
             var delbut = document.createElement("button")
-            // console.log(this.favourites)
-            
+            //console.log(this.favourites.length)
+            if (this.favourites.length > 0){
                 for(var index = 0; index < this.favourites.length; index++) {
                         console.log(this.favourites[index]["Name"] == name)
                         if (this.favourites[index]["Name"] == name) {
@@ -154,7 +154,7 @@ export default {
                             }
                     
                 }
-            /*
+            
             } else {
                 delbut.className = "btn btn-danger"
                 delbut.id = String(name)
@@ -164,7 +164,7 @@ export default {
                 } 
                 favbut.append(delbut) 
             }
-            */
+            
             async function addFav(name, imageURL, rating, address, contact, desc, web,category) {
                 try {
                     const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
