@@ -122,6 +122,16 @@
         </div>
     </div>
 
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <div id="errorMsg"></div>
+            <img id="no-results" src="@/assets/sad.png" alt=""/> <br>
+            <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                Search Again
+            </button>
+        </div>
+    </div>
+
 </template>
 <script>
 import firebaseApp from "@/firebase.js"
@@ -183,10 +193,15 @@ export default {
             return group;
         },
 
+        closeErrorModal() {
+            var modal = document.getElementById("errorModal");
+            modal.style.display = "none"
+        },
+
         async searchFlights() {
-            console.log(this.departureDate)
-            console.log(this.arrivalDate)
-            console.log(this.isOneWay)
+            var modal = document.getElementById("errorModal");
+            var error = document.getElementById("errorMsg")
+
             if (this.originCountry != "" && this.destinationCountry != "" && this.departureDate != "" && this.classType != "") { // empty field
                 if (this.noOfPassengers >= 1) {
                     if (this.arrivalDate != "") { // return flight
@@ -204,12 +219,12 @@ export default {
                                     manyPassengers: this.noOfPassengers == 1 ? "" : true,
                                 },
                             })
-                        console.log(typeof(this.isOneWay));
                         } else {
-                            console.log("error in return date")
-                            alert("Return Date must be after Departure Date.")
+                            console.log("wrong return date")
+                            modal.style.display = "block"
+                            error.innerHTML = "<h5><b> Please ensure that the return date is after the departure date. </b></h5>"
                         }
-                        }
+                    }
                     else { // one way flight
                     console.log("im here")
                         this.$router.push({
@@ -228,15 +243,16 @@ export default {
                     }
                 }
                 else {
-                        console.log("error, not a positive number")
-                        alert("There must be at least one passenger.")
+                    modal.style.display = "block"
+                    error.innerHTML = "<h5><b> Please ensure that the number of passenger is a positive number. </b></h5>"
                 }
             }
             else {
-                    console.log("error, missing fields")
-                    alert("There are missing fields.")
+                modal.style.display = "block"
+                error.innerHTML = "<h5><b> Please fill up all fields to start searching. </b></h5>"
             }}
         },
+
 }
 </script>
 
@@ -348,5 +364,32 @@ export default {
 
     .slider.round:before {
     border-radius: 50%;
+    }
+
+    #no-results {
+    width: 20%;
+    height: 40%;
+    }
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+    background-color: #fefefe;
+    color: black;
+    margin: 15% auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 50%;
+    height: 300px;
+    align-items: center;
+    justify-content: center;
     }
 </style>
