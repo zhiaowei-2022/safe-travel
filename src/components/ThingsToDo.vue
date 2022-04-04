@@ -79,9 +79,7 @@
 
 import firebaseApp from "../firebase.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"
-
-import { collection, getDocs} from "firebase/firestore"
+import { getFirestore, collection, getDocs} from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 export default {
     methods: {
@@ -212,7 +210,8 @@ export default {
                     this.categories.push(row.Category);
                     }
                     row["Country"] = country
-                    //console.log(row)
+                    console.log(row)
+
                     container.push(row);
                     this.allinfo.push(row) 
                     //console.log(this.allinfo)
