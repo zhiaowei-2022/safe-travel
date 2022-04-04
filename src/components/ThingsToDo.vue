@@ -1,10 +1,7 @@
 <template>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-
-    
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>    
     <div class="ThingsToDo">
         <h1>Things To Do</h1>
         <h3>Explore attractions, tours and more</h3>
@@ -12,9 +9,10 @@
         <div class="row">
             <div class="col-lg-2">
             <select id="country" class="form-select form-control" v-on:change='changeData()'>
-                <option value="Singapore" selected>Singapore</option>
+            <!-- <select id="country" class="form-select form-control">-->
                 <option value="Japan">Japan</option>
                 <option value="Melbourne">Melbourne</option>
+                <option value="Singapore" selected>Singapore</option>
             </select>
             </div>
         </div>
@@ -22,67 +20,68 @@
     </div>
     <br>
     <div class="container">
-        <div class="row" style="padding-top:10px">
-            <div class="col" id="overview"><button v-on:click='display("overview")'>Overview</button></div>
-            <div class="col" id="Museum"><button v-on:click='display("Museum")'>Museum & Galleries</button></div>
-            <div class="col" id="WTP"><button v-on:click='display("Water & Themed Park")'>Water & Themed Park</button></div>
-            <div class="col" id="Thrill"><button v-on:click='display("Thrill")'>Thrill Activities</button></div>
-            <div class="col" id="AquaZoo"><button v-on:click='display("Aquarium & Zoo")'>Aquarium & Zoos</button></div>
-        </div>
+    <div class="row">
+      <div class="col" v-for="cat in categories" :key="cat">
+        <div class="btn btn-primary" v-on:click="goFilter(cat)">{{ cat }}</div>
+      </div>
     </div>
-    <br><br>
-    <div class="container">
-        <h4><b>Popular Attractions</b></h4>
-        <div class="searchResult">
-            <div class="row">
-                <div class="col" id="0">
-                </div>
-                <div class="col" id="1">
-                </div>
-                <div class="col" id="2">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col" id="3">
-                </div>
-                <div class="col" id="4">
-                </div>
-                <div class="col" id="5">
-                </div>
-            </div>
+  </div>
+  <br /><br />
+  <div class="container" >
+    <div>
+      <div class="row" v-for="row in database" :key="row">
+        <div class="col-4" v-for="item in row" :key="item">
+          <figure>
+            <img
+              :id="item.Name"
+              :src="item.ImageURL"
+              :alt="item.Name"
+              v-on:click="openModal(item.Name, item.ImageURL, item.Rating, item.Address, item.Phone, item.Description, item.Website)"
+            />
+            <figcaption>{{ item.Name }}</figcaption>
+          </figure>
         </div>
+      </div>
     </div>
-    <div id="searchResult" class="modal">
-
+  </div>
+  <div id="searchResult" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <span class="close" v-on:click="closeModal()">&times;</span>
-        <div class="container">
+      <span class="close" v-on:click="closeModal()">&times;</span>
+      <div class="container">
         <div class="row">
-            <div id="photo">
+          <div id="photo">
             <!-- img -->
-            </div>
-
+          </div>
+        </div>
+        <div class="row" v-if="user">
+            <div class="col-8"></div>
+            <div class="col-4" id="favbut" style="text-align:right"></div>
         </div>
         <div class="row">
-            <div id="resultinfo">
-            <!-- Name , Rating ,Address , Phone , Description , Website -->
-            </div>            
+          <div id="resultinfo">
+            <!--
+              Name
+              Rating
+              Address
+              Phone
+              Description
+              Website
+              -->
+          </div>
         </div>
-        </div>
-        
-            
+      </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
 
 import firebaseApp from "../firebase.js";
-//import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore"
 
-import { collection, getDocs } from "firebase/firestore"
+import { collection, getDocs} from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 export default {
     methods: {
@@ -90,89 +89,178 @@ export default {
             for (var i = 0; i < 6; i++){
                 var containerclear = document.getElementById(i);
                 containerclear.innerHTML = ""
+            }  
+        },
+        changeData(){
+            this.goFilter();
+        },
+        goFilter(cat) {
+            console.log(cat);
+            //console.log(this.allinfo)
+            let counter = 0;
+            let container = [];
+            var country = document.getElementById("country").value
+            this.database = []
+            for(var i=0;i < this.allinfo.length; i++){
+                    let row = this.allinfo[i];
+                    //console.log(row);
+                    if(cat === undefined){
+                        if(row["Country"] == country) {
+                            container.push(row);
+                            counter++;
+                        }
+                    } else if (cat != "All") {
+                        if(row["Country"] == country && row["Category"] == cat) {
+                            container.push(row);
+                            counter++;
+                        } 
+                    } else {
+                        if(row["Country"] == country) {
+                            container.push(row);
+                            counter++;
+                        }
+                    }
+                    if (counter % this.numberOfColumns == 0 || counter == this.allinfo.length || i == this.allinfo.length-1) {
+                                this.database.push(container);
+                                container = [];
+                    }
             }
-            
-            
+        },
+        openModal(name, imageURL, rating, address, contact, desc, web) {            
+            var modal = document.getElementById("searchResult");
+            var photoinfo = document.getElementById("photo");
+            photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px;padding:10px'>";
+            var favbut = document.getElementById("favbut");
+            favbut.innerHTML = "";
+            var delbut = document.createElement("button")
+            console.log(this.favourites)
+            for(var index = 0; index < this.favourites.length; index++) {
+                
+                for (var val = 0; val < this.favourites[index].length; val++) {
+
+                    if (this.favourites[index][val]["Name"] == name) {
+                            delbut.className = "btn btn-danger"
+                            delbut.id = String(name)
+                            delbut.innerHTML = "Remove from Favourites"
+                            delbut.onclick = function () {
+                                console.log("removeFav(name)")
+                            } 
+                            favbut.append(delbut) 
+                            break;
+                        } else {
+                            delbut.className = "btn btn-danger"
+                            delbut.id = String(name)
+                            delbut.innerHTML = "Add to Favourites"
+                            delbut.onclick = function () {
+                                console.log("addFav(name)")
+                            } 
+                            favbut.append(delbut) 
+                        }
+                }
+            }
+            var resultbox = document.getElementById("resultinfo");
+            resultbox.innerHTML =
+                "<h4><b>" +
+                name +
+                "</b></h4>" +
+                "<b>Rating:</b> " +
+                rating +
+                " / 5 <br>" +
+                "<b>Address:</b> " +
+                address +
+                "<br>" +
+                "<b>Phone:</b> " +
+                contact +
+                "<br><br>" +
+                "<h5><b>Description:</b></h5> " +
+                desc +
+                "<br><br>" +
+                "For more information please visit <a href='" +
+                web +
+                "' target='_blank' style='color:black'>here</a> <br>";
+                modal.style.display = "block";
         },
         closeModal() {
             var modal = document.getElementById("searchResult");
+            //console.log(modal)
             modal.style.display = "none";
         },
-        changeData(){
-            // console.log(document.getElementById('country').value)
-            // Change to a country specific Data
-            // Will not be implmemented at the time being
-            this.display();
+        async readFirebase() {
+        // user in params
+            //console.log(document.getElementById("country").options[1].text)
+            var countrybox = document.getElementById("country")
+            //console.log(countrybox.length)
+            for(var i = 0; i < countrybox.length; i++){
+                var country = countrybox.options[i].value
+            
+                var zz = await getDocs(collection(db, "ThingToDo/Attractions/" + country));
+                //console.log(zz)
+                let counter = 0;
+                let container = [];
+                let rowcounter = 0;
+                zz.forEach((doc) => {
+                    let row = doc.data();
+                    if (!this.categories.includes(row.Category)) {
+                    this.categories.push(row.Category);
+                    }
+                    row["Country"] = country
+                    //console.log(row)
+                    container.push(row);
+                    this.allinfo.push(row) 
+                    //console.log(this.allinfo)
+                    counter++;
+                    if ((counter % this.numberOfColumns == 0 || counter == zz.length) && rowcounter < 2) {
+                        this.database.push(container);
+                        container = [];
+                        rowcounter++;
+                    }
+                });
+            }
+            //console.log(this.database)
         },
-        async display(variable){
-            var country = document.getElementById('country').value
-            //console.log(country)
-            let z = await getDocs(collection(db, "ThingToDo/Attractions/" + country ))
-            let ind = 0
-            this.clearAll()
-            // console.log(z)
-            z.forEach((docs) => {
-                let yy = docs.data()
-                var container = document.getElementById(ind)
-                //container.innerHTML = ""
-                var name = (yy.Name)
-                var imageURL = (yy.ImageURL)
-                var address = (yy.Address)
-                var contact = (yy.Contact)
-                var desc = (yy.Description)
-                var rating = (yy.Rating)
-                var web = (yy.Website)
-                
-                if (ind > 5) {
-                    return;
-                }
-                else {
-                    if (variable === undefined || variable == 'overview') {                        
-                        container.innerHTML +=  "<figure id='"+name+"' >" 
-                        + "<img class='srphotos' src='"+ imageURL +"'style='width:100%;height:200px;padding:10px'>"
-                        + "<figcaption>" + name + " </figcaption>"
-                        + "</figure>"  
-                        ind+=1
+        async readUserFirebase() {
+            const auth = getAuth();
+            const fbuser = auth.currentUser.email;
+            var z = await getDocs(collection(db,"Users"))
+            z.forEach((doc) => {
+                    let row = doc.data();
+                    if (fbuser == row.email){
+                        let rowfavourites = row.favourites
+                        
+                        this.favourites.push(rowfavourites)
                     }
-                    else {
-                        var category = (yy.Category)
-                        if (variable == category) {
-                            container.innerHTML +=  "<figure id='"+name+"' >" 
-                            + "<img class='srphotos' src='"+ imageURL +" 'style='width:100%;height:200px;padding:10px'>"
-                            + "<figcaption>" + name + " </figcaption>"
-                            + "</figure>" 
-                            ind+=1
-                        }
-                    }
-                    container.onclick = function() {
-                            var modal = document.getElementById("searchResult");
-                            console.log("getting modal");
-                            // need to insert Information into Modal
-                            var photoinfo = document.getElementById("photo")
-                            photoinfo.innerHTML = 
-                                "<img src='"+ imageURL +" 'style='position:relative;width:100%;padding:10px'>" +
-                                "<img src='@/assets/emptyStar.png' style='position:relative; top:10%; left:40%'>" 
-                                
-                                
-                            var resultbox = document.getElementById("resultinfo")
-                            resultbox.innerHTML =
-                                "<h4><b>" + name + "</b></h4>" +
-                                "<b>Rating:</b> " + rating + " / 5 <br>" +
-                                "<b>Address:</b> " + address + "<br>" +
-                                "<b>Phone:</b> " + contact + "<br><br>" + 
-                                
-                                "<h5><b>Description:</b></h5> " + desc + "<br><br>" +
-                                "For more information please visit <a href='" + web + "' target='_blank' style='color:black'>here</a> <br>" 
-                            modal.style.display = "block";
-                            console.log("modal displayed")
-                    }
-                }
-            })
+            });
+            //console.log(this.favourites)
             
         }
     },
-    mounted(){
-        this.display()
+    data() {
+        return {
+        allinfo: [],
+        favourites: [],
+        database: [],
+        categories: ["All"],
+        numberOfColumns: 3,
+        };
+    },
+    mounted() {
+        let jquery = document.createElement("script");
+        jquery.setAttribute(
+        "src",
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        );
+        document.head.appendChild(jquery);
+
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+        if (user) {
+            this.user = user;
+            this.readUserFirebase();
+        } else {
+            this.favourites = [];
+        }
+        });
+        this.readFirebase();
     }
 }
 </script>
@@ -201,9 +289,11 @@ h4 {
     margin: 10px 0px;
 }
 img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin:5px
 }
 button {
     margin-bottom: 15px;
@@ -265,6 +355,12 @@ label {
     text-align: left;
 }
 
-
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active    {
+        background-color: red;
+        color: #FFF;
+        border-color: #285e8e;
+}
 
 </style>

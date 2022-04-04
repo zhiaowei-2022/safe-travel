@@ -32,7 +32,7 @@
   <div class="container">
     <div class="row">
       <div class="col" v-for="cat in categories" :key="cat">
-        <div class="btn btn-primary" @click="goFilter(cat)">{{ cat }}</div>
+        <div class="btn btn-primary" v-on:click="goFilter(cat)">{{ cat }}</div>
       </div>
     </div>
   </div>
@@ -225,5 +225,13 @@ label {
   color: white;
   float: left;
   text-align: left;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active    {
+        background-color: #3276b1;
+        color: #FFF;
+        border-color: #285e8e;
 }
 </style>
