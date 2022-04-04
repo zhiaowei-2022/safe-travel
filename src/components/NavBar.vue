@@ -9,15 +9,9 @@
       <img src="@/assets/safe_travel_logo.png" style="width: 214px; height: 50px;">
     </div>
     <ul class="nav me-auto mb-2 mb-lg-0 nav-pills justify-content-end" style="width:500px">
-      <li class="nav-item justify-content-end">
+      <!-- <li class="nav-item justify-content-end">
           <a class="nav-link" id="TryingStuffs"><router-link style="text-decoration: none; color: inherit;" to="/tryingstuffs">try</router-link></a>
-      </li>
-
-      <li class="nav-item" >
-        <div v-if="user">
-          <a class="nav-link" id="FavouritePage"><router-link style="text-decoration: none; color: inherit;" to="/favouritepage"><em> Favourites </em> </router-link></a>
-        </div>
-      </li>
+      </li> -->
 
       <li class="nav-item" >
         <div v-if="user">
@@ -25,9 +19,17 @@
         </div>
       </li>
 
+      <li class="nav-item" >
+        <div v-if="user">
+          <a class="nav-link" id="FavouritePage"><router-link style="text-decoration: none; color: inherit;" to="/favouritepage"> Favourites </router-link></a>
+        </div>
+      </li>
+
+
+
       <li class="nav-item" id = "login">
         <div v-if="user">
-          <a class="nav-link" id="LogOut" href="#" v-on:click="signOut()">Log Out</a>
+          <a class="nav-link" id="LogOut" href="#" v-on:click="signOut()">Logout</a>
         </div>
         <div v-else>
           <a class="nav-link" href="#" id="LogIn" data-bs-toggle="collapse" v-on:click="openModal()">Login</a>
@@ -292,7 +294,7 @@ export default {
 
       // console.log($(this))
 
-    if (($(this).children().children()[0].id) == "UserProfile") {
+    if (($(this).children().children()[0].id) == ("UserProfile") || ($(this).children().children()[0].id) == ("FavouritePage")) {
       $(this).children().children().addClass('active')
     }
 
