@@ -178,6 +178,10 @@ export default {
 </script>
 
 <style scoped>
+.row {
+    background-color: transparent;
+}
+
 h1 {
     text-align: left;
     margin-left: 180px;
