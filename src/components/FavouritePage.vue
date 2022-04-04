@@ -164,9 +164,9 @@ export default {
             z.forEach((doc) => {
                     let row = doc.data();
                     this.favourites.push(row)
-                
+                    
             });
-            //console.log(this.favourites)
+            console.log(this.favourites)
             
         }
 
@@ -180,6 +180,13 @@ export default {
         }
     },
     mounted() {
+        let jquery = document.createElement("script");
+        jquery.setAttribute(
+        "src",
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        );
+        document.head.appendChild(jquery);
+
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if(user) {

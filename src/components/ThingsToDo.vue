@@ -83,12 +83,7 @@ import { getFirestore, collection, getDocs, setDoc, doc, deleteDoc} from "fireba
 const db = getFirestore(firebaseApp);
 export default {
     methods: {
-        clearAll(){
-            for (var i = 0; i < 6; i++){
-                var containerclear = document.getElementById(i);
-                containerclear.innerHTML = ""
-            }  
-        },
+    
         changeData(){
             this.goFilter();
         },
@@ -134,7 +129,7 @@ export default {
             var favbut = document.getElementById("favbut");
             favbut.innerHTML = "";
             var delbut = document.createElement("button")
-            console.log(this.favourites)
+            // console.log(this.favourites)
             
                 for(var index = 0; index < this.favourites.length; index++) {
                         console.log(this.favourites[index]["Name"] == name)
@@ -143,7 +138,6 @@ export default {
                                 delbut.id = String(name)
                                 delbut.innerHTML = "Remove from Favourites"
                                 delbut.onclick = function () {
-                                    //console.log(name + " " + imageURL + " " + rating + " " + address + " " + contact + " " + desc + " " + web + " " + category)
                                     removeFav(name)
                                     console.log("removed")
                                 } 
@@ -154,7 +148,6 @@ export default {
                                 delbut.id = String(name)
                                 delbut.innerHTML = "Add to Favourites"
                                 delbut.onclick = function () {
-                                    console.log(name + " " + imageURL + " " + rating + " " + address + " " + contact + " " + desc + " " + web + " " + category)
                                     addFav(name, imageURL, rating, address, contact, desc, web,category)
                                 } 
                                 favbut.append(delbut) 
@@ -272,8 +265,7 @@ export default {
                     this.favourites.push(row)
                 
             });
-            console.log(this.favourites)
-            
+            //console.log(this.favourites)
         }
     },
     data() {
