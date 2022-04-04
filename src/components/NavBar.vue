@@ -148,7 +148,7 @@
         <button type="button" class="btn-close" v-on:click="closeModal()" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 120px">
+        <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 150px; width: 150px">
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to login</button>
