@@ -15,7 +15,7 @@
             <FlightSearchInput :input="classType"/>
         </span>
     </div>
-    <div class="form-group">
+    <div class="container form-group">
         <div v-if="database.length !== 0" @click="openSearchModal()">
             <button class="btn btn-primary" id="modify" name="submit" type="submit">
                 Modify Search
