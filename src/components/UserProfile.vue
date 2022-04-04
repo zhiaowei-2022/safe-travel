@@ -125,7 +125,7 @@
    <div class="field">
     <div class="row justify-content-md-center">
       <div class="col col-lg-5" style="text-align:right;">
-        <strong><label for="password" id="credentials" style="margin: 2px 0 0 0 0;">Current Password: </label></strong> 
+        <strong><label for="password" id="newcredentials" style="margin: 2px 0 0 0 0;">Current Password: </label></strong> 
       </div>
       <div span class="col col-lg-7">
         <input class="passwordForm" v-if="showPassword" v-model="password" type="">
@@ -143,7 +143,7 @@
    <div class="field">
     <div class="row justify-content-md-center">
       <div class="col col-lg-5" style="text-align:right;">
-        <strong><label for="password" id="credentials" style="margin: 2px 0 0 0 0;">New Password: </label></strong> 
+        <strong><label for="password" id="newcredentials" style="margin: 0 0 0 0 0;">New Password: </label></strong> 
       </div>
       <div span class="col col-lg-7">
         <input class="passwordForm" id="passwordForm" v-if="showNewPassword" v-model="newPassword" type="">
@@ -191,7 +191,7 @@
       </div>
       <div class="modal-body">
         {{ passwordMsg }}
-        <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 120px">
+        <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 120px; width: 120px">
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" data-bs-target="#changePwModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Password Form</button>
@@ -487,6 +487,10 @@ export default {
   #newPasswordCriteria {
     font-size: 9px;
     margin: 0 0 0 8px;
+  }
+
+  #newcredentials {
+    margin: 15px 0 0 0;
   }
 
 
