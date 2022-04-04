@@ -61,7 +61,7 @@
       <span class="close" @click="closeModal()">&times;</span>
       <div class="container">
         <div class="row">
-          <div id="photo">
+          <div id="photo" style="overlay: ">
             <!-- img -->
           </div>
         </div>
@@ -279,5 +279,10 @@ label {
 
 #resultinfo {
   text-align: left;
+}
+
+#fav {
+  width: 5em;
+  text-align: center;
 }
 </style>
