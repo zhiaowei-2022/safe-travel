@@ -7,17 +7,23 @@
             <div> <h2> <strong> {{user.displayName}}'s Favourites </strong> </h2> </div>
             <div class="container" >
                 <div>
-                <div class="row" v-for="row in favourites" :key="row">
-                    <div class="col-4" v-for="item in row" :key="item"> 
-                    <figure>
+                <div class="row" v-for="row in favourites" :key="row" v-on:click="openModal(row.Name, row.ImageURL, row.Rating, row.Address, row.Contact, row.Description, row.Website)">
+                    <div class="col-4">
+                    <figure >
                         <img
-                        :id="item.Name"
-                        :src="item.ImageURL"
-                        :alt="item.Name"
-                        v-on:click="openModal(item.Name, item.ImageURL, item.Rating, item.Address, item.Phone, item.Description, item.Website)"
+                        :id="row.Name"
+                        :src="row.ImageURL"
+                        :alt="row.Name"
+                        
+                        style="width:100%"
                         />
                     </figure>
-
+                    </div>
+                    <div class="col - 8">
+                        <h4><strong> {{row.Name}} </strong></h4>
+                        <br/>
+                        <br/>
+                        <h5>{{row.Category}} </h5>
                     </div>
                     
                 </div>
@@ -68,7 +74,7 @@ export default {
             const fbuser = getAuth().currentUser.email;            
             var modal = document.getElementById("searchResult");
             var photoinfo = document.getElementById("photo");
-            photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px;padding:10px'>";
+            photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
             var favbut = document.getElementById("favbut");
             favbut.innerHTML = "";
             var delbut = document.createElement("button")
@@ -126,8 +132,6 @@ export default {
                 console.log("Document removed")
                 
             }
-            
-
             var resultbox = document.getElementById("resultinfo");
             resultbox.innerHTML =
                 "<h4><b>" +
@@ -253,5 +257,17 @@ h2 {
 
 #resultinfo {
     text-align: left;
+}
+
+.row {
+    background-color: rgb(0, 15, 95, 0.05);
+    align-items: center;
+    margin: 10px 0px;
+}
+img {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  margin:5px
 }
 </style>
