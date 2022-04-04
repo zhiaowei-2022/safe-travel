@@ -36,7 +36,7 @@
               :id="item.Name"
               :src="item.ImageURL"
               :alt="item.Name"
-              v-on:click="openModal(item.Name, item.ImageURL, item.Rating, item.Address, item.Phone, item.Description, item.Website)"
+              v-on:click="openModal(item.Name, item.ImageURL, item.Rating, item.Address, item.Contact, item.Description, item.Website, item.Category)"
             />
             <figcaption>{{ item.Name }}</figcaption>
           </figure>
@@ -79,7 +79,7 @@
 
 import firebaseApp from "../firebase.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, collection, getDocs} from "firebase/firestore"
+import { getFirestore, collection, getDocs, setDoc, doc, deleteDoc} from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 export default {
     methods: {
@@ -124,23 +124,28 @@ export default {
                     }
             }
         },
-        openModal(name, imageURL, rating, address, contact, desc, web) {            
+
+
+        openModal(name, imageURL, rating, address, contact, desc, web,category) {
+            const fbuser = getAuth().currentUser.email;            
             var modal = document.getElementById("searchResult");
             var photoinfo = document.getElementById("photo");
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px;padding:10px'>";
             var favbut = document.getElementById("favbut");
             favbut.innerHTML = "";
             var delbut = document.createElement("button")
-            if(this.favourites.length == 1 && this.favourites[0].length !== undefined){
+            console.log(this.favourites)
+            
                 for(var index = 0; index < this.favourites.length; index++) {
-                    for (var val = 0; val < this.favourites[index].length; val++) {
-                        if (this.favourites[index][val]["Name"] == name) {
+                        console.log(this.favourites[index]["Name"] == name)
+                        if (this.favourites[index]["Name"] == name) {
                                 delbut.className = "btn btn-danger"
                                 delbut.id = String(name)
                                 delbut.innerHTML = "Remove from Favourites"
                                 delbut.onclick = function () {
-                                    console.log("removeFav(name)")
-                                    
+                                    //console.log(name + " " + imageURL + " " + rating + " " + address + " " + contact + " " + desc + " " + web + " " + category)
+                                    removeFav(name)
+                                    console.log("removed")
                                 } 
                                 favbut.append(delbut) 
                                 break;
@@ -149,22 +154,52 @@ export default {
                                 delbut.id = String(name)
                                 delbut.innerHTML = "Add to Favourites"
                                 delbut.onclick = function () {
-                                    console.log("addFav(name)")
+                                    console.log(name + " " + imageURL + " " + rating + " " + address + " " + contact + " " + desc + " " + web + " " + category)
+                                    addFav(name, imageURL, rating, address, contact, desc, web,category)
                                 } 
                                 favbut.append(delbut) 
                             }
-                    }
+                    
                 }
+            /*
             } else {
                 delbut.className = "btn btn-danger"
                 delbut.id = String(name)
                 delbut.innerHTML = "Add to Favourites"
                 delbut.onclick = function () {
-                    console.log("addFav(name)")
+                    addFav(name, imageURL, rating, address, contact, desc, web,category)
                 } 
                 favbut.append(delbut) 
             }
+            */
+            async function addFav(name, imageURL, rating, address, contact, desc, web,category) {
+                try {
+                    const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
+                        Name: name,
+                        ImageURL: imageURL,
+                        Rating: rating,
+                        Address: address,
+                        Contact: contact,
+                        Description: desc,
+                        Website: web,
+                        Category: category
+                })
+                console.log(docRef)
+                                    
+                } catch (error) {
+                    console.error("Error adding document:", error)
+                }
+                
+            }
+            async function removeFav(name){
+                var itemname = name
+                console.log("Removing Favourites: ", itemname)
+                await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
+                console.log("Document removed")
+                
+            }
             
+
             var resultbox = document.getElementById("resultinfo");
             resultbox.innerHTML =
                 "<h4><b>" +
@@ -187,6 +222,7 @@ export default {
                 "' target='_blank' style='color:black'>here</a> <br>";
                 modal.style.display = "block";
         },
+        
         closeModal() {
             var modal = document.getElementById("searchResult");
             //console.log(modal)
@@ -211,7 +247,7 @@ export default {
                     this.categories.push(row.Category);
                     }
                     row["Country"] = country
-                    console.log(row)
+                    //console.log(row)
 
                     container.push(row);
                     this.allinfo.push(row) 
@@ -227,18 +263,16 @@ export default {
             //console.log(this.database)
         },
         async readUserFirebase() {
+            this.favourites = [];
             const auth = getAuth();
             const fbuser = auth.currentUser.email;
-            var z = await getDocs(collection(db,"Users"))
+            var z = await getDocs(collection(db,"Users/"+ String(fbuser)+"/Favourites"))
             z.forEach((doc) => {
                     let row = doc.data();
-                    if (fbuser == row.email){
-                        let rowfavourites = row.favourites
-                        
-                        this.favourites.push(rowfavourites)
-                    }
+                    this.favourites.push(row)
+                
             });
-            //console.log(this.favourites)
+            console.log(this.favourites)
             
         }
     },
@@ -277,7 +311,8 @@ export default {
 <style scoped>
 .ThingsToDo {
   background-image: url("https://res.klook.com/image/upload/fl_lossy.progressive,q_85/c_fill,,w_1920,/v1607408071/ued/ttd/banner/jpg/ttd_veritcal_page_banner_experiences.jpg"); 
-  height: 400px;
+  height: 500px;
+  width:100%;
   padding-top: 100px;
 }
 h1, h3 {
