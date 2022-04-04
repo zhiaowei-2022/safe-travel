@@ -22,7 +22,7 @@
     <div class="container">
     <div class="row">
       <div class="col" v-for="cat in categories" :key="cat">
-        <div class="btn btn-primary" v-on:click="goFilter(cat)">{{ cat }}</div>
+        <div class="btn btn-primary" v-on:click="goFilter(cat)" style="width:100%">{{ cat }}</div>
       </div>
     </div>
   </div>
@@ -140,6 +140,7 @@ export default {
                                 delbut.innerHTML = "Remove from Favourites"
                                 delbut.onclick = function () {
                                     console.log("removeFav(name)")
+                                    
                                 } 
                                 favbut.append(delbut) 
                                 break;
