@@ -6,7 +6,7 @@
   <div class="container-fluid m-0 p-0" style="position: absolute; top: 0;">
   <nav id = "nav" class="navbar navbar-expand-lg mx-0 px-5">
     <div class="container-fluid">
-      <img src="@/assets/safe_travel_logo.png" style="height: 50px;">
+      <img src="@/assets/safe_travel_logo.png" style="width: 214px; height: 50px;">
     </div>
     <ul class="nav me-auto mb-2 mb-lg-0 nav-pills justify-content-end" style="width:500px">
       <li class="nav-item justify-content-end">
@@ -56,7 +56,7 @@
                 <a class="nav-link" id = "ThingsToDo"><router-link style="text-decoration: none; color: inherit;" to="/ThingsToDo">Things To Do</router-link></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id = "AccomodationPage"><router-link style="text-decoration: none; color: inherit;" to="/accomodationpage">Accommodation</router-link></a>
+                <a class="nav-link" id = "AccommodationPage"><router-link style="text-decoration: none; color: inherit;" to="/accommodationpage">Accommodation</router-link></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id = "FoodAndDining"><router-link style="text-decoration: none; color: inherit;" to="/FoodAndDining">Food And Dining</router-link></a>
