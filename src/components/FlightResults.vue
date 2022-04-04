@@ -15,9 +15,9 @@
             <FlightSearchInput :input="classType"/>
         </span>
     </div>
-    <div class="form-group">
+    <div class="container form-group">
         <div v-if="database.length !== 0" @click="openSearchModal()">
-            <button class="btn btn-primary pull-right" name="submit" type="submit">
+            <button class="btn btn-primary" id="modify" name="submit" type="submit">
                 Modify Search
             </button>
         </div>
@@ -359,5 +359,10 @@ export default {
     padding-right: 15px;
     font-size: 35px;
     font-weight: bold;
+    }
+
+    #modify {
+    float: right;
+    margin-top: 10px;
     }
 </style>
