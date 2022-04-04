@@ -202,72 +202,72 @@ export default {
 }
 </script>
 
-<style>
-h1,
-h2 {
-  text-align: left;
-  margin-left: 180px;
-  font-weight: bold;
-  color: black;
-}
-
-.Favourite {
-    margin-top:20px;
-}
-
-
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  /* overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 50%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-  color: #aaa;
-  text-align: right;
-  padding-right:15px;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#resultinfo {
+<style scoped>
+    h1,
+    h2 {
     text-align: left;
-}
+    margin-left: 180px;
+    font-weight: bold;
+    color: black;
+    }
 
-.row {
-    background-color: rgb(0, 15, 95, 0.05);
-    align-items: center;
-    margin: 10px 0px;
-}
-img {
-  width: 100%;
-  border-radius: 10px;
-  object-fit: cover;
-  margin:5px
-}
-</style>
+    .Favourite {
+        margin-top:20px;
+    }
+
+
+    /* The Modal (background) */
+    .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    /* overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+    color: #aaa;
+    text-align: right;
+    padding-right:15px;
+    font-size: 28px;
+    font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    }
+
+    #resultinfo {
+        text-align: left;
+    }
+
+    .row {
+        background-color: yellow;
+        align-items: center;
+        margin: 10px 0px;
+    }
+    img {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    margin:5px
+    }
+</style>>

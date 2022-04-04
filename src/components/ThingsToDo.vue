@@ -320,7 +320,7 @@ h4 {
     color: rgb(1, 1, 87);
 }
 .row {
-    background-color: rgb(0, 15, 95, 0.05);
+    background-color: transparent;
     align-items: center;
     margin: 10px 0px;
 }
