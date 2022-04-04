@@ -30,7 +30,7 @@
 
 
       <li class="nav-item">
-        <div v-if="!user">
+        <div v-if="user==false">
           <a class="nav-link" id="RegisterView"><router-link style="text-decoration: none; color: inherit;" to="/registerview">Register</router-link></a>
         </div>
       </li>
@@ -261,33 +261,39 @@ export default {
     document.head.appendChild(jquery);
 
     
-    // var current = (this.$router.currentRoute)
+    var current = (this.$router.currentRoute)
     
-    // $(document).ready(function() {
-    //   var page_name = current['_value']['name']
-    //   if (page_name != "UserProfile") {
-    //     console.log(document.getElementById(page_name))
-    //     document.getElementById(page_name).classList.toggle("active")
-    //   }
+    $(document).ready(function() {
+      var page_name = current['_value']['name']
+      if (page_name != "UserProfile") {
+        console.log(document.getElementById(page_name))
+        document.getElementById(page_name).classList.toggle("active")
+      }
 
-    // });
+    });
 
 
     $('.nav li').click(function() {
-      $("#HomeView").removeClass("active")
-      $("#BookFlight").removeClass("active")
-      $("#ThingsToDo").removeClass("active")
-      $("#FoodAndDining").removeClass("active")
-      $("#AccomodationPage").removeClass("active")
-      $("#TryingStuffs").removeClass("active")
-      $("#RegisterView").removeClass("active")
-      $("#UserProfile").removeClass("active")
+      // $("#HomeView").removeClass("active")
+      // $("#BookFlight").removeClass("active")
+      // $("#ThingsToDo").removeClass("active")
+      // $("#FoodAndDining").removeClass("active")
+      // $("#AccomodationPage").removeClass("active")
+      // $("#TryingStuffs").removeClass("active")
+      // $("#RegisterView").removeClass("active")
+      // $("#UserProfile").removeClass("active")
+      $('.active').removeClass('active')
 
       // console.log($(this))
 
     if (($(this).children().children()[0].id) == "UserProfile") {
       $(this).children().children().addClass('active')
     }
+
+    else if (($(this).children().children()[0].id) == "RegisterView") {
+      $(this).children().children().addClass('active')
+    }
+
     else {
       $(this).children().addClass('active')
       // $(this).removeClass('active');   
@@ -302,8 +308,10 @@ export default {
 
   },
   updated() {
+    console.log("here")
     this.$nextTick(() => {
       var current = (this.$router.currentRoute)
+      console.log(current)
       var page_name = current['_value']['name']
       document.getElementById(page_name).classList.toggle("active")
     })
@@ -378,6 +386,10 @@ html,body{
   margin: 0px;
   padding: 0px;
   overflow-x: hidden;
+}
+
+#nav a.router-link-exact-active {
+  color: white !important;
 }
 
 

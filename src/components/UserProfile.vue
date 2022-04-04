@@ -268,6 +268,7 @@ export default {
       // console.log(this.DP)
       const storage = getStorage()
       const profileRef = ref(storage, "UsersDP/" + this.actualEmail + "/" + this.DP.name);
+      console.log(profileRef)
       const uploadTask = uploadBytesResumable(profileRef, this.DP);
       uploadTask.on('state_changed', (snapshot) => {
         // Observe state change events such as progress, pause, and resume

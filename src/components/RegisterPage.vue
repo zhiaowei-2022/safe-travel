@@ -293,7 +293,7 @@ export default {
       width: 90%;
       background-color: #f0f0f0;
       height: 35px;
-      border-radius: 55px;
+      border-radius: 10px;
       border: 3px solid transparent;
       padding: 0;
       font-size: 15px;
@@ -334,7 +334,7 @@ export default {
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
-      opacity: 0.6;
+      opacity: 0.4;
     }
 
     .container {
@@ -348,7 +348,7 @@ export default {
     }
 
     .field {
-      height: 100px;
+      height: 80px;
     }
 
     #login {
@@ -372,8 +372,8 @@ export default {
       color: rgb(0, 15, 92);
     }
 
-    .label {
-      color: white;
+    label {
+      color: rgb(0, 15, 92);
     }
 
     #registerBtn, #invalidRegisterBtn {
@@ -403,6 +403,8 @@ export default {
       text-align: left;
       /* border: 1px solid black; */
     }
+
+
 
 
 </style>
