@@ -247,7 +247,7 @@ export default {
         const user = auth.currentUser;
         signOut(auth, user)
         // console.log(this.$router.currentRoute._value.name)
-        if ((this.$router.currentRoute._value.name) == "UserProfile") {
+        if ( ((this.$router.currentRoute._value.name) == "UserProfile") || ((this.$router.currentRoute._value.name) == "FavouritePage")) {
           await this.$router.push({name: 'HomeView'})
         }
         this.$router.go()
