@@ -200,7 +200,7 @@ export default {
                         "<strong>" +  " On return to " + origin.value  + "</strong></h4> <br>" +
                         "Fully Vaccinated: Quarantine <strong>" + originSnap.data().Vaxxed  + "</strong><br>" +
                         "Non-Fully Vaccinated: Quarantine <strong>" + originSnap.data().NonVaxxed + "</strong><br><br>" +
-                        "<a  class='btn btn-info' href=" + originSnap.data().QuarrantineLink + ">See detailed Quarantine Information</a>";
+                        "<a  class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + originSnap.data().QuarrantineLink + " target='_blank'><b>See detailed Quarantine Information</b></a>";
 
                         // COVID IN ORIGIN
                         covidOrigin.innerHTML = 
@@ -209,7 +209,7 @@ export default {
                         "Daily cases: <strong>" + originSnap.data().DailyCases + "</strong><br>" +
                         "7-Day Average: <strong>" + originSnap.data().WeeklyCases + "</strong><br>" +
                         "Mask Rule: <strong>" + originSnap.data().Mask + "</strong><br><br>" +
-                        "<a class='btn btn-info' href=" + originSnap.data().CovidLink + ">See detailed Covid Status</a>";
+                        "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + originSnap.data().CovidLink + " target='_blank'><b>See detailed Covid Status</b></a>";
                 } 
                 else {
                     // doc.data() will be undefined in this case
@@ -231,7 +231,7 @@ export default {
                     "<strong>" +  " On arrival to " + dest.value  + "</strong></h4>" + "<br>" +
                     "Fully Vaccinated: Quarantine <strong>" + destSnap.data().Vaxxed  + "</strong><br>" +
                     "Non-Fully Vaccinated: Quarantine <strong>" + destSnap.data().NonVaxxed + "</strong><br> <br>" +
-                    "<a class='btn btn-info' href=" + destSnap.data().QuarrantineLink + ">See detailed Quarantine Information</a>";
+                    "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + destSnap.data().QuarrantineLink + " target='_blank'><b>See detailed Quarantine Information</b></a>";
 
                     // COVID IN DEST
                     covidDest.innerHTML = 
@@ -240,14 +240,14 @@ export default {
                     "Daily cases: <strong>" + destSnap.data().DailyCases + "</strong><br>" +
                     "7-Day Average: <strong>" + destSnap.data().WeeklyCases + "</strong><br>" +
                     "Mask Rule: <strong>" + destSnap.data().Mask + "</strong><br><br>" +
-                    "<a class='btn btn-info' href=" + destSnap.data().CovidLink + ">See detailed Covid Status</a>";
+                    "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + destSnap.data().CovidLink + " target='_blank'><b>See detailed Covid Status</b></a>";
 
                     // VISA
                     visaDest.innerHTML = 
                     "<h4><i class='fa-solid fa-passport fa-xs'></i>" +
                     "<strong> " + origin.value + " to "  + dest.value + "</strong> </h4> <br>" +
                     "Visa Entry: <strong>" + destSnap.data().Visa + "</strong><br><br>" +
-                    "<a class='btn btn-info' href=" + destSnap.data().VisaLink + ">See detailed Visa Entry Requirement</a>";
+                    "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + destSnap.data().VisaLink + " target='_blank'><b>See detailed Visa Entry Requirement</b></a>";
                 } 
                 else {
                     // doc.data() will be undefined in this case
