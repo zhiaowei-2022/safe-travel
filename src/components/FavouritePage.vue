@@ -5,9 +5,11 @@
     
         <div v-if="user">
             <div> <h2> <strong> {{user.displayName}}'s Favourites </strong> </h2> </div>
-            <div class="container" >
+            <div class="container" id="Infocontainer" >
                 <div>
-                <div class="row" v-for="row in favourites" :key="row" v-on:click="openModal(row.Name, row.ImageURL, row.Rating, row.Address, row.Contact, row.Description, row.Website)">
+                <h3> Favourite Tourist Attraction </h3>
+                <div class="row" v-for="row in favouriteTA" :key="row" 
+                    v-on:click="openModal(row.Name, row.ImageURL, row.Rating, row.Address, row.Contact, row.Description, row.Website)">
                     <div class="col-4">
                     <figure >
                         <img
@@ -19,7 +21,29 @@
                         />
                     </figure>
                     </div>
-                    <div class="col - 8">
+                    <div class="col-8">
+                        <h4><strong> {{row.Name}} </strong></h4>
+                        <br/>
+                        <br/>
+                        <h5> Category: {{row.Category}} </h5>
+                    </div>
+                    
+                </div>
+                <br>
+                <h3> Favourite Food and Dining </h3>
+                <div class="row" v-for="row in favouriteFB" :key="row" v-on:click="openModal(row.Name, row.ImageURL, row.Rating, row.Address, row.Contact, row.Description, row.Website)">
+                    <div class="col-4">
+                    <figure >
+                        <img
+                        :id="row.Name"
+                        :src="row.ImageURL"
+                        :alt="row.Name"
+                        
+                        style="width:100%"
+                        />
+                    </figure>
+                    </div>
+                    <div class="col-8">
                         <h4><strong> {{row.Name}} </strong></h4>
                         <br/>
                         <br/>
@@ -36,16 +60,16 @@
     <div class="modal-content">
       <span class="close" v-on:click="closeModal()">&times;</span>
       <div class="container">
-        <div class="row">
+        <div >
           <div id="photo">
             <!-- img -->
           </div>
         </div>
-        <div class="row" v-if="user">
+        <div class="row" v-if="user" style="background-color:white">
             <div class="col-8"></div>
             <div class="col-4" id="favbut" style="text-align:right"></div>
         </div>
-        <div class="row">
+        <div >
           <div id="resultinfo">
             <!--
               Name
@@ -167,10 +191,15 @@ export default {
             var z = await getDocs(collection(db,"Users/"+ String(fbuser)+"/Favourites"))
             z.forEach((doc) => {
                     let row = doc.data();
+                    if(row["Overhead"] == "Tourist Attractions") {
+                        this.favouriteTA.push(row)
+                    } else if (row["Overhead"] == "Food and Dining") {
+                        this.favouriteFB.push(row)
+                    }
                     this.favourites.push(row)
                     
             });
-            console.log(this.favourites)
+            //console.log(this.favourites)
             
         }
 
@@ -180,6 +209,8 @@ export default {
             user:false,
             allinfo: [],
             favourites: [],
+            favouriteTA: [],
+            favouriteFB: [],
             database: [],
         }
     },
@@ -203,21 +234,27 @@ export default {
 </script>
 
 <style scoped>
-    h1,
-    h2 {
-    text-align: left;
-    margin-left: 180px;
+h1, h2 {
+    text-align: center;
+    
     font-weight: bold;
-    color: black;
-    }
+    color: rgb(0, 15, 92);
+}
 
-    .Favourite {
+h3 {
+    text-align: left;
+    margin-left: 10px;
+    color:rgb(0, 15, 92);
+    font-weight: bold;
+}
+
+.Favourite {
         margin-top:20px;
-    }
+}
 
 
     /* The Modal (background) */
-    .modal {
+.modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -228,46 +265,54 @@ export default {
     /* overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    }
+}
 
     /* Modal Content/Box */
-    .modal-content {
+.modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 50%; /* Could be more or less, depending on screen size */
-    }
+}
 
     /* The Close Button */
-    .close {
+.close {
     color: #aaa;
     text-align: right;
     padding-right:15px;
     font-size: 28px;
     font-weight: bold;
-    }
+}
 
-    .close:hover,
-    .close:focus {
+.close:hover,
+.close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
-    }
+}
 
-    #resultinfo {
+#resultinfo {
         text-align: left;
-    }
+}
 
-    .row {
-        background-color: yellow;
+
+.row {
+        background-color: lightskyblue;
+        color:rgb(0, 15, 92);
         align-items: center;
         margin: 10px 0px;
-    }
-    img {
+        height: 25%;
+}
+
+
+
+img {
     width: 100%;
     border-radius: 10px;
     object-fit: cover;
     margin:5px
-    }
+}
+
+
 </style>>
