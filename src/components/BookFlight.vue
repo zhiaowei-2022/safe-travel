@@ -12,7 +12,7 @@
           <div class="col">
            <label for="originCountry" class="title">Origin</label>
            <select name="originCountry" id="originCountry" class="form-select form-control" v-model="originCountry" aria-placeholder="Select Country">
-                <option value="null">---- Select Country ----</option>
+                <option value="null" selected hidden>---- Select Country ----</option>
                 <option value="Singapore">Singapore</option>
                 <option value="Melbourne">Melbourne</option>
                 <option value="Germany">Germany</option>
@@ -25,7 +25,7 @@
           <div class="col">
             <label for="destinationCountry" class="title">Destination</label>
             <select name="destinationCountry" id="destinationCountry" class="form-select form-control" v-model="destinationCountry" aria-placeholder="Select Country">
-                <option value="null">---- Select Country ----</option>
+                <option value="null" selected hidden>---- Select Country ----</option>
                 <option value="Singapore">Singapore</option>
                 <option value="Melbourne">Melbourne</option>
                 <option value="Germany">Germany</option>
@@ -70,7 +70,7 @@
                     <div class="col">
                         <label  class="form-label">Class</label>
                         <select name="classType" class="form-select form-control" v-model="classType">
-                            <option value=null>---- Select Class ----</option>
+                            <option value=null selected hidden>---- Select Class ----</option>
                             <option value="Economy Class">Economy Class</option>
                             <option value="Business Class">Business Class</option>
                             <option value="First Class">First Class</option>
@@ -85,7 +85,7 @@
             <div class="col">
                 <div class="form-group">
                 <div>
-                 <button class="btn btn-primary " name="submit" type="submit" @click="searchFlights()">
+                 <button class="btn btn-primary " name="submit" type="submit" @click="searchFlights()" style="float:right">
                   Search Flights
                  </button>
                 </div>
@@ -93,24 +93,23 @@
             </div>
             <div class="col">
                 <label class="switch">
-                <input type="checkbox" checked  v-model="isOneWay" @click="toggle">
+                <input type="checkbox" checked v-model="isOneWay" @click="toggle">
                 <span class="slider round"></span>
                 </label>
-                <p style="color: white; margin-right:330px; margin-top:5px">One-way?</p>
+                <p id="one-way">One-way?</p>
             </div>
         </div>
         </form>
     </div>
 
     <br>
+    <div class="container">
     <h2>Popular Destination</h2>
     <br>
-
-    <div class="container">
         <div v-if="database.length !== 0">
             <div v-for="destinations in database" v-bind:key="destinations.uid">
                 <div class="row">
-                    <div class="col" v-for="destination in destinations" v-bind:key="destination.uid">
+                    <div class="col-4" v-for="destination in destinations" v-bind:key="destination.uid">
                         <PopularDestination
                         :image="destination.image"
                         :altText="destination.altText"
@@ -124,11 +123,18 @@
 
     <div id="errorModal" class="modal">
         <div class="modal-content">
-            <div id="errorMsg"></div>
-            <img id="no-results" src="@/assets/sad.png" alt=""/> <br>
-            <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
-                Search Again
-            </button>
+            <div class="modal-header">
+                <h5>Invalid Options</h5>
+            </div>
+            <div class="modal-body">
+                <div id="errorMsg"></div>
+                <img id="no-results" src="@/assets/sad.png" alt=""/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                    Search Again
+                </button>
+            </div>
         </div>
     </div>
 
@@ -222,7 +228,7 @@ export default {
                         } else {
                             console.log("wrong return date")
                             modal.style.display = "block"
-                            error.innerHTML = "<h5><b> Please ensure that the return date is after the departure date. </b></h5>"
+                            error.innerHTML = "<h6> Please ensure that the return date is after the departure date. </h6>"
                         }
                     }
                     else { // one way flight
@@ -244,12 +250,12 @@ export default {
                 }
                 else {
                     modal.style.display = "block"
-                    error.innerHTML = "<h5><b> Please ensure that the number of passenger is a positive number. </b></h5>"
+                    error.innerHTML = "<h6> Please ensure that the number of passenger is a positive number. </h6>"
                 }
             }
             else {
                 modal.style.display = "block"
-                error.innerHTML = "<h5><b> Please fill up all fields to start searching. </b></h5>"
+                error.innerHTML = "<h6> Please fill up all fields to start searching. </h6>"
             }}
         },
 
@@ -261,7 +267,7 @@ export default {
     .book-flight {
         background-image: url("@/assets/popular-destination-background.jpg");
         height: 500px;
-        padding-top: 100px;
+        padding-top: 80px;
     }
 
     h1 {
@@ -273,10 +279,16 @@ export default {
 
     h2 {
     text-align: left;
-    margin-left: 80px;
     font-weight: bold;
     color: rgb(1, 1, 87);
+    margin-left: 10px;
     }   
+
+    h5 {
+    font-weight:bold; 
+    font-size:30px;
+    color: rgb(0, 15, 92);
+    }
 
     button {
         background-color: lightskyblue;
@@ -304,6 +316,7 @@ export default {
         color: white;
         float: left;
         text-align: left;
+        font-weight: bold;
     }
 
     .switch {
@@ -367,9 +380,10 @@ export default {
     }
 
     #no-results {
-    width: 20%;
-    height: 40%;
+    width: 120px;
+    height: 120px;
     }
+
     .modal {
     display: none;
     position: fixed;
@@ -381,15 +395,48 @@ export default {
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0,0.4);
     }
+
+    .modal-header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    }
+
     .modal-content {
     background-color: #fefefe;
     color: black;
     margin: 15% auto;
     padding: 10px;
     border: 1px solid #888;
-    width: 50%;
+    width: 30%;
     height: 300px;
-    align-items: center;
+    }
+
+    .modal-body {
+    padding: 2px 16px;
     justify-content: center;
+    align-items: center;
+    }
+
+    .modal-footer {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    }
+
+    #errorBtn {
+    background-color: rgb(0, 15, 92);
+    border-color: rgb(0, 15, 92);
+    color: white;
+    font-weight: bold;
+    width: 150px;
+    }
+
+    #one-way {
+    font-weight: bold; 
+    color: white; 
+    text-align:left; 
+    margin-left:80px; 
+    margin-top:5px;
     }
 </style>

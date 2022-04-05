@@ -13,7 +13,7 @@
           <div class="col">
            <label for="origin-country" class="title">Origin</label>
             <select class="form-select" required id="origin">
-               <option value="" selected hidden>---- Please select origin country ----</option>
+               <option value="" selected hidden>---- Select Country ----</option>
                 <option v-for="country in countries" v-bind:key="country" v-bind:value="country">
                 {{ country }}
                 </option>
@@ -23,7 +23,7 @@
           <div class="col">
             <label for="destination-country" class="title">Destination</label>
             <select class="form-select" required id="destination" >
-               <option value="" selected hidden>---- Please select destination country ----</option>               
+               <option value="" selected hidden>---- Select Country ----</option>               
                 <option v-for="country in countries" v-bind:key="country" v-bind:value="country">
                 {{ country }}
                 </option>
@@ -36,7 +36,7 @@
             <div class="form-group">
                 <div>
                  <button class="btn btn-primary" @click.prevent="searchInfo()">
-                  Display Information <br>Below
+                  Display Information
                  </button>
                 </div>
             </div>
@@ -47,7 +47,7 @@
 
 
 
-    <div v-if="displayInfo">
+    <div v-if="displayInfo" class="container">
         <h2>Covid Status</h2>
         <br>
     <div class="container">
@@ -57,9 +57,6 @@
                     <div id ="qtDest" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
                     <hr>
                     <div id ="covidDest" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
-                    
-
-
                 </figure>
             </div>
             <div class="col">
@@ -91,21 +88,20 @@
 
 <br>
 
-    <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel" style="font-weight:bold; font-size:30px;">
-                Options are invalid
+                Invalid Options
             </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            {{ errorMsg }}
-            <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 120px; width: 120px">
+            <h6> {{ errorMsg }} </h6>
+            <img src="@/assets/sad.png" alt="sad face" style="height: 120px; width: 120px">
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" id="errorBtn" data-bs-dismiss="modal">Search Again</button>
         </div>
         </div>
     </div>
@@ -288,6 +284,11 @@ export default {
     font-weight: bold;
     color: rgb(1, 1, 87);
     }   
+    h5 {
+    font-weight:bold; 
+    font-size:30px;
+    color: rgb(0, 15, 92);
+    }
     button {
         background-color: lightskyblue;
         border-color: lightskyblue;
@@ -307,20 +308,21 @@ export default {
         margin-left: 180px;
         
     }
-        .form-detail {
-        background-color: rgb(1, 1, 87);
-        padding: 20px;
-        border-radius: 10px;
-        margin-right: 350px;
-        margin-left: 350px;
+    .form-detail {
+    background-color: rgb(1, 1, 87);
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 350px;
+    margin-left: 350px;
         
     }
     label {
         color: white;
         float: left;
         text-align: left;
+        font-weight: bold;
     }
-        select:invalid{
+    select:invalid{
         color: gray;
     }
     option{
@@ -329,7 +331,6 @@ export default {
 
     #visaDest, #covidDest, #covidOrigin, #qtOrigin, #qtDest {
         box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-
         background-color: rgb(1, 1, 87);;
         padding-top: 20px;
         padding-bottom: 20px;
@@ -339,7 +340,11 @@ export default {
 
     }
 
-
-
-
+    #errorBtn {
+        background-color: rgb(0, 15, 92);
+        border-color: rgb(0, 15, 92);
+        color: white;
+        font-weight: bold;
+        width: 150px;
+    }
 </style>

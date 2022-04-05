@@ -4,7 +4,7 @@
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     
-    <div class="container-fluid" style="margin-bottom: 50px">
+    <div class="container-fluid">
         <span class="search-field">
             <FlightSearchInput :input="originCountry"/>
             <i class="bi bi-arrow-right"></i>
@@ -24,7 +24,9 @@
     </div>
     <br>
 
-    <h2>Depart - {{ originCountry }} to {{ destinationCountry }}</h2>
+    <div class="container" v-if="database.length !== 0">
+        <h2>Depart - {{ originCountry }} to {{ destinationCountry }}</h2>
+    </div>
 
     <br>
 
@@ -50,7 +52,9 @@
 
     <div v-if="this.isOneWay == false"> 
         <br>
-        <h2>Return - {{ destinationCountry }} to {{ originCountry }}</h2>
+        <div class="container" v-if="returnDatabase.length !== 0">
+            <h2>Return - {{ destinationCountry }} to {{ originCountry }}</h2>
+        </div>
         <br>
         <div v-if="database.length !== 0">
             <div v-for="flight in returnDatabase" v-bind:key="flight.uid">
@@ -72,7 +76,7 @@
         </div> 
     </div>
     
-    <div v-if="database.length == 0">
+    <div v-if="database.length === 0 && returnDatabase.length !== 0">
         <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
         <h3>No Results Found</h3>
         <h5>We could not find any departure flights that match your search.</h5> <br>
@@ -81,7 +85,7 @@
         </button>
     </div>
 
-    <div v-if="returnDatabase.length == 0">
+    <div v-if="database.length !== 0 && returnDatabase.length === 0">
         <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
         <h3>No Results Found</h3>
         <h5>We could not find any return flights that match your search.</h5> <br>
@@ -90,9 +94,22 @@
         </button>
     </div>
 
+    <div v-if="database.length === 0 && returnDatabase.length === 0">
+        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
+        <h3>No Results Found</h3>
+        <h5>We could not find any departure and return flights that match your search.</h5> <br>
+        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
+            Search Again
+        </button>
+    </div>
+
     <div id="searchModal" class="modal">
         <div class="modal-content">
-            <span class="close" v-on:click="closeSearchModal()">&times;</span>
+            <!-- <span class="close" v-on:click="closeSearchModal()">&times;</span> -->
+            <div class="modal-header">
+                <h2 style="font-weight:bold">Modify Your Search</h2>
+                <span class="close" v-on:click="closeSearchModal()">&times;</span>
+            </div> <br>
 
             <form class="form-details">
                 <div class="row">
@@ -100,7 +117,7 @@
                         <div class="form-group">
                         <label for="originCountry" class="title">Origin</label>
                         <select name="originCountry" id="originCountry" class="form-select form-control" v-model="newOriginCountry" aria-placeholder="Select Country">
-                                <option value="null">---- Select Country ----</option>
+                                <option value="null" selected hidden>---- Select Country ----</option>
                                 <option value="Singapore">Singapore</option>
                                 <option value="Melbourne">Melbourne</option>
                                 <option value="Germany">Germany</option>
@@ -112,7 +129,7 @@
                         <div class="form-group">
                         <label for="destinationCountry" class="title">Destination</label>
                         <select name="destinationCountry" id="destinationCountry" class="form-select form-control" v-model="newDestinationCountry" aria-placeholder="Select Country">
-                                <option value="null">---- Select Country ----</option>
+                                <option value="null" selected hidden>---- Select Country ----</option>
                                 <option value="Singapore">Singapore</option>
                                 <option value="Melbourne">Melbourne</option>
                                 <option value="Germany">Germany</option>
@@ -146,7 +163,7 @@
                     </div>
                 </div>
                 <br>
-                <button type="button" class="btn btn-primary" @click="modifySearch()">Save Edits</button>
+                <button type="button" class="btn btn-primary" @click="modifySearch()">Save</button>
             </form>
         </div>
     </div>
@@ -301,7 +318,6 @@ export default {
     }
     h2 {
     text-align: left;
-    margin-left: 80px;
     font-weight: bold;
     color: rgb(1, 1, 87);
     }   
@@ -323,8 +339,7 @@ export default {
     border-color: rgb(0, 15, 92);
     color: white;
     font-weight: bold;
-    float: right;
-    margin-top: 10px;
+    width: 150px;
     }
     img {
     width: 90%;
@@ -332,7 +347,8 @@ export default {
     display: inline-block;
     }
     #no-results {
-    width: 10%;
+    width: 120px;
+    height: 120px;
     }
     .modal {
     display: none;
@@ -344,6 +360,12 @@ export default {
     height: 100%;
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0,0.4);
+    }
+    .modal-header {
+    padding: 10px;
+    color: rgb(0, 15, 92);
+    display: flex;
+    align-items: center;
     }
     .modal-content {
     background-color: #fefefe;
@@ -359,9 +381,24 @@ export default {
     font-size: 35px;
     font-weight: bold;
     }
-
+    .close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    }
     #modify {
     float: right;
     margin-top: 10px;
+    }
+    label {
+        color: black;
+        float: left;
+        text-align: left;
+        font-weight: bold;
+    }
+    i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     }
 </style>

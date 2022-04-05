@@ -116,11 +116,18 @@
 
     <div id="errorModal" class="modal">
         <div class="modal-content" id="error-modal-content">
-            <div id="errorMsg"></div>
-            <img id="no-results" src="@/assets/sad.png" alt=""/> <br>
-            <button class="btn btn-primary" name="submit" type="button" @click="closeErrorModal()">
-                Search Again
-            </button>
+            <div class="modal-header">
+                <h5>Invalid Options</h5>
+            </div>
+            <div class="modal-body">
+                <div id="errorMsg"></div>
+                <img id="no-results" src="@/assets/sad.png" alt=""/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                    Search Again
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -290,15 +297,15 @@ export default {
                         this.display()
                     } else {
                         modal.style.display = "block"
-                        error.innerHTML = "<h5><b> Please ensure that the check-out date is after the check-in date. </b></h5>"
+                        error.innerHTML = "<h5><b> Please ensure that the check-out date is after the check-in date. </h6>"
                     }
                 } else {
                     modal.style.display = "block"
-                    error.innerHTML = "<h5><b> Please ensure that the number of guests and rooms is a positive number. </b></h5>"
+                    error.innerHTML = "<h6> Please ensure that the number of guests and rooms is a positive number. </h6>"
                 }
             } else {
                 modal.style.display = "block"
-                error.innerHTML = "<h5><b> Please fill up all fields to start searching. </b></h5>"
+                error.innerHTML = "<h6> Please fill up all fields to start searching. </h6>"
             }
         },
 
@@ -311,6 +318,12 @@ export default {
 </script>
 
 <style scoped>
+h5 {
+    font-weight:bold; 
+    font-size:30px;
+    color: rgb(0, 15, 92);
+}
+
 button {
     background-color: rgb(0, 15, 92);
     border-color: rgb(0, 15, 92);
@@ -337,44 +350,55 @@ img {
 }
 
 #no-results {
-    width: 12%;
-    height: 40%;
+    width: 120px;
+    height: 120px;
 }
 
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
 }
 
 .modal-header {
-  padding: 2px 16px;
-  color: rgb(0, 15, 92);
-  display: flex;
-  align-items: center;
+    padding: 10px;
+    color: rgb(0, 15, 92);
+    display: flex;
+    align-items: center;
 }
 
 .modal-content {
-  background-color: #fefefe;
-  color: black;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 75%;
+    background-color: #fefefe;
+    color: black;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 75%;
 }
 
 #error-modal-content {
     margin: 16% auto;
-    width: 50%;
+    padding: 0px;
+    width: 30%;
     height: 300px;
-    align-items: center;
+}
+
+.modal-body {
+    padding: 2px 16px;
     justify-content: center;
+    align-items: center;
+}
+
+.modal-footer {
+    padding: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .close {

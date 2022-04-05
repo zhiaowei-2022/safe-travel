@@ -21,9 +21,13 @@ export default {
 <style scoped>
     .input {
         background-color: rgb(0, 15, 95, 0.13);
+        border-radius: 10px;
         padding: 10px 65px;
         margin: 10px;
         color: black;
-        border-radius: 10px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
