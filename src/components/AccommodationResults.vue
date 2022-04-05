@@ -318,12 +318,6 @@ export default {
 </script>
 
 <style scoped>
-h5 {
-    font-weight:bold; 
-    font-size:30px;
-    color: rgb(0, 15, 92);
-}
-
 button {
     background-color: rgb(0, 15, 92);
     border-color: rgb(0, 15, 92);
@@ -371,6 +365,8 @@ img {
     color: rgb(0, 15, 92);
     display: flex;
     align-items: center;
+    font-weight:bold; 
+    font-size:30px;
 }
 
 .modal-content {
