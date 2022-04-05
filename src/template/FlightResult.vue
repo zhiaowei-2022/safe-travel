@@ -4,26 +4,33 @@
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col col-lg-1">
-                <img src="@/assets/australian-airlines.jpeg" alt="">
+                <img :src="airlinePhoto" alt="">
             </div>
             <div class="col col-lg-3" style="text-align:left; margin-left: 50px">
                 <div class="flight-name"> {{ departureCountryId }} {{departureTime}}</div>
                 <div class="flight-body"> {{ departureCountryName }} </div>
                 <div class="flight-body"> {{ departureDate }}</div>
             </div>
-            <div class="col col-lg-2">
+            <div class="col col-lg-2" style="color: black;">
                 <div class="row-lg" id="duration">{{ duration }}</div>
-                <div class="row-lg" style="background-color: rgb(0, 15, 95, 0);"><i class="bi bi-arrow-right" style="font-size:50px; display: inline-block"></i></div>
+                <div class="row-lg" style="background-color: rgb(0, 15, 95, 0);"><i class="bi bi-arrow-right" style="font-size:50px; display: inline-block;"></i></div>
                 <div class="row-lg"> {{ airline }} </div>
+                <div class="row-lg"> Click <a :href="link" target="_blank">here</a> for flight info! </div>
             </div>
             <div class="col col-lg-3" style="text-align:left; margin-left: 50px">
                 <div class="flight-name"> {{ arrivalCountryId }} {{arrivalTime}}</div>
                 <div class="flight-body"> {{ arrivalCountryName }} </div>
-                <div class="flight-body"> {{ departureDate }}</div>
             </div>
             <div class="col col-lg-2">
-                <div class="flight-price"> {{ price }} </div> <br>
-                <button type="button" class="btn btn-link" style="background-color: rgb(0, 15, 95, 0)">Add to cart</button>
+                <!-- added to likes -->
+                <div v-if="user" class="flight-price-added"> {{price }} </div>
+                <div v-if="user">
+                    <!-- not added to likes -->
+                    <!-- <div class="flight-price"> {{ price }} </div> -->
+                    <button v-if="false" type="button" class="btn btn-link" style="background-color: rgb(0, 15, 95, 0)">Added to favourites!</button>
+                    <button v-if="true" type="button" class="btn btn-link" style="background-color: rgb(0, 15, 95, 0)">Add to favourites?</button>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -31,9 +38,19 @@
 </template>
 
 <script>
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+
 export default {
     name: "FlightResult",
+
+    data() {
+        return {
+            user:false,
+        }
+    },
+
     props: {
+        airlinePhoto: String,
         departureCountryId: String,
         departureCountryName: String,
         departureTime: Number,
@@ -45,7 +62,25 @@ export default {
         duration: String,
         price: String,
         airline: String,
+        link: String,
     },
+
+    methods: {
+        logOut() {
+            const auth = getAuth()
+            const user = auth.currentUser
+            signOut(auth, user)
+        }
+    },
+
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        });
+    }
 }
 </script>
 
@@ -68,7 +103,7 @@ img {
 .flight-body {
     color: black;
 }
-.flight-price {
+.flight-price-added {
     background-color: rgb(0, 15, 95);
     width: 100px;
     height: 100px;
@@ -78,8 +113,19 @@ img {
     font-weight: bold;
     color: white;
     font-size: 15px;
-    margin-top: 20px;
-    
+    margin-top: 20px;  
+}
+.flight-price {
+    background-color: rgb(0, 15, 95, 0.2);
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    display: inline-block;
+    line-height: 100px;
+    font-weight: bold;
+    color: black;
+    font-size: 15px;
+    margin-top: 20px;  
 }
 button {
     margin-bottom: 15px;

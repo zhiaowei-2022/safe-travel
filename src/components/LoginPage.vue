@@ -59,7 +59,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-danger" id="exampleModalLabel">Login Form</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="font-weight:bold; color: rgb(0, 15, 92);">Login to your account!</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -98,8 +98,9 @@
                   <td>
                     <p id="registerlink"> New to Safe Travel? Sign up 
                       <router-link to="/registerview">HERE</router-link> 
-                    </p> <router-view/>
+                    </p> <router-view/> 
                     <br>
+                    
                     
                     <button type="button" id="loginBtn" v-on:click="Login()"> Login </button>
                   </td>
@@ -206,21 +207,7 @@ export default {
         document.head.appendChild(jquery)
         
     },
-        
-    //   async function display(email) {
-    //     const docRef = doc(db, "Users", email);
-    //       const docSnap = await getDoc(docRef);
-
-    //       if (docSnap.exists()) {
-    //         console.log("Document data:", docSnap.data());
-    //         document.getElementById("displayUsername").innerHTML = docSnap.data().username
-    //       } else {
-    //         // doc.data() will be undefined in this case
-    //         console.log("No such document!");
-    //       }
-    //   }
-    // }
-
+  
 }
 */
 </script>

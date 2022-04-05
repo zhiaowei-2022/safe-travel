@@ -12,21 +12,21 @@
           <!-- Search field for origin country -->
           <div class="col">
            <label for="origin-country" class="title">Origin</label>
-            <select class="form-select" required id="origin" >
-               <option value="" selected hidden>---- Please select origin country ----</option>
-               <option value="economyClass">Singapore</option>
-               <option value="businessClass">Malaysia</option>
-               <option value="firstClass">China</option>
+            <select class="form-select" required id="origin">
+               <option value="" selected hidden>---- Select Country ----</option>
+                <option v-for="country in countries" v-bind:key="country" v-bind:value="country">
+                {{ country }}
+                </option>
             </select>
           </div>
           <!-- Search field for destination country -->
           <div class="col">
             <label for="destination-country" class="title">Destination</label>
             <select class="form-select" required id="destination" >
-               <option value="" selected hidden>---- Please select destination country ----</option>
-               <option value="economyClass">Singapore</option>
-               <option value="businessClass">Malaysia</option>
-               <option value="firstClass">China</option>
+               <option value="" selected hidden>---- Select Country ----</option>               
+                <option v-for="country in countries" v-bind:key="country" v-bind:value="country">
+                {{ country }}
+                </option>
             </select>
           
            </div>
@@ -35,8 +35,8 @@
         <div class="row g-lg-2">
             <div class="form-group">
                 <div>
-                 <button class="btn btn-primary " name="submit" type="submit" @click="searchInfo()">
-                  Display Information <br>Below
+                 <button class="btn btn-primary" @click.prevent="searchInfo()">
+                  Display Information
                  </button>
                 </div>
             </div>
@@ -44,95 +44,68 @@
         </form>
     </div>
     <br>
-    
-    <!-- <div class="form-details" style="color:black">
-        <div class="container" style="background-color:white">
-        <div class="row">
-            <div class="col-5" style="background-color:white">
-                origin <br>
-                Fully Vaccinated: X <br>
-                Non-Fully Vaccinated: X
-            </div>
-            <div class="col">
-                covid <br>
-                Daily cases: X <br>
-                Weekly cases: X 
 
-            </div>
-        </div>
+
+
+    <div v-if="displayInfo" class="container">
+        <h2>Covid Status</h2>
+        <br>
+    <div class="container">
         <div class="row">
             <div class="col">
-                destination
+                <figure style="margin: auto; color: white;">
+                    <div id ="qtDest" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
+                    <hr>
+                    <div id ="covidDest" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
+                </figure>
             </div>
             <div class="col">
-                covid
+                <figure style="margin: auto; color: white;">
+                     <div id ="qtOrigin" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
+                    <hr>
+                    <div id ="covidOrigin" style="background-color: rgb(115, 149, 174); width: 80%; margin:auto; border-radius: 20px"></div>
+                </figure>
             </div>
         </div>
+    </div> 
+    <br> <br>
+
+    <div style="text-align:center; margin:auto;">
+        <h2 style="text-align:center; margin:auto;">Visa Entry</h2>
+        <br>
+    </div>
+    <div class="container">
+        <div class = "row">
+            <div class="col">
+                <figure style="color: white; margin:auto; ">
+                    <div id="visaDest" style="width: 40%; margin:auto; border-radius: 20px"></div>
+                </figure>
+            </div>
         </div>
-    </div> -->
-
-
+    </div>
+    </div>
     
-    <div class="form-details">
-        <h3 style="color:lightskyblue;"> COVID </h3>
-    <table class="table table-dark table-bordered" style="border-radius: 10px; overflow: hidden;" >
-  <tbody>
-    <tr>
-      <td class="col-4">
-          <strong>Origin</strong> <br> <br>
-          Fully Vaccinated: X <br>
-          Non-Fully Vaccinated: X <br>
-          <a href="https://www.google.com">For more details click me</a>
-          
-          </td>
-      <td><strong>Covid Information</strong> <br> <br>
-      Daily cases: X <br>
-      Weekly cases: X 
-      </td>
-    </tr>
-  </tbody>
-  <tbody>
-    <tr>
-      <td>Destination</td>
-      <td>Covid Information</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-<br>
-
-
-<div v-if="displayInfo">
-    <div class="form-details">
-    <table class="table table-dark table-bordered" style="border-radius: 10px; overflow: hidden;" >
-  <tbody>
-    <tr>
-      <td class="col-4">
-          <strong>Origin</strong> <br> <br>
-          Fully Vaccinated: X <br>
-          Non-Fully Vaccinated: X <br>
-          <a href="https://www.google.com">For more details click me</a>
-          
-          </td>
-      <td><strong>Covid Information</strong> <br> <br>
-      Daily cases: X <br>
-      Weekly cases: X 
-      </td>
-    </tr>
-  </tbody>
-  <tbody>
-    <tr>
-      <td>Destination</td>
-      <td>Covid Information</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
 
 <br>
 
-
+    <div class="modal" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="font-weight:bold; font-size:30px;">
+                Invalid Options
+            </h5>
+        </div>
+        <div class="modal-body">
+            <h6> {{ errorMsg }} </h6>
+            <img src="@/assets/sad.png" alt="sad face" style="height: 120px; width: 120px">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="errorBtn" data-bs-dismiss="modal">Search Again</button>
+        </div>
+        </div>
+    </div>
+    </div>
 
 
 
@@ -143,6 +116,13 @@
 
 <script>
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"
+import firebaseApp from '../firebase.js';
+import {getFirestore} from "firebase/firestore"
+import {collection, getDocs, doc, getDoc} from "firebase/firestore";
+import * as $ from 'jquery'
+
+
+const db = getFirestore(firebaseApp);
 
 
 
@@ -153,7 +133,9 @@ export default {
         return {
             user: false,
             invalid: false,
-            displayInfo: false
+            displayInfo: false,
+            countries: [],
+            errorMsg: "",
         }
     },
 
@@ -167,6 +149,11 @@ export default {
         let jquery = document.createElement('script')
         jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
         document.head.appendChild(jquery)
+        this.dropdown()
+
+
+
+        
     },
 
     methods: {
@@ -177,12 +164,102 @@ export default {
             this.$router.push({name:'LoginView'})
         },
 
-        searchInfo() {
-            this.displayInfo = true;
+        async dropdown() {
+            let docs = await getDocs(collection(db, "Origin"));
+            docs.forEach((doc) => {
+                var docData = doc.data()
+                // console.log(docData.name)
+                this.countries.push(docData.Name)
+            })
+        },
+
+        async searchInfo() {
+            var origin = document.getElementById("origin")
+            var dest = document.getElementById("destination")
+
+            if ((origin.value == "") || (dest.value == "")) {
+                this.errorMsg = "Sorry, please fill up both the Origin and Destination fields."
+                $('#exampleModal5').modal('show')
+            }
+            else if (origin.value == dest.value) {
+                this.errorMsg = "Sorry, Origin and Destination fields should be different."
+                $('#exampleModal5').modal('show')
+            }
+            else {
+        
+                this.displayInfo = true;
+                const originRef = doc(db, "Origin", origin.value);
+                const originSnap = await getDoc(originRef);
+                var qtOrigin = document.getElementById("qtOrigin")
+                var covidOrigin = document.getElementById("covidOrigin")
+
+                if (originSnap.exists()) {
+                    // QUARRANTINE IN ORIGIN
+                        qtOrigin.innerHTML = 
+                        "<h4><i class='fa-solid fa-plane-arrival fa-flip-horizontal fa-xs'></i>" +
+                        "<strong>" +  " On return to " + origin.value  + "</strong></h4> <br>" +
+                        "Fully Vaccinated: Quarantine <strong>" + originSnap.data().Vaxxed  + "</strong><br>" +
+                        "Non-Fully Vaccinated: Quarantine <strong>" + originSnap.data().NonVaxxed + "</strong><br><br>" +
+                        "<a  class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + originSnap.data().QuarrantineLink + " target='_blank'><b>See detailed Quarantine Information</b></a>";
+
+                        // COVID IN ORIGIN
+                        covidOrigin.innerHTML = 
+                        "<h4><i class='fa-solid fa-virus-covid fa-xs'></i>" +
+                        "<strong> Covid Information in " + origin.value + "</strong></h4> <br>" +
+                        "Daily cases: <strong>" + originSnap.data().DailyCases + "</strong><br>" +
+                        "7-Day Average: <strong>" + originSnap.data().WeeklyCases + "</strong><br>" +
+                        "Mask Rule: <strong>" + originSnap.data().Mask + "</strong><br><br>" +
+                        "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + originSnap.data().CovidLink + " target='_blank'><b>See detailed Covid Status</b></a>";
+                } 
+                else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                    }
+
+                // var dest = document.getElementById("destination")
+                console.log(dest.value)
+                var qtDest = document.getElementById("qtDest")
+                var covidDest = document.getElementById("covidDest")
+                var visaDest = document.getElementById("visaDest")
+                const destRef = doc(db, "Origin", origin.value, "Destination", dest.value);
+                const destSnap = await getDoc(destRef);
+                
+                if (destSnap.exists()) {
+                    // QUARRANTINE IN DEST
+                    qtDest.innerHTML = 
+                    "<h4><i class='fa-solid fa-plane-arrival fa-xs'></i>" +
+                    "<strong>" +  " On arrival to " + dest.value  + "</strong></h4>" + "<br>" +
+                    "Fully Vaccinated: Quarantine <strong>" + destSnap.data().Vaxxed  + "</strong><br>" +
+                    "Non-Fully Vaccinated: Quarantine <strong>" + destSnap.data().NonVaxxed + "</strong><br> <br>" +
+                    "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + destSnap.data().QuarrantineLink + " target='_blank'><b>See detailed Quarantine Information</b></a>";
+
+                    // COVID IN DEST
+                    covidDest.innerHTML = 
+                    "<h4><i class='fa-solid fa-virus-covid fa-xs'></i>" +
+                    "<strong> Covid Information in " + dest.value + "</strong></h4> <br>" +
+                    "Daily cases: <strong>" + destSnap.data().DailyCases + "</strong><br>" +
+                    "7-Day Average: <strong>" + destSnap.data().WeeklyCases + "</strong><br>" +
+                    "Mask Rule: <strong>" + destSnap.data().Mask + "</strong><br><br>" +
+                    "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + destSnap.data().CovidLink + " target='_blank'><b>See detailed Covid Status</b></a>";
+
+                    // VISA
+                    visaDest.innerHTML = 
+                    "<h4><i class='fa-solid fa-passport fa-xs'></i>" +
+                    "<strong> " + origin.value + " to "  + dest.value + "</strong> </h4> <br>" +
+                    "Visa Entry: <strong>" + destSnap.data().Visa + "</strong><br><br>" +
+                    "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + destSnap.data().VisaLink + " target='_blank'><b>See detailed Visa Entry Requirement</b></a>";
+                } 
+                else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                    }
+            }
         }
     }
-    
 }
+
+
+        
 </script>
 
 <style scoped>
@@ -207,6 +284,11 @@ export default {
     font-weight: bold;
     color: rgb(1, 1, 87);
     }   
+    h5 {
+    font-weight:bold; 
+    font-size:30px;
+    color: rgb(0, 15, 92);
+    }
     button {
         background-color: lightskyblue;
         border-color: lightskyblue;
@@ -226,18 +308,43 @@ export default {
         margin-left: 180px;
         
     }
+    .form-detail {
+    background-color: rgb(1, 1, 87);
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 350px;
+    margin-left: 350px;
+        
+    }
     label {
         color: white;
         float: left;
         text-align: left;
+        font-weight: bold;
     }
-        select:invalid{
+    select:invalid{
         color: gray;
     }
     option{
         color: black;
     }
 
+    #visaDest, #covidDest, #covidOrigin, #qtOrigin, #qtDest {
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+        background-color: rgb(1, 1, 87);;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        /* box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px; */
 
+    }
 
+    #errorBtn {
+        background-color: rgb(0, 15, 92);
+        border-color: rgb(0, 15, 92);
+        color: white;
+        font-weight: bold;
+        width: 150px;
+    }
 </style>
