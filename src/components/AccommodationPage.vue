@@ -8,7 +8,7 @@
         <form class="form-details">
             <div class="form-group">
                 <label for="hotelName" class="form-label">Destination Country/Hotel Name:</label>
-                <input type="text" class="form-control" id="hotelName" v-model="hotelName" required>
+                <input type="text" class="form-control" id="hotelName" v-model="hotelName" placeholder="Destination Country/Hotel Name" required>
             </div>
             <br>
             <div class="row">
@@ -22,11 +22,11 @@
                 </div>
                 <div class="col">
                     <label for="noOfGuests" class="form-label">No. of Guest(s):</label>
-                    <input type="number" min="1" class="form-control" id="noOfGuests" v-model="noOfGuests" required>
+                    <input type="number" min="1" class="form-control" id="noOfGuests" v-model="noOfGuests" placeholder="No. of Guests(s)" required>
                 </div>
                 <div class="col">
                     <label for="noOfRooms" class="form-label">No. of Room(s):</label>
-                    <input type="number" min="1" class="form-control" id="noOfRooms" v-model="noOfRooms" required>
+                    <input type="number" min="1" class="form-control" id="noOfRooms" v-model="noOfRooms" placeholder="No. of Room(s)" required>
                 </div>
             </div>
             <br>
@@ -37,18 +37,25 @@
 
     <div id="errorModal" class="modal">
         <div class="modal-content">
-            <div id="errorMsg"></div>
-            <img id="no-results" src="@/assets/sad.png" alt=""/> <br>
-            <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
-                Search Again
-            </button>
+            <div class="modal-header">
+                <h5>Invalid Options</h5>
+            </div>
+            <div class="modal-body">
+                <div id="errorMsg"></div>
+                <img id="no-results" src="@/assets/sad.png" alt=""/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                    Search Again
+                </button>
+            </div>
         </div>
     </div>
 
     <div class="container">
         <h2>Popular Hotels</h2>
 
-        <form class="container" style="margin-left: 10px;">
+        <form class="container">
             <div class="row">
                 <div class="col-lg-2">
                 <select name="country" class="form-select form-select-sm" v-model="category" @change="display()">
@@ -135,15 +142,15 @@ export default {
                         })
                     } else {
                         modal.style.display = "block"
-                        error.innerHTML = "<h5><b> Please ensure that the check-out date is after the check-in date. </b></h5>"
+                        error.innerHTML = "<h6> Please ensure that the check-out date is after the check-in date. </h6>"
                     }
                 } else {
                     modal.style.display = "block"
-                    error.innerHTML = "<h5><b> Please ensure that the number of guests and rooms is a positive number. </b></h5>"
+                    error.innerHTML = "<h6> Please ensure that the number of guests and rooms is a positive number. </h6>"
                 }
             } else {
                 modal.style.display = "block"
-                error.innerHTML = "<h5><b> Please fill up all fields to start searching. </b></h5>"
+                error.innerHTML = "<h6> Please fill up all fields to start searching. </h6>"
             }
         },
 
@@ -187,8 +194,14 @@ h1 {
 
 h2 {
     text-align: left;
-    margin-left: 20px;
+    margin-left: 10px;
     font-weight: bold;
+    color: rgb(0, 15, 92);
+}
+
+h5 {
+    font-weight:bold; 
+    font-size:30px;
     color: rgb(0, 15, 92);
 }
 
@@ -197,7 +210,6 @@ button {
     border-color: lightskyblue;
     color: black;
     font-weight: bold;
-    float: right;
 }
 
 #errorBtn {
@@ -209,19 +221,17 @@ button {
 }
 
 img {
-    width: 90%;
+    width: 95%;
     border-radius: 20px;
 }
 
 figcaption {
     font-weight: bold;
-    
 }
 
 .form-details {
     background-color: rgb(0, 15, 92);
     padding: 20px;
-    padding-bottom: 60px;
     border-radius: 10px;
     margin-right: 180px;
     margin-left: 180px;
@@ -242,31 +252,46 @@ label {
 }
 
 #no-results {
-    width: 12%;
-    height: 40%;
+    width: 120px;
+    height: 120px;
 }
 
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .modal-content {
-  background-color: #fefefe;
-  color: black;
-  margin: 15% auto;
-  padding: 10px;
-  border: 1px solid #888;
-  width: 50%;
-  height: 300px;
-  align-items: center;
-  justify-content: center;
+    background-color: #fefefe;
+    color: black;
+    margin: 15% auto;
+    border: 1px solid #888;
+    width: 30%;
+    height: 300px;
+}
+
+.modal-body {
+    padding: 2px 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-footer {
+    padding: 10px;
+    display: flex;
+    align-items: center;
 }
 </style>

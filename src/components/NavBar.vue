@@ -9,15 +9,9 @@
       <img src="@/assets/safe_travel_logo.png" style="width: 214px; height: 50px;">
     </div>
     <ul class="nav me-auto mb-2 mb-lg-0 nav-pills justify-content-end" style="width:500px">
-      <li class="nav-item justify-content-end">
+      <!-- <li class="nav-item justify-content-end">
           <a class="nav-link" id="TryingStuffs"><router-link style="text-decoration: none; color: inherit;" to="/tryingstuffs">try</router-link></a>
-      </li>
-
-      <li class="nav-item" >
-        <div v-if="user">
-          <a class="nav-link" id="FavouritePage"><router-link style="text-decoration: none; color: inherit;" to="/favouritepage"><em> Favourites </em> </router-link></a>
-        </div>
-      </li>
+      </li> -->
 
       <li class="nav-item" >
         <div v-if="user">
@@ -25,9 +19,17 @@
         </div>
       </li>
 
+      <li class="nav-item" >
+        <div v-if="user">
+          <a class="nav-link" id="FavouritePage"><router-link style="text-decoration: none; color: inherit;" to="/favouritepage"> Favourites </router-link></a>
+        </div>
+      </li>
+
+
+
       <li class="nav-item" id = "login">
         <div v-if="user">
-          <a class="nav-link" id="LogOut" href="#" v-on:click="signOut()">Log Out</a>
+          <a class="nav-link" id="LogOut" href="#" v-on:click="signOut()">Logout</a>
         </div>
         <div v-else>
           <a class="nav-link" href="#" id="LogIn" data-bs-toggle="collapse" v-on:click="openModal()">Login</a>
@@ -82,7 +84,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-danger" id="exampleModalLabel">Login Form</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="font-weight:bold; color: rgb(0, 15, 92);">Login to your account!</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" v-on:click="closeModal()"></button>
         </div>
         <div class="modal-body">
@@ -148,7 +150,7 @@
         <button type="button" class="btn-close" v-on:click="closeModal()" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 120px">
+        <br><br><img src="@/assets/sad.png" alt="sad face" style="height: 150px; width: 150px">
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to login</button>
@@ -245,7 +247,7 @@ export default {
         const user = auth.currentUser;
         signOut(auth, user)
         // console.log(this.$router.currentRoute._value.name)
-        if ((this.$router.currentRoute._value.name) == "UserProfile") {
+        if ( ((this.$router.currentRoute._value.name) == "UserProfile") || ((this.$router.currentRoute._value.name) == "FavouritePage")) {
           await this.$router.push({name: 'HomeView'})
         }
         this.$router.go()
@@ -292,7 +294,7 @@ export default {
 
       // console.log($(this))
 
-    if (($(this).children().children()[0].id) == "UserProfile") {
+    if (($(this).children().children()[0].id) == ("UserProfile") || ($(this).children().children()[0].id) == ("FavouritePage")) {
       $(this).children().children().addClass('active')
     }
 

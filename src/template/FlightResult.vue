@@ -11,11 +11,11 @@
                 <div class="flight-body"> {{ departureCountryName }} </div>
                 <div class="flight-body"> {{ departureDate }}</div>
             </div>
-            <div class="col col-lg-2">
+            <div class="col col-lg-2" style="color: black;">
                 <div class="row-lg" id="duration">{{ duration }}</div>
-                <div class="row-lg" style="background-color: rgb(0, 15, 95, 0);"><i class="bi bi-arrow-right" style="font-size:50px; display: inline-block"></i></div>
+                <div class="row-lg" style="background-color: rgb(0, 15, 95, 0);"><i class="bi bi-arrow-right" style="font-size:50px; display: inline-block;"></i></div>
                 <div class="row-lg"> {{ airline }} </div>
-                <div class="row-lg"><a :href="link">Click here for flight info!</a></div>
+                <div class="row-lg"> Click <a :href="link" target="_blank">here</a> for flight info! </div>
             </div>
             <div class="col col-lg-3" style="text-align:left; margin-left: 50px">
                 <div class="flight-name"> {{ arrivalCountryId }} {{arrivalTime}}</div>

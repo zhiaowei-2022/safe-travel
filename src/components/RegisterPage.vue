@@ -3,23 +3,74 @@
     <link rel= "stylesheet" href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
+<div id="photo">
+  <div class="title">
+    <h1> Register for an account! </h1>
+  </div>
+<div class="container background" style="width: 40%">
+<form>
+  <div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label">Email: </label>
 
-<div id="holder">
+    <div class="col-sm-9" style="text-align:left">
+      <input class="form-control" v-model="email" @input="checkEmail()" type="email" placeholder="xyz@gmail.com">
+      <p v-if="checkingEmail" id="invalidCritera"> {{emailCriteria}} </p>
+      <p v-else id="invalidCritera">&nbsp;</p>
+    </div>
+  </div>
+  <br>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-3 col-form-label">Username: </label>
+    <div class="col-sm-9" style="text-align:left">
+      <input type="text" v-model="username" @input="checkUsername()" class="form-control" id="inputPassword" placeholder="xyz">
+      <p id="invalidCritera" v-if="checkingUsername" v-html="usernameCriteria"></p>
+      <p v-else id="invalidCritera">&nbsp;</p>
+    </div>
+  </div>
+  <br>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-3 col-form-label">Password: </label>
+    <div class="col-sm-9" style="display:inline-block; text-align:left">
+        <input class="form-control" style="display:inline-block" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="  *******">
+        <input class="form-control" style="display:inline-block" v-else v-model="password" @input="checkPassword()" type="password" placeholder="  *******">
+        <div v-if="showPassword" @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px;">
+          <i id = "visibility" class="fa-solid fa-eye"></i></div>
+        <div v-else @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px">
+          <i id = "visibility" class="fa-solid fa-eye-slash"></i>
+        </div>
+        <p id="invalidCritera" v-if="checkingPassword" v-html="passwordCriteria"></p> 
+        <p v-else id="invalidCritera">
+          &nbsp;</p>
+    </div>
+  </div>
+  <strong><p id="login"> Already have an account? Login
+  <router-link to="/loginview" style="color:rgb(1, 1, 87)">HERE</router-link> </p>
+  <router-view/></strong>
+      
+  <br>
+  <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>
+  <button type="button" v-else id ="invalidRegisterBtn"> REGISTER</button>
+</form>
+</div>
+</div>
+
+<!-- <div id="holder">
 <div class="container">
   <div class="title">
     <h1> Register for an account </h1>
   </div>
 
   <div id="background">
-
+    <div class="form-details">
+    
 
   <div class="field">
-    <div class="row justify-content-md-center">
+    <div class="row justify-content-center">
       <div class="col col-lg-1" style="text-align:right">
         <strong><label for="email" id="credentials">Email: </label></strong>
       </div>
       <div class="col col-lg-3">
-        <input class="registerForm" v-model="email" @input="checkEmail()" type="email" placeholder="xyz@gmail.com">
+        <input class="registerForm" v-model="email" @input="checkEmail()" type="email" placeholder="  xyz@gmail.com">
         <p v-if="checkingEmail" id="invalidCritera"> {{emailCriteria}} </p>
         
       </div>
@@ -45,8 +96,8 @@
         <strong><label for="password" id="credentials" style="text-align:right">Password: </label></strong> 
       </div>
       <div span class="col col-lg-3">
-        <input class="registerForm" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="*******">
-        <input class="registerForm" v-else v-model="password" @input="checkPassword()" type="password" placeholder="*******">
+        <input class="registerForm" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="  *******">
+        <input class="registerForm" v-else v-model="password" @input="checkPassword()" type="password" placeholder="  *******">
         <div v-if="showPassword" @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px;">
           <i id = "visibility" class="fa-solid fa-eye"></i></div>
         <div v-else @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px">
@@ -63,7 +114,7 @@
   <div class="row justify-content-md-center">
     <div class="col col-lg-1">
       </div>
-      <div class="col col-lg-3" style="text-align:center">
+      <div class="col col-lg-3" style="text-align:right">
       
           <strong><p id="login"> Already have an account? Login
           <router-link to="/loginview" style="color:rgb(1, 1, 87)">HERE</router-link> </p>
@@ -80,6 +131,7 @@
 </div>
 </div>
 </div>
+</div> -->
 
         
 </template>
@@ -194,7 +246,7 @@ export default {
         return true
       } 
       else if (this.username.length > 15) {
-        this.usernameCriteria = "Invalid Username:<br>Cannot be longer than 15 characters"
+        this.usernameCriteria = "Invalid Username: Cannot be longer than 15 characters"
         return true
       }
       else {
@@ -208,15 +260,15 @@ export default {
       this.criteriaArray[2] = false
       var numbers = /[0-9]/g;
       if (!this.password.match(numbers) && this.password.length < 8) {
-        this.passwordCriteria = "Invalid Password:<br>At least 8 Characters with a Numeric Number"
+        this.passwordCriteria = "Invalid Password: At least 8 Characters with a Numeric Number"
         return true
       }
       else if (!this.password.match(numbers)) {
-        this.passwordCriteria = "Invalid Password:<br>At least One Numeric Number"
+        this.passwordCriteria = "Invalid Password: At least One Numeric Number"
         return true
       }
       else if (this.password.length < 8) {
-        this.passwordCriteria = "Invalid Password:<br>At least 8 Characters"
+        this.passwordCriteria = "Invalid Password: At least 8 Characters"
         return true
       }else{
         this.checkingPassword = false
@@ -289,13 +341,26 @@ export default {
 </script>
 
 <style scoped>
+    h1 {
+      font-weight: bold;
+    }
     .registerForm {
       width: 90%;
       background-color: #f0f0f0;
       height: 35px;
       border-radius: 10px;
       border: 3px solid transparent;
-      padding: 0;
+      /* padding: 0; */
+      font-size: 15px;
+      
+    }
+
+    .form-control {
+      width: 90%;
+      background-color: #f0f0f0;
+      height: 35px;
+      border-radius: 10px;
+      border: 3px solid transparent;
       font-size: 15px;
       
     }
@@ -352,12 +417,13 @@ export default {
     }
 
     #login {
-      font-size: 12px;
+      font-size: 15px;
       color: black;
+      text-align: center;
     }
 
     #invalidCritera {
-      font-size: 10px;
+      font-size: px;
       width:90%;
       color: red;
       margin : 0px;
@@ -367,13 +433,24 @@ export default {
     
     }
 
+    .form-details {
+        background-color: white;
+        /* padding: 20px; */
+        /* padding-left: 0px; */
+        /* border-radius: 10px; */
+        margin-right: 300px;
+        margin-left: 300px;
+        /* overflow:clip; */
+    }
+
     .title {
-      padding: 0px 0px 50px 0px;
+      margin-bottom: 30px;
       color: rgb(0, 15, 92);
     }
 
     label {
       color: rgb(0, 15, 92);
+      font-size: 12px;
     }
 
     #registerBtn, #invalidRegisterBtn {
@@ -382,14 +459,17 @@ export default {
       font-weight: bold;
       width: 120px;
       height: 50px;
-      align-items: center;
-      justify-content: center;
+      align-items: right;
+      justify-content: right;
     }
 
     #invalidRegisterBtn {
       background-color: #f0f0f0;
       border:0;
       color: grey;
+      justify-content: right;
+      align-items: right;
+      /* margin-right: 100px; */
     }
 
     /* #visibility:hover{
@@ -401,10 +481,35 @@ export default {
        /* background-color: gray; */
       /* color: blue; */
       text-align: left;
-      /* border: 1px solid black; */
+      border: 1px solid black;
     }
 
 
+
+  .background {
+    background-color: rgb(220,223,240);
+    padding: 40px;
+    border-radius: 10px;
+  }
+
+  #photo {
+    padding: 40px;
+    background-image: url("@/assets/background 3.jpeg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .col-form-label {
+    text-align: right;
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+  }
+
+  .col-sm-10 {
+    padding-left: 15px;
+  }
 
 
 </style>
