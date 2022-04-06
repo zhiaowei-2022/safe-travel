@@ -32,7 +32,7 @@
   <div class="container">
     <div class="row">
       <div class="col" v-for="cat in categories" :key="cat">
-        <div class="btn btn-primary" v-on:click="goFilter(cat)">{{ cat }}</div>
+        <div class="btn btn-primary" @click="readFirebase(cat)">{{ cat }}</div>
       </div>
     </div>
   </div>
@@ -46,21 +46,22 @@
               :id="item.Name"
               :src="item.ImageURL"
               :alt="item.Name"
-              :click="openModal(item.Name, item.ImageURL, item.Rating, item.Address, item.Phone, item.Description, item.Website)"
+              @click="openModal(item.Name, item.ImageURL, item.Rating, item.Address, item.Contact, item.Description, item.Website)"
             />
             <figcaption>{{ item.Name }}</figcaption>
           </figure>
         </div>
+        <div class="col" v-for="i in numberOfColumns - row.length" :key="i"></div>
       </div>
     </div>
   </div>
   <div id="searchResult" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-      <span class="close" :click="closeModal()">&times;</span>
+      <span class="close" @click="closeModal()">&times;</span>
       <div class="container">
         <div class="row">
-          <div id="photo">
+          <div id="photo" style="overlay: ">
             <!-- img -->
           </div>
         </div>
@@ -70,7 +71,7 @@
               Name
               Rating
               Address
-              Phone
+              Contact
               Description
               Website
               -->
@@ -90,10 +91,14 @@ const db = getFirestore(firebaseApp);
 
 export default {
   name: "FoodAndDining",
+  computed: {
+    // return computed value methods here
+  },
   methods: {
     // Read Firebase
-    async readFirebase() {
+    async readFirebase(variable) {
       // user in params
+      this.database = [];
       var z = await getDocs(collection(db, "FnB"));
       let counter = 0;
       let container = [];
@@ -102,24 +107,33 @@ export default {
         if (!this.categories.includes(row.Category)) {
           this.categories.push(row.Category);
         }
-        container.push(row);
-        counter++;
+
+        if (variable === undefined || variable == "All") {
+          container.push(row);
+          counter++;
+        } else {
+          if (variable == row.Category) {
+            container.push(row);
+            counter++;
+          }
+        }
+
         if (counter % this.numberOfColumns == 0 || counter == z.length) {
           this.database.push(container);
           container = [];
         }
       });
-    },
-    goFilter(cat) {
-      console.log(cat);
+      if (container.length < this.numberOfColumns) {
+        this.database.push(container);
+      }
     },
     openModal(name, imageURL, rating, address, contact, desc, web) {
       var modal = document.getElementById("searchResult");
-      console.log(modal)
-      // need to insert Information into Modal
       var photoinfo = document.getElementById("photo");
-      photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%'>";
-
+      photoinfo.innerHTML =
+        "<img src='" +
+        imageURL +
+        " 'style='width:100%; border-radius: 10px;'><br/><br/>";
       var resultbox = document.getElementById("resultinfo");
       resultbox.innerHTML =
         "<h4><b>" +
@@ -140,12 +154,11 @@ export default {
         "For more information please visit <a href='" +
         web +
         "' target='_blank' style='color:black'>here</a> <br>";
-      //modal.style.display = "block";
+      modal.style.display = "block";
     },
     closeModal() {
       var modal = document.getElementById("searchResult");
-      console.log(modal)
-      //modal.style.display = "none";
+      modal.style.display = "none";
     },
   },
   data() {
@@ -153,6 +166,7 @@ export default {
       database: [],
       categories: ["All"],
       numberOfColumns: 3,
+      temp_db: "",
     };
   },
   mounted() {
@@ -169,12 +183,9 @@ export default {
         this.user = user;
       }
     });
+
     this.readFirebase();
   },
-  updated() {
-    
-  }
-  // modifying firebase database script here for filtering
 };
 </script>
 
@@ -227,11 +238,51 @@ label {
   text-align: left;
 }
 
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active    {
-        background-color: #3276b1;
-        color: #FFF;
-        border-color: #285e8e;
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  /* overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  text-align: right;
+  padding-right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#resultinfo {
+  text-align: left;
+}
+
+#fav {
+  width: 5em;
+  text-align: center;
 }
 </style>

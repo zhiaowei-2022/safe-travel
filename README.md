@@ -9,6 +9,9 @@ npm install
 ```
 npm install firebase
 npm install vue-router@4
+
+@josephleejj to add in the installation packages
+
 ```
 
 ### Compiles and hot-reloads for development

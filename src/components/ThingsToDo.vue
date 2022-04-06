@@ -124,11 +124,9 @@ export default {
 
 
         openModal(name, imageURL, rating, address, contact, desc, web,category) {
-                        
             var modal = document.getElementById("searchResult");
             var photoinfo = document.getElementById("photo");
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px;padding:10px'>";
-            
             //console.log(this.favourites.length)
             if (getAuth().currentUser != null) {
               var favbut = document.getElementById("favbut");
