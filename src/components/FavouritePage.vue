@@ -66,9 +66,11 @@
             <!-- img -->
           </div>
         </div>
-        <div class="row" v-if="user" style="background-color:white">
+        <div class="row" style="background-color:transparent">
             <div class="col-8"></div>
-            <div class="col-4" id="favbut" style="text-align:right"></div>
+            <div class="col-4"  style="text-align:right">
+                <button class="btn btn-primary" id="favbut">Remove from favourites</button>
+            </div>
         </div>
         <div >
           <div id="resultinfo">
@@ -102,63 +104,44 @@ export default {
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
             var favbut = document.getElementById("favbut");
             favbut.innerHTML = "";
-            var delbut = document.createElement("button")
+            
             
                 for(var index = 0; index < this.favourites.length; index++) {
                         console.log(this.favourites[index]["Name"] == name)
                         if (this.favourites[index]["Name"] == name) {
                                 createDelBut(name,this.favourites);
-                                /*
-                                delbut.className = "btn btn-danger"
-                                delbut.id = String(name)
-                                delbut.innerHTML = "Remove from Favourites"
-                                delbut.onclick = function () {
-                                    //console.log(name + " " + imageURL + " " + rating + " " + address + " " + contact + " " + desc + " " + web + " " + category)
-                                    removeFav(name)
-                                    console.log("removed")
-                                } 
-                                favbut.append(delbut)*/
+                                
                                 break;
                             } else {
                                 createAddBut(name, this.favourites)
-                                /*
-                                delbut.className = "btn btn-danger"
-                                delbut.id = String(name)
-                                delbut.innerHTML = "Add to Favourites"
-                                delbut.onclick = function () {
-                                    // console.log(name + " " + imageURL + " " + rating + " " + address + " " + contact + " " + desc + " " + web + " " + category)
-                                    addFav(name, imageURL, rating, address, contact, desc, web,category)
-                                } 
-                                favbut.append(delbut) 
-                                */
+                                
                             }
                     
                 }
             function createDelBut(name,favourites) {
-                delbut.className = "btn btn-primary"
-                delbut.id = String(name)
-                delbut.innerHTML = "Remove from Favourites"
-                delbut.onclick = function () {
+                favbut.id = String(name)
+                favbut.innerHTML = "Remove from Favourites"
+                favbut.onclick = function () {
                     removeFav(name,favourites)
                     console.log("removed")
                     console.log(favourites)
                     createAddBut(name,favourites)
                 } 
-                favbut.append(delbut)
+                
             }
 
             function createAddBut(name,favourites) {
-                delbut.className = "btn btn-primary"
-                delbut.id = String(name)
-                delbut.innerHTML = "Add to Favourites"
-                delbut.onclick = function () {
+                
+                favbut.id = String(name)
+                favbut.innerHTML = "Add to Favourites"
+                favbut.onclick = function () {
                     //console.log(name)
                     console.log(this.database)
                     addFav(name,favourites)
                     console.log("Added")
                     createDelBut(name,favourites)
                 } 
-                favbut.append(delbut)
+                
             }
             
             async function removeFav(name,favourites){
@@ -353,6 +336,14 @@ img {
     object-fit: cover;
     margin:5px;
     height: 200px;
+}
+
+.btn-primary, button {
+    background-color: lightskyblue;
+    border-color: lightskyblue;
+    color: black;
+    font-weight: bold;
+    float: right;
 }
 
 
