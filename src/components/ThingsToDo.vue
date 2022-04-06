@@ -20,6 +20,7 @@
     </div>
     <br>
     <div class="container">
+    <h4> Pick a category </h4>
     <div class="row">
       <div class="col" v-for="cat in categories" :key="cat">
         <div class="btn btn-primary" v-on:click="goFilter(cat)" style="width:100%">{{ cat }}</div>
@@ -29,6 +30,7 @@
   <br /><br />
   <div class="container" >
     <div>
+      <h2> Tourist Attractions </h2>
       <div class="row" v-for="row in database" :key="row">
         <div class="col-4" v-for="item in row" :key="item">
           <figure>
@@ -122,76 +124,51 @@ export default {
 
 
         openModal(name, imageURL, rating, address, contact, desc, web,category) {
-            const fbuser = getAuth().currentUser.email;            
+                        
             var modal = document.getElementById("searchResult");
             var photoinfo = document.getElementById("photo");
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px;padding:10px'>";
-            var favbut = document.getElementById("favbut");
-            favbut.innerHTML = "";
-            var delbut = document.createElement("button")
+            
             //console.log(this.favourites.length)
-            if (this.favourites.length > 0){
-                for(var index = 0; index < this.favourites.length; index++) {
-                        console.log(this.favourites[index]["Name"] == name)
-                        if (this.favourites[index]["Name"] == name) {
-                                delbut.className = "btn btn-danger"
-                                delbut.id = String(name)
-                                delbut.innerHTML = "Remove from Favourites"
-                                delbut.onclick = function () {
-                                    removeFav(name)
-                                    console.log("removed")
-                                } 
-                                favbut.append(delbut) 
-                                break;
-                            } else {
-                                delbut.className = "btn btn-danger"
-                                delbut.id = String(name)
-                                delbut.innerHTML = "Add to Favourites"
-                                delbut.onclick = function () {
-                                    addFav(name, imageURL, rating, address, contact, desc, web,category)
-                                } 
-                                favbut.append(delbut) 
-                            }
-                    
-                }
-            
-            } else {
-                delbut.className = "btn btn-danger"
-                delbut.id = String(name)
-                delbut.innerHTML = "Add to Favourites"
-                delbut.onclick = function () {
-                    addFav(name, imageURL, rating, address, contact, desc, web,category)
-                } 
-                favbut.append(delbut) 
+            if (getAuth().currentUser != null) {
+              var favbut = document.getElementById("favbut");
+              var delbut = document.createElement("button")
+              favbut.innerHTML = "";
+              if (this.favourites.length > 0){
+                  
+                  for(var index = 0; index < this.favourites.length; index++) {
+                          console.log(this.favourites[index]["Name"] == name)
+                          if (this.favourites[index]["Name"] == name) {
+                                  delbut.className = "btn btn-primary"
+                                  delbut.id = String(name)
+                                  delbut.innerHTML = "Remove from Favourites"
+                                  delbut.onclick = function () {
+                                      removeFav(name)
+                                      console.log("removed")
+                                  } 
+                                  favbut.append(delbut) 
+                                  break;
+                              } else {
+                                  delbut.className = "btn btn-primary"
+                                  delbut.id = String(name)
+                                  delbut.innerHTML = "Add to Favourites"
+                                  delbut.onclick = function () {
+                                      addFav(name, imageURL, rating, address, contact, desc, web,category,"Tourist Attractions")
+                                  } 
+                                  favbut.append(delbut) 
+                              }
+                  }
+              
+              } else {
+                  delbut.className = "btn btn-primary"
+                  delbut.id = String(name)
+                  delbut.innerHTML = "Add to Favourites"
+                  delbut.onclick = function () {
+                      addFav(name, imageURL, rating, address, contact, desc, web,category,"Tourist Attractions")
+                  } 
+                  favbut.append(delbut) 
+              }
             }
-            
-            async function addFav(name, imageURL, rating, address, contact, desc, web,category) {
-                try {
-                    const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
-                        Name: name,
-                        ImageURL: imageURL,
-                        Rating: rating,
-                        Address: address,
-                        Contact: contact,
-                        Description: desc,
-                        Website: web,
-                        Category: category
-                })
-                console.log(docRef)
-                                    
-                } catch (error) {
-                    console.error("Error adding document:", error)
-                }
-                
-            }
-            async function removeFav(name){
-                var itemname = name
-                console.log("Removing Favourites: ", itemname)
-                await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
-                console.log("Document removed")
-                
-            }
-            
 
             var resultbox = document.getElementById("resultinfo");
             resultbox.innerHTML =
@@ -214,6 +191,37 @@ export default {
                 web +
                 "' target='_blank' style='color:black'>here</a> <br>";
                 modal.style.display = "block";
+            
+            async function addFav(name, imageURL, rating, address, contact, desc, web,category,overhead) {
+                const fbuser = getAuth().currentUser.email;
+                try {
+                    const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
+                        Name: name,
+                        ImageURL: imageURL,
+                        Rating: rating,
+                        Address: address,
+                        Contact: contact,
+                        Description: desc,
+                        Website: web,
+                        Category: category,
+                        Overhead: overhead
+                })
+                
+                console.log(docRef)
+                                    
+                } catch (error) {
+                    console.error("Error adding document:", error)
+                }
+                
+            }
+            async function removeFav(name){
+                const fbuser = getAuth().currentUser.email;
+                var itemname = name
+                console.log("Removing Favourites: ", itemname)
+                await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
+                console.log("Document removed")
+                
+            }
         },
         
         closeModal() {
@@ -311,13 +319,13 @@ h1, h3 {
   text-align: left;
   margin-left: 180px;
   font-weight: bold;
-  color: white;
+  color: rgb(0, 15, 92);
 }
-h4 {
+h2,h4 {
     text-align: left;
-    margin-left: 30px;
+    margin-left: 20px;
     font-weight: bold;
-    color: rgb(1, 1, 87);
+    color: rgb(0, 15, 92);
 }
 .row {
     background-color: transparent;
@@ -332,10 +340,13 @@ img {
   margin:5px
 }
 button {
-    margin-bottom: 15px;
-    background-color: rgb(0, 15, 95, 0.05);
-    color: rgb(0, 15, 95);
+    background-color: lightskyblue;
+    border-color: lightskyblue;
+    color: black;
+    font-weight: bold;
+    float: right;
 }
+
 .form-details {
   padding: 20px;
   border-radius: 10px;
@@ -391,12 +402,13 @@ label {
     text-align: left;
 }
 
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active    {
-        background-color: red;
-        color: #FFF;
-        border-color: #285e8e;
+.btn-primary, button {
+    background-color: lightskyblue;
+    border-color: lightskyblue;
+    color: black;
+    font-weight: bold;
+    float: right;
 }
+
 
 </style>
