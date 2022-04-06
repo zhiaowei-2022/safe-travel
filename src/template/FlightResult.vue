@@ -21,9 +21,8 @@
                 <div class="flight-name"> {{ arrivalCountryId }} {{arrivalTime}}</div>
                 <div class="flight-body"> {{ arrivalCountryName }} </div>
             </div>
-            <div class="col col-lg-2">
-                <!-- added to likes -->
-                <div v-if="user" class="flight-price-added"> {{price }} </div>
+            <div class="col col-lg-2"> 
+                <div class="flight-price-added"> {{ price }} </div>
                 <div v-if="user">
                     <!-- not added to likes -->
                     <!-- <div class="flight-price"> {{ price }} </div> -->

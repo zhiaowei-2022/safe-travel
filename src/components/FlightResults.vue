@@ -52,7 +52,7 @@
         <br>
         <h2>Return - {{ destinationCountry }} to {{ originCountry }}</h2>
         <br>
-        <div v-if="database.length !== 0">
+        <div v-if="returnDatabase.length !== 0">
             <div v-for="flight in returnDatabase" v-bind:key="flight.uid">
                 <FlightResult 
                 :airlinePhoto="flight.airlinePic"
@@ -150,6 +150,24 @@
             </form>
         </div>
     </div>
+
+    <div id="errorModal" class="modal">
+        <div class="modal-content" id="error-modal-content">
+            <div class="modal-header">
+                <h5>Invalid Options</h5>
+            </div>
+            <div class="modal-body">
+                <div id="errorMsg"></div>
+                <img id="no-results" src="@/assets/sad.png" alt=""/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                    Search Again
+                </button>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -184,6 +202,13 @@ export default {
             classType: this.$route.query.classType,
             manyPassengers: this.$route.query.manyPassengers,
             user : false,
+
+            newOriginCountry: this.$route.query.originCountry,
+            newDestinationCountry:this.$route.query.destinationCountry,
+            newDepartureDate: this.$route.query.departureDate,
+            newArrivalDate: this.$route.query.arrivalDate,
+            newNoOfPassengers: this.$route.query.noOfPassengers,
+            newClassType: this.$route.query.classType,
         }
     },
 
@@ -256,7 +281,7 @@ export default {
               querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.data()
-                // console.log("im here" + doc.id + "=>" + doc.data());
+                console.log("im here" + doc.id + "=>" + doc.data());
                 this.returnDatabase.push(data)
             });
         },
@@ -272,6 +297,8 @@ export default {
         },
 
         async modifySearch() {
+            var modal = document.getElementById("errorModal");
+            var error = document.getElementById("errorMsg")
             this.originCountry = this.newOriginCountry
             this.destinationCountry = this.newDestinationCountry
             this.departureDate = this.newDepartureDate
@@ -280,11 +307,40 @@ export default {
             this.classType = this.newClassType
             this.database = []
             this.returnDatabase = []
-            this.isOneWayFlightSearchValid()
-            if (this.isOneWay == false) { // return flight
-                this.isReturnFlightSearchValid()
+
+            if (this.newOriginCountry != "" && this.newDestinationCountry != "" && this.newDepartureDate != "" && this.classType != "") {
+                console.log("missing search")
+                if (this.newNoOfPassengers >= 1) {
+                    console.log("check passengers")
+                    if (this.isOneWay == true) {
+                        // one way flight
+                        this.isOneWayFlightSearchValid()
+                    } else {
+                        console.log("check return flight")
+                        // return flight
+                        if(this.newArrivalDate > this.newDepartureDate) {
+                            console.log("check dates")
+                            this.isOneWayFlightSearchValid()
+                            this.isReturnFlightSearchValid()
+                        } else {
+                            modal.style.display = "block"
+                            error.innerHTML = "<h5><b> Please ensure that the return date is after the departure date. </h6>"
+                        }
+                    }
+                } else {
+                    modal.style.display = "block"
+                    error.innerHTML = "<h6> Please ensure that the number of passengers is a positive number. </h6>"
+                }
+            } else {
+                modal.style.display = "block"
+                error.innerHTML = "<h6> Please fill up all fields to start searching. </h6>"
             }
             this.closeSearchModal()
+        },
+
+        closeErrorModal() {
+            var modal = document.getElementById("errorModal");
+            modal.style.display = "none"
         },
     }
 }
