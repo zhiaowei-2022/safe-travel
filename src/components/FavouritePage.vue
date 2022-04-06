@@ -135,7 +135,7 @@ export default {
                     
                 }
             function createDelBut(name,favourites) {
-                delbut.className = "btn btn-danger"
+                delbut.className = "btn btn-primary"
                 delbut.id = String(name)
                 delbut.innerHTML = "Remove from Favourites"
                 delbut.onclick = function () {
@@ -148,7 +148,7 @@ export default {
             }
 
             function createAddBut(name,favourites) {
-                delbut.className = "btn btn-danger"
+                delbut.className = "btn btn-primary"
                 delbut.id = String(name)
                 delbut.innerHTML = "Add to Favourites"
                 delbut.onclick = function () {
@@ -354,6 +354,7 @@ img {
     margin:5px;
     height: 200px;
 }
+
 
 
 </style>>
