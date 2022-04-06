@@ -62,6 +62,7 @@
             <figcaption>{{ item.Name }}</figcaption>
           </figure>
         </div>
+        <div class="col" v-for="i in numberOfColumns - row.length" :key="i"></div>
       </div>
     </div>
   </div>
@@ -71,7 +72,7 @@
       <span class="close" @click="closeModal()">&times;</span>
       <div class="container">
         <div class="row">
-          <div id="photo">
+          <div id="photo" style="overlay: ">
             <!-- img -->
           </div>
           <div class="row" v-if="user">
@@ -85,7 +86,7 @@
               Name
               Rating
               Address
-              Phone
+              Contact
               Description
               Website
               -->
@@ -107,11 +108,12 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-
 const db = getFirestore(firebaseApp);
-
 export default {
   name: "FoodAndDining",
+  computed: {
+    // return computed value methods here
+  },
   methods: {
     // Read Firebase
     changeData(){
@@ -178,72 +180,32 @@ export default {
                     }
             }
     },
-    openModal(name, imageURL, rating, address, contact, desc, web, category) {
+    openModal(name, imageURL, rating, address, contact, desc, web) {
       var modal = document.getElementById("searchResult");
       var photoinfo = document.getElementById("photo");
       photoinfo.innerHTML =
         "<img src='" +
         imageURL +
         " 'style='width:100%;border-radius: 30px;padding:10px'>";
-      //console.log(this.favourites.length)
+      console.log(this.favourites.length)
       if (getAuth().currentUser != null) {
         var favbut = document.getElementById("favbut");
         var delbut = document.createElement("button");
         favbut.innerHTML = "";
         if (this.favourites.length > 0) {
           for (var index = 0; index < this.favourites.length; index++) {
-            console.log(this.favourites[index]["Name"] == name);
+            console.log(this.favourites[index]["Name"] == name)
             if (this.favourites[index]["Name"] == name) {
-              delbut.className = "btn btn-primary";
-              delbut.id = String(name);
-              delbut.innerHTML = "Remove from Favourites";
-              delbut.onclick = function () {
-                removeFav(name);
-                console.log("removed");
-              };
-              favbut.append(delbut);
+              createDelBut(name,this.allinfo);
               break;
             } else {
-              delbut.className = "btn btn-primary";
-              delbut.id = String(name);
-              delbut.innerHTML = "Add to Favourites";
-              delbut.onclick = function () {
-                addFav(
-                  name,
-                  imageURL,
-                  rating,
-                  address,
-                  contact,
-                  desc,
-                  web,
-                  category,
-                  "Food And Dining"
-                );
-              };
-              favbut.append(delbut);
+              createAddBut(name, this.allinfo)
             }
           }
         } else {
-          delbut.className = "btn btn-primary";
-          delbut.id = String(name);
-          delbut.innerHTML = "Add to Favourites";
-          delbut.onclick = function () {
-            addFav(
-              name,
-              imageURL,
-              rating,
-              address,
-              contact,
-              desc,
-              web,
-              category,
-              "Food And Dining"
-            );
-          };
-          favbut.append(delbut);
+          createAddBut(name, this.allinfo)
         }
       }
-
       var resultbox = document.getElementById("resultinfo");
       resultbox.innerHTML =
         "<h4><b>" +
@@ -264,8 +226,67 @@ export default {
         "For more information please visit <a href='" +
         web +
         "' target='_blank' style='color:black'>here</a> <br>";
-      modal.style.display = "block";
-
+        modal.style.display = "block";
+      
+        function createDelBut(name,allinfo) {
+                delbut.className = "btn btn-primary"
+                delbut.id = String(name)
+                delbut.innerHTML = "Remove from Favourites"
+                delbut.onclick = function () {
+                    removeFav(name,allinfo)
+                    console.log("removed")
+                    console.log(allinfo)
+                    createAddBut(name,allinfo)
+                } 
+                favbut.append(delbut)
+            }
+            function createAddBut(name,allinfo) {
+                delbut.className = "btn btn-primary"
+                delbut.id = String(name)
+                delbut.innerHTML = "Add to Favourites"
+                delbut.onclick = function () {
+                    console.log(allinfo)
+                    addFav(name,allinfo)
+                    console.log("Added")
+                    createDelBut(name,allinfo)
+                } 
+                favbut.append(delbut)
+            }
+            async function removeFav(name,allinfo){
+                const fbuser = getAuth().currentUser.email;
+                var itemname = name
+                console.log("Removing Favourites: ", itemname)
+                await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
+                console.log("Document removed")
+                console.log(allinfo)
+            }
+            async function addFav(name,allinfo) {
+                const fbuser = getAuth().currentUser.email;
+                //console.log(favourites)
+                try {
+                    for(var i = 0; i < allinfo.length; i++){
+                        if(allinfo[i]["Name"] == name) {
+                            console.log(allinfo[i])
+                            const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
+                                Name: name,
+                                ImageURL: allinfo[i]["ImageURL"],
+                                Rating: allinfo[i]["Rating"],
+                                Address: allinfo[i]["Address"],
+                                Contact: allinfo[i]["Contact"],
+                                Description: allinfo[i]["Description"],
+                                Website: allinfo[i]["Website"],
+                                Category: allinfo[i]["Category"],
+                                Overhead: "Food And Dining"
+                            })
+                            console.log(docRef)
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error adding document:", error)
+                }
+                
+            }
+      /*
       function addFav(
         name,
         imageURL,
@@ -298,10 +319,7 @@ export default {
           console.error("Error adding document:", error);
         } finally {
           console.log("Document added");
-          setTimeout(function () {
-            console.log("1 sec timeout");
-            window.location.reload();
-          }, 1000);
+          
           //alert("Timeout")
           //window.location.reload()
         }
@@ -316,17 +334,30 @@ export default {
           doc(db, "Users/" + String(fbuser) + "/Favourites", itemname)
         );
         console.log("Document removed");
-        setTimeout(function () {
-          console.log("1 sec timeout");
-          window.location.reload();
-        }, 1000);
-      }
+        
+      } */
     },
     closeModal() {
       var modal = document.getElementById("searchResult");
       console.log(modal);
-      modal.style.display = "none"
+      modal.style.display = "none";
+      setTimeout(function () {
+          console.log("0.5 sec timeout");
+          window.location.reload();
+      }, 500);
     },
+    async readUserFirebase() {
+          
+            this.favourites = [];
+            const auth = getAuth();
+            const fbuser = auth.currentUser.email;
+            var z = await getDocs(collection(db,"Users/"+ String(fbuser)+"/Favourites"))
+            z.forEach((doc) => {
+                    let row = doc.data();
+                    this.favourites.push(row)
+                
+            });
+        }
   },
   data() {
     return {
@@ -344,11 +375,12 @@ export default {
       "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     );
     document.head.appendChild(jquery);
-
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
+        console.log(user.email)
+        this.readUserFirebase();
       }
     });
     this.readFirebase();
@@ -364,7 +396,6 @@ export default {
   height: 500px;
   padding-top: 100px;
 }
-
 h1,
 h3 {
   text-align: left;
@@ -372,41 +403,35 @@ h3 {
   font-weight: bold;
   color: white;
 }
-
 h2 {
   text-align: left;
   margin-left: 180px;
   font-weight: bold;
   color: rgb(1, 1, 87);
 }
-
 button {
   background-color: lightskyblue;
   border-color: lightskyblue;
   color: black;
   font-weight: bold;
 }
-
 img {
   width: 100%;
   height: 200px;
   border-radius: 10px;
   object-fit: cover;
 }
-
 .form-details {
   padding: 20px;
   border-radius: 10px;
   margin-right: 180px;
   margin-left: 160px;
 }
-
 label {
   color: white;
   float: left;
   text-align: left;
 }
-
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active {
@@ -414,7 +439,6 @@ label {
   color: #fff;
   border-color: #285e8e;
 }
-
 .row {
   background-color: transparent;
   align-items: center;
@@ -427,7 +451,6 @@ img {
   object-fit: cover;
   margin: 5px;
 }
-
 .form-details {
   padding: 20px;
   border-radius: 10px;
@@ -439,7 +462,6 @@ label {
   float: left;
   text-align: left;
 }
-
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
@@ -453,7 +475,6 @@ label {
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
-
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
@@ -462,7 +483,6 @@ label {
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */
 }
-
 /* The Close Button */
 .close {
   color: #aaa;
@@ -471,18 +491,15 @@ label {
   font-size: 28px;
   font-weight: bold;
 }
-
 .close:hover,
 .close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
-
 #resultinfo {
   text-align: left;
 }
-
 .btn-primary, button {
     background-color: lightskyblue;
     border-color: lightskyblue;
