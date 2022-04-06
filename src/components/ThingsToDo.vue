@@ -91,7 +91,6 @@ export default {
         },
         goFilter(cat) {
             console.log(cat);
-            // console.log(this.database)
             //console.log(this.allinfo)
             let counter = 0;
             let container = [];
@@ -116,119 +115,117 @@ export default {
                             counter++;
                         }
                     }
-                    if ( (counter % this.numberOfColumns == 0 || counter == this.allinfo.length || i == this.allinfo.length-1)
-                          && counter != 0 ) {
+                    if (counter % this.numberOfColumns == 0 || counter == this.allinfo.length || i == this.allinfo.length-1) {
                                 this.database.push(container);
                                 container = [];
                     }
             }
         },
-        openModal(name, imageURL, rating, address, contact, desc, web) {
+
+
+        openModal(name, imageURL, rating, address, contact, desc, web,category) {
             var modal = document.getElementById("searchResult");
             var photoinfo = document.getElementById("photo");
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px;padding:10px'>";
             //console.log(this.favourites.length)
             if (getAuth().currentUser != null) {
-              
               var favbut = document.getElementById("favbut");
               var delbut = document.createElement("button")
               favbut.innerHTML = "";
               if (this.favourites.length > 0){
+                  
                   for(var index = 0; index < this.favourites.length; index++) {
                           console.log(this.favourites[index]["Name"] == name)
                           if (this.favourites[index]["Name"] == name) {
-                              createDelBut(name,this.allinfo);
-                              break;
-                            } else {
-                                createAddBut(name, this.allinfo)
-                            }
+                                  delbut.className = "btn btn-primary"
+                                  delbut.id = String(name)
+                                  delbut.innerHTML = "Remove from Favourites"
+                                  delbut.onclick = function () {
+                                      removeFav(name)
+                                      console.log("removed")
+                                  } 
+                                  favbut.append(delbut) 
+                                  break;
+                              } else {
+                                  delbut.className = "btn btn-primary"
+                                  delbut.id = String(name)
+                                  delbut.innerHTML = "Add to Favourites"
+                                  delbut.onclick = function () {
+                                      addFav(name, imageURL, rating, address, contact, desc, web,category,"Tourist Attractions")
+                                  } 
+                                  favbut.append(delbut) 
+                              }
                   }
+              
               } else {
-                  createAddBut(name, this.allinfo)
+                  delbut.className = "btn btn-primary"
+                  delbut.id = String(name)
+                  delbut.innerHTML = "Add to Favourites"
+                  delbut.onclick = function () {
+                      addFav(name, imageURL, rating, address, contact, desc, web,category,"Tourist Attractions")
+                  } 
+                  favbut.append(delbut) 
               }
             }
+
             var resultbox = document.getElementById("resultinfo");
             resultbox.innerHTML =
-                "<h4><b>" + name + "</b></h4>" +
-                "<b>Rating:</b> " + rating + " / 5 <br>" +
-                "<b>Address:</b> " + address + "<br>" +
-                "<b>Phone:</b> " + contact + "<br><br>" +
-                "<h5><b>Description:</b></h5> " + desc + "<br><br>" +
-                "For more information please visit <a href='" + web + "' target='_blank' style='color:black'>here</a> <br>";
+                "<h4><b>" +
+                name +
+                "</b></h4>" +
+                "<b>Rating:</b> " +
+                rating +
+                " / 5 <br>" +
+                "<b>Address:</b> " +
+                address +
+                "<br>" +
+                "<b>Phone:</b> " +
+                contact +
+                "<br><br>" +
+                "<h5><b>Description:</b></h5> " +
+                desc +
+                "<br><br>" +
+                "For more information please visit <a href='" +
+                web +
+                "' target='_blank' style='color:black'>here</a> <br>";
                 modal.style.display = "block";
-                //console.log(category);
-
-            function createDelBut(name,allinfo) {
-                delbut.className = "btn btn-primary"
-                delbut.id = String(name)
-                delbut.innerHTML = "Remove from Favourites"
-                delbut.onclick = function () {
-                    removeFav(name,allinfo)
-                    console.log("removed")
-                    console.log(allinfo)
-                    createAddBut(name,allinfo)
-                } 
-                favbut.append(delbut)
-            }
-
-            function createAddBut(name,allinfo) {
-                delbut.className = "btn btn-primary"
-                delbut.id = String(name)
-                delbut.innerHTML = "Add to Favourites"
-                delbut.onclick = function () {
-                    console.log(allinfo)
-                    addFav(name,allinfo)
-                    console.log("Added")
-                    createDelBut(name,allinfo)
-                } 
-                favbut.append(delbut)
-            }
-
-            async function removeFav(name,allinfo){
+            
+            async function addFav(name, imageURL, rating, address, contact, desc, web,category,overhead) {
                 const fbuser = getAuth().currentUser.email;
-                var itemname = name
-                console.log("Removing Favourites: ", itemname)
-                await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
-                console.log("Document removed")
-                console.log(allinfo)
-            }
-
-            async function addFav(name,allinfo) {
-                const fbuser = getAuth().currentUser.email;
-                //console.log(favourites)
                 try {
-                    for(var i = 0; i < allinfo.length; i++){
-                        if(allinfo[i]["Name"] == name) {
-                            console.log(allinfo[i])
-                            const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
-                                Name: name,
-                                ImageURL: allinfo[i]["ImageURL"],
-                                Rating: allinfo[i]["Rating"],
-                                Address: allinfo[i]["Address"],
-                                Contact: allinfo[i]["Contact"],
-                                Description: allinfo[i]["Description"],
-                                Website: allinfo[i]["Website"],
-                                Category: allinfo[i]["Category"],
-                                Overhead: "Tourist Attractions"
-                            })
-                            console.log(docRef)
-                        }
-                    }
+                    const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
+                        Name: name,
+                        ImageURL: imageURL,
+                        Rating: rating,
+                        Address: address,
+                        Contact: contact,
+                        Description: desc,
+                        Website: web,
+                        Category: category,
+                        Overhead: overhead
+                })
+                
+                console.log(docRef)
+                                    
                 } catch (error) {
                     console.error("Error adding document:", error)
                 }
                 
             }
+            async function removeFav(name){
+                const fbuser = getAuth().currentUser.email;
+                var itemname = name
+                console.log("Removing Favourites: ", itemname)
+                await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
+                console.log("Document removed")
+                
+            }
         },
+        
         closeModal() {
             var modal = document.getElementById("searchResult");
             //console.log(modal)
             modal.style.display = "none";
-            setTimeout(function() {
-                    console.log(".5 sec timeout")
-                    window.location.reload()
-                  }, 500
-            )
         },
         async readFirebase() {
         // user in params
@@ -265,7 +262,6 @@ export default {
             //console.log(this.database)
         },
         async readUserFirebase() {
-          
             this.favourites = [];
             const auth = getAuth();
             const fbuser = auth.currentUser.email;
@@ -275,12 +271,7 @@ export default {
                     this.favourites.push(row)
                 
             });
-            /*console.log(this.favourites)
-            setTimeout(function() {
-                    console.log("1 sec timeout")
-                    window.location.reload()
-                  }, 1000
-            ) */
+            //console.log(this.favourites)
         }
     },
     data() {
@@ -311,7 +302,6 @@ export default {
         }
         });
         this.readFirebase();
-        
     }
 }
 </script>
