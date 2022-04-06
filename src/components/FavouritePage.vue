@@ -193,7 +193,7 @@ export default {
                     let row = doc.data();
                     if(row["Overhead"] == "Tourist Attractions") {
                         this.favouriteTA.push(row)
-                    } else if (row["Overhead"] == "Food and Dining") {
+                    } else if (row["Overhead"] == "Food And Dining") {
                         this.favouriteFB.push(row)
                     }
                     this.favourites.push(row)
@@ -246,6 +246,10 @@ h3 {
     margin-left: 10px;
     color:rgb(0, 15, 92);
     font-weight: bold;
+}
+
+img {
+    height: 200px;
 }
 
 .Favourite {
