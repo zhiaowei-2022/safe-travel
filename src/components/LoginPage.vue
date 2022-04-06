@@ -189,7 +189,7 @@ export default {
           }
           $('#exampleModal').modal('hide')
           $('#exampleModal1').modal('toggle')
-        });   
+        }); 
     },
     
   },

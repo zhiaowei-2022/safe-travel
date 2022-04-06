@@ -239,7 +239,14 @@ export default {
           }
           $('#loginModal').modal('hide')
           $('#exampleModal1').modal('toggle')
-        });   
+        });
+        console.log("reload")
+          setTimeout(function() {
+              console.log("1 sec timeout")
+              window.location.reload()
+            }, 1000
+          )
+        console.log("reloaded")   
     },
 
     async signOut() {
