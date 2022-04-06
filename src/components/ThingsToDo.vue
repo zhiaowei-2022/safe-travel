@@ -91,6 +91,7 @@ export default {
         },
         goFilter(cat) {
             console.log(cat);
+            // console.log(this.database)
             //console.log(this.allinfo)
             let counter = 0;
             let container = [];
@@ -115,25 +116,24 @@ export default {
                             counter++;
                         }
                     }
-                    if (counter % this.numberOfColumns == 0 || counter == this.allinfo.length || i == this.allinfo.length-1) {
+                    if ( (counter % this.numberOfColumns == 0 || counter == this.allinfo.length || i == this.allinfo.length-1)
+                          && counter != 0 ) {
                                 this.database.push(container);
                                 container = [];
                     }
             }
         },
-
-
         openModal(name, imageURL, rating, address, contact, desc, web,category) {
             var modal = document.getElementById("searchResult");
             var photoinfo = document.getElementById("photo");
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px;padding:10px'>";
             //console.log(this.favourites.length)
             if (getAuth().currentUser != null) {
+              
               var favbut = document.getElementById("favbut");
               var delbut = document.createElement("button")
               favbut.innerHTML = "";
               if (this.favourites.length > 0){
-                  
                   for(var index = 0; index < this.favourites.length; index++) {
                           console.log(this.favourites[index]["Name"] == name)
                           if (this.favourites[index]["Name"] == name) {
@@ -156,7 +156,6 @@ export default {
                                   favbut.append(delbut) 
                               }
                   }
-              
               } else {
                   delbut.className = "btn btn-primary"
                   delbut.id = String(name)
@@ -170,27 +169,15 @@ export default {
 
             var resultbox = document.getElementById("resultinfo");
             resultbox.innerHTML =
-                "<h4><b>" +
-                name +
-                "</b></h4>" +
-                "<b>Rating:</b> " +
-                rating +
-                " / 5 <br>" +
-                "<b>Address:</b> " +
-                address +
-                "<br>" +
-                "<b>Phone:</b> " +
-                contact +
-                "<br><br>" +
-                "<h5><b>Description:</b></h5> " +
-                desc +
-                "<br><br>" +
-                "For more information please visit <a href='" +
-                web +
-                "' target='_blank' style='color:black'>here</a> <br>";
+                "<h4><b>" + name + "</b></h4>" +
+                "<b>Rating:</b> " + rating + " / 5 <br>" +
+                "<b>Address:</b> " + address + "<br>" +
+                "<b>Phone:</b> " + contact + "<br><br>" +
+                "<h5><b>Description:</b></h5> " + desc + "<br><br>" +
+                "For more information please visit <a href='" + web + "' target='_blank' style='color:black'>here</a> <br>";
                 modal.style.display = "block";
             
-            async function addFav(name, imageURL, rating, address, contact, desc, web,category,overhead) {
+            function addFav(name, imageURL, rating, address, contact, desc, web,category,overhead) {
                 const fbuser = getAuth().currentUser.email;
                 try {
                     const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
@@ -204,13 +191,21 @@ export default {
                         Category: category,
                         Overhead: overhead
                 })
-                
                 console.log(docRef)
-                                    
                 } catch (error) {
                     console.error("Error adding document:", error)
+                } finally {
+                    console.log("Document added")                
+                    setTimeout(function() {
+                      console.log("1 sec timeout")
+                      window.location.reload()
+                      }, 1000
+                    ) 
+                    //alert("Timeout")
+                    //window.location.reload()
                 }
-                
+                //console.log("Timeout")
+                //
             }
             async function removeFav(name){
                 const fbuser = getAuth().currentUser.email;
@@ -218,10 +213,13 @@ export default {
                 console.log("Removing Favourites: ", itemname)
                 await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
                 console.log("Document removed")
-                
+                setTimeout(function() {
+                    console.log("1 sec timeout")
+                    window.location.reload()
+                  }, 1000
+                )
             }
         },
-        
         closeModal() {
             var modal = document.getElementById("searchResult");
             //console.log(modal)
@@ -262,6 +260,7 @@ export default {
             //console.log(this.database)
         },
         async readUserFirebase() {
+          
             this.favourites = [];
             const auth = getAuth();
             const fbuser = auth.currentUser.email;
@@ -271,7 +270,12 @@ export default {
                     this.favourites.push(row)
                 
             });
-            //console.log(this.favourites)
+            /*console.log(this.favourites)
+            setTimeout(function() {
+                    console.log("1 sec timeout")
+                    window.location.reload()
+                  }, 1000
+            ) */
         }
     },
     data() {
@@ -302,6 +306,7 @@ export default {
         }
         });
         this.readFirebase();
+        
     }
 }
 </script>
