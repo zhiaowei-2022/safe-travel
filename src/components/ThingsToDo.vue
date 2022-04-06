@@ -123,7 +123,7 @@ export default {
                     }
             }
         },
-        openModal(name, imageURL, rating, address, contact, desc, web,category) {
+        openModal(name, imageURL, rating, address, contact, desc, web) {
             var modal = document.getElementById("searchResult");
             var photoinfo = document.getElementById("photo");
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px;padding:10px'>";
@@ -137,36 +137,16 @@ export default {
                   for(var index = 0; index < this.favourites.length; index++) {
                           console.log(this.favourites[index]["Name"] == name)
                           if (this.favourites[index]["Name"] == name) {
-                                  delbut.className = "btn btn-primary"
-                                  delbut.id = String(name)
-                                  delbut.innerHTML = "Remove from Favourites"
-                                  delbut.onclick = function () {
-                                      removeFav(name)
-                                      console.log("removed")
-                                  } 
-                                  favbut.append(delbut) 
-                                  break;
-                              } else {
-                                  delbut.className = "btn btn-primary"
-                                  delbut.id = String(name)
-                                  delbut.innerHTML = "Add to Favourites"
-                                  delbut.onclick = function () {
-                                      addFav(name, imageURL, rating, address, contact, desc, web,category,"Tourist Attractions")
-                                  } 
-                                  favbut.append(delbut) 
-                              }
+                              createDelBut(name,this.allinfo);
+                              break;
+                            } else {
+                                createAddBut(name, this.allinfo)
+                            }
                   }
               } else {
-                  delbut.className = "btn btn-primary"
-                  delbut.id = String(name)
-                  delbut.innerHTML = "Add to Favourites"
-                  delbut.onclick = function () {
-                      addFav(name, imageURL, rating, address, contact, desc, web,category,"Tourist Attractions")
-                  } 
-                  favbut.append(delbut) 
+                  createAddBut(name, this.allinfo)
               }
             }
-
             var resultbox = document.getElementById("resultinfo");
             resultbox.innerHTML =
                 "<h4><b>" + name + "</b></h4>" +
@@ -176,54 +156,79 @@ export default {
                 "<h5><b>Description:</b></h5> " + desc + "<br><br>" +
                 "For more information please visit <a href='" + web + "' target='_blank' style='color:black'>here</a> <br>";
                 modal.style.display = "block";
-            
-            function addFav(name, imageURL, rating, address, contact, desc, web,category,overhead) {
-                const fbuser = getAuth().currentUser.email;
-                try {
-                    const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
-                        Name: name,
-                        ImageURL: imageURL,
-                        Rating: rating,
-                        Address: address,
-                        Contact: contact,
-                        Description: desc,
-                        Website: web,
-                        Category: category,
-                        Overhead: overhead
-                })
-                console.log(docRef)
-                } catch (error) {
-                    console.error("Error adding document:", error)
-                } finally {
-                    console.log("Document added")                
-                    setTimeout(function() {
-                      console.log("1 sec timeout")
-                      window.location.reload()
-                      }, 1000
-                    ) 
-                    //alert("Timeout")
-                    //window.location.reload()
-                }
-                //console.log("Timeout")
-                //
+                //console.log(category);
+
+            function createDelBut(name,allinfo) {
+                delbut.className = "btn btn-primary"
+                delbut.id = String(name)
+                delbut.innerHTML = "Remove from Favourites"
+                delbut.onclick = function () {
+                    removeFav(name,allinfo)
+                    console.log("removed")
+                    console.log(allinfo)
+                    createAddBut(name,allinfo)
+                } 
+                favbut.append(delbut)
             }
-            async function removeFav(name){
+
+            function createAddBut(name,allinfo) {
+                delbut.className = "btn btn-primary"
+                delbut.id = String(name)
+                delbut.innerHTML = "Add to Favourites"
+                delbut.onclick = function () {
+                    console.log(allinfo)
+                    addFav(name,allinfo)
+                    console.log("Added")
+                    createDelBut(name,allinfo)
+                } 
+                favbut.append(delbut)
+            }
+
+            async function removeFav(name,allinfo){
                 const fbuser = getAuth().currentUser.email;
                 var itemname = name
                 console.log("Removing Favourites: ", itemname)
                 await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
                 console.log("Document removed")
-                setTimeout(function() {
-                    console.log("1 sec timeout")
-                    window.location.reload()
-                  }, 1000
-                )
+                console.log(allinfo)
+            }
+
+            async function addFav(name,allinfo) {
+                const fbuser = getAuth().currentUser.email;
+                //console.log(favourites)
+                try {
+                    for(var i = 0; i < allinfo.length; i++){
+                        if(allinfo[i]["Name"] == name) {
+                            console.log(allinfo[i])
+                            const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
+                                Name: name,
+                                ImageURL: allinfo[i]["ImageURL"],
+                                Rating: allinfo[i]["Rating"],
+                                Address: allinfo[i]["Address"],
+                                Contact: allinfo[i]["Contact"],
+                                Description: allinfo[i]["Description"],
+                                Website: allinfo[i]["Website"],
+                                Category: allinfo[i]["Category"],
+                                Overhead: "Tourist Attractions"
+                            })
+                            console.log(docRef)
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error adding document:", error)
+                }
+                
             }
         },
         closeModal() {
             var modal = document.getElementById("searchResult");
             //console.log(modal)
             modal.style.display = "none";
+            setTimeout(function() {
+                    console.log(".5 sec timeout")
+                    window.location.reload()
+                  }, 500
+            )
         },
         async readFirebase() {
         // user in params
