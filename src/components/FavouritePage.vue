@@ -10,7 +10,8 @@
                 <h3> Favourite Tourist Attraction </h3>
                 <div class="row" v-for="row in favouriteTA" :key="row" 
                     v-on:click="openModal(row.Name, row.ImageURL, row.Rating, row.Address, row.Contact, row.Description, row.Website)">
-                    <div class="col-4">
+                    
+                    <div class="col-4 imginput">
                     <figure >
                         <img
                         :id="row.Name"
@@ -33,7 +34,7 @@
                 <h3> Favourite Food and Dining </h3>
                 <div class="row" v-for="row in favouriteFB" :key="row" 
                     v-on:click="openModal(row.Name, row.ImageURL, row.Rating, row.Address, row.Contact, row.Description, row.Website)">
-                    <div class="col-4">
+                    <div class="col-4 imginput">
                     <figure >
                         <img
                         :id="row.Name"
@@ -300,25 +301,38 @@ h3 {
 #resultinfo {
         text-align: left;
 }
+
 .favouritesModal {
-        background-color: lightskyblue;
-        color:rgb(0, 15, 92);
+        
+        
+        color:black;
         align-items: center;
         margin:auto;
 }
 
 .row {
-        background-color: lightskyblue;
-        margin-bottom: 5px;
+        background-color: #f8f9fa;
+        border-color: #f8f9fa;
+
+        padding:10px 0px 0px 0px;
+        margin: 10px 0px 0px 0px;
+}
+.row:hover {
+    
+    color: #212529;
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+
 }
 img {
     width: 100%;
     border-radius: 10px;
     object-fit: cover;
-    margin:5px;
+    margin:auto;
     height: 200px;
 }
-.btn-primary, button {
+
+.btn-primary {
     background-color: lightskyblue;
     border-color: lightskyblue;
     color: black;

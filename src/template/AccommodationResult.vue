@@ -81,4 +81,12 @@ button {
     background-color: rgb(0, 15, 95, 0.05);
     color: rgb(0, 15, 95);
 }
+
+.btn-light:hover {
+    
+    color: #212529;
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+
+}
 </style>
