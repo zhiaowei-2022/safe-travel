@@ -6,10 +6,13 @@
 
   <NavBar/>
   <router-view/>
+  <br/><br/>
+  <FooterBar/>
 </template>
 
 <script>
 import NavBar from './components/NavBar.vue'
+import FooterBar from './components/FooterBar.vue'
 // import LoginPage from './components/LoginPage.vue'
 
 
@@ -18,6 +21,7 @@ export default {
   name: 'App',
   components: {
     NavBar,
+    FooterBar,
     // LoginPage
   },
 }

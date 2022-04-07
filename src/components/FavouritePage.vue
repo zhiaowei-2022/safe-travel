@@ -5,9 +5,11 @@
     
         <div v-if="user">
             <div> <h2> <strong> {{user.displayName}}'s Favourites </strong> </h2> </div>
-            <div class="container" >
+            <div class="container" id="Infocontainer" >
                 <div>
-                <div class="row" v-for="row in favourites" :key="row" v-on:click="openModal(row.Name, row.ImageURL, row.Rating, row.Address, row.Contact, row.Description, row.Website)">
+                <h3> Favourite Tourist Attraction </h3>
+                <div class="row" v-for="row in favouriteTA" :key="row" 
+                    v-on:click="openModal(row.Name, row.ImageURL, row.Rating, row.Address, row.Contact, row.Description, row.Website)">
                     <div class="col-4">
                     <figure >
                         <img
@@ -19,7 +21,30 @@
                         />
                     </figure>
                     </div>
-                    <div class="col - 8">
+                    <div class="col-8">
+                        <h4><strong> {{row.Name}} </strong></h4>
+                        <br/>
+                        <br/>
+                        <h5> Category: {{row.Category}} </h5>
+                    </div>
+                    
+                </div>
+                <br>
+                <h3> Favourite Food and Dining </h3>
+                <div class="row" v-for="row in favouriteFB" :key="row" 
+                    v-on:click="openModal(row.Name, row.ImageURL, row.Rating, row.Address, row.Contact, row.Description, row.Website)">
+                    <div class="col-4">
+                    <figure >
+                        <img
+                        :id="row.Name"
+                        :src="row.ImageURL"
+                        :alt="row.Name"
+                        
+                        style="width:100%"
+                        />
+                    </figure>
+                    </div>
+                    <div class="col-8">
                         <h4><strong> {{row.Name}} </strong></h4>
                         <br/>
                         <br/>
@@ -36,16 +61,18 @@
     <div class="modal-content">
       <span class="close" v-on:click="closeModal()">&times;</span>
       <div class="container">
-        <div class="row">
+        <div >
           <div id="photo">
             <!-- img -->
           </div>
         </div>
-        <div class="row" v-if="user">
+        <div class="row" style="background-color:transparent">
             <div class="col-8"></div>
-            <div class="col-4" id="favbut" style="text-align:right"></div>
+            <div class="col-4"  style="text-align:right">
+                <button class="btn btn-primary" id="favbut">Remove from favourites</button>
+            </div>
         </div>
-        <div class="row">
+        <div >
           <div id="resultinfo">
             <!--
               Name
@@ -70,66 +97,82 @@ const db = getFirestore(firebaseApp);
 export default {
     name:"FavouritePage",
     methods: {
-        openModal(name, imageURL, rating, address, contact, desc, web,category) {
+        openModal(name, imageURL, rating, address, contact, desc, web) {
             const fbuser = getAuth().currentUser.email;            
             var modal = document.getElementById("searchResult");
             var photoinfo = document.getElementById("photo");
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
             var favbut = document.getElementById("favbut");
             favbut.innerHTML = "";
-            var delbut = document.createElement("button")
-            console.log(this.favourites)
+            
             
                 for(var index = 0; index < this.favourites.length; index++) {
                         console.log(this.favourites[index]["Name"] == name)
                         if (this.favourites[index]["Name"] == name) {
-                                delbut.className = "btn btn-danger"
-                                delbut.id = String(name)
-                                delbut.innerHTML = "Remove from Favourites"
-                                delbut.onclick = function () {
-                                    //console.log(name + " " + imageURL + " " + rating + " " + address + " " + contact + " " + desc + " " + web + " " + category)
-                                    removeFav(name)
-                                    console.log("removed")
-                                } 
-                                favbut.append(delbut) 
+                                createDelBut(name,this.favourites);
+                                
                                 break;
                             } else {
-                                delbut.className = "btn btn-danger"
-                                delbut.id = String(name)
-                                delbut.innerHTML = "Add to Favourites"
-                                delbut.onclick = function () {
-                                    console.log(name + " " + imageURL + " " + rating + " " + address + " " + contact + " " + desc + " " + web + " " + category)
-                                    addFav(name, imageURL, rating, address, contact, desc, web,category)
-                                } 
-                                favbut.append(delbut) 
+                                createAddBut(name, this.favourites)
+                                
                             }
                     
                 }
-            
-            async function addFav(name, imageURL, rating, address, contact, desc, web,category) {
-                try {
-                    const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
-                        Name: name,
-                        ImageURL: imageURL,
-                        Rating: rating,
-                        Address: address,
-                        Contact: contact,
-                        Description: desc,
-                        Website: web,
-                        Category: category
-                })
-                console.log(docRef)
-                                    
-                } catch (error) {
-                    console.error("Error adding document:", error)
-                }
+            function createDelBut(name,favourites) {
+                favbut.id = String(name)
+                favbut.innerHTML = "Remove from Favourites"
+                favbut.onclick = function () {
+                    removeFav(name,favourites)
+                    console.log("removed")
+                    console.log(favourites)
+                    createAddBut(name,favourites)
+                } 
                 
             }
-            async function removeFav(name){
+            function createAddBut(name,favourites) {
+                
+                favbut.id = String(name)
+                favbut.innerHTML = "Add to Favourites"
+                favbut.onclick = function () {
+                    //console.log(name)
+                    console.log(this.database)
+                    addFav(name,favourites)
+                    console.log("Added")
+                    createDelBut(name,favourites)
+                } 
+                
+            }
+            
+            async function removeFav(name,favourites){
                 var itemname = name
                 console.log("Removing Favourites: ", itemname)
                 await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
                 console.log("Document removed")
+                console.log(favourites)
+            }
+            async function addFav(name,favourites) {
+                console.log(favourites)
+                try {
+                    for(var i = 0; i < favourites.length; i++){
+                        if(favourites[i]["Name"] == name) {
+                            console.log(favourites[i])
+                            const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
+                                Name: name,
+                                ImageURL: favourites[i]["ImageURL"],
+                                Rating: favourites[i]["Rating"],
+                                Address: favourites[i]["Address"],
+                                Contact: favourites[i]["Contact"],
+                                Description: favourites[i]["Description"],
+                                Website: favourites[i]["Website"],
+                                Category: favourites[i]["Category"],
+                                Overhead: favourites[i]["Overhead"]
+                            })
+                            console.log(docRef)
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error adding document:", error)
+                }
                 
             }
             var resultbox = document.getElementById("resultinfo");
@@ -153,12 +196,14 @@ export default {
                 web +
                 "' target='_blank' style='color:black'>here</a> <br>";
                 modal.style.display = "block";
+                // console.log(category)
         },
         
         closeModal() {
             var modal = document.getElementById("searchResult");
             //console.log(modal)
             modal.style.display = "none";
+            window.location.reload();
         },
         async readUserFirebase() {
             this.favourites = [];
@@ -167,19 +212,25 @@ export default {
             var z = await getDocs(collection(db,"Users/"+ String(fbuser)+"/Favourites"))
             z.forEach((doc) => {
                     let row = doc.data();
+                    if(row["Overhead"] == "Tourist Attractions") {
+                        this.favouriteTA.push(row)
+                    } else if (row["Overhead"] == "Food And Dining") {
+                        this.favouriteFB.push(row)
+                    }
                     this.favourites.push(row)
+                    this.database.push(row)
                     
             });
-            console.log(this.favourites)
+            //console.log(this.favourites)
             
         }
-
     },
     data() {
         return {
             user:false,
-            allinfo: [],
             favourites: [],
+            favouriteTA: [],
+            favouriteFB: [],
             database: [],
         }
     },
@@ -190,7 +241,6 @@ export default {
         "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         );
         document.head.appendChild(jquery);
-
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if(user) {
@@ -203,21 +253,23 @@ export default {
 </script>
 
 <style scoped>
-    h1,
-    h2 {
-    text-align: left;
-    margin-left: 180px;
+h1, h2 {
+    text-align: center;
+    
     font-weight: bold;
-    color: black;
-    }
-
-    .Favourite {
+    color: rgb(0, 15, 92);
+}
+h3 {
+    text-align: left;
+    margin-left: 10px;
+    color:rgb(0, 15, 92);
+    font-weight: bold;
+}
+.Favourite {
         margin-top:20px;
-    }
-
-
+}
     /* The Modal (background) */
-    .modal {
+.modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -228,46 +280,51 @@ export default {
     /* overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    }
-
+}
     /* Modal Content/Box */
-    .modal-content {
+.modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 50%; /* Could be more or less, depending on screen size */
-    }
-
+}
     /* The Close Button */
-    .close {
+.close {
     color: #aaa;
     text-align: right;
     padding-right:15px;
     font-size: 28px;
     font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
+}
+.close:hover,
+.close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
-    }
-
-    #resultinfo {
+}
+#resultinfo {
         text-align: left;
-    }
-
-    .row {
-        background-color: yellow;
+}
+.row {
+        background-color: lightskyblue;
+        color:rgb(0, 15, 92);
         align-items: center;
         margin: 10px 0px;
-    }
-    img {
+        height: 25%;
+}
+img {
     width: 100%;
     border-radius: 10px;
     object-fit: cover;
-    margin:5px
-    }
+    margin:5px;
+    height: 200px;
+}
+.btn-primary, button {
+    background-color: lightskyblue;
+    border-color: lightskyblue;
+    color: black;
+    font-weight: bold;
+    float: right;
+}
 </style>>

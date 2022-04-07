@@ -5,8 +5,7 @@
 
 <div id="photo">
   <div class="title">
-    <br>
-    <h1> Register for an account </h1>
+    <h1> Register for an account! </h1>
   </div>
 <div class="container background" style="width: 40%">
 <form>
@@ -342,6 +341,9 @@ export default {
 </script>
 
 <style scoped>
+    h1 {
+      font-weight: bold;
+    }
     .registerForm {
       width: 90%;
       background-color: #f0f0f0;
@@ -442,7 +444,7 @@ export default {
     }
 
     .title {
-      padding: 0px 0px 50px 0px;
+      margin-bottom: 30px;
       color: rgb(0, 15, 92);
     }
 
@@ -491,7 +493,7 @@ export default {
   }
 
   #photo {
-    padding: 20px;
+    padding: 40px;
     background-image: url("@/assets/background 3.jpeg");
     background-position: center;
     background-repeat: no-repeat;

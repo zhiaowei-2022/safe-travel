@@ -17,10 +17,10 @@
     <form class="form-details">
       <div class="row">
         <div class="col-lg-2">
-          <select name="country" class="form-select form-control">
-            <option value="sgp" selected>Singapore</option>
-            <option value="jpn">Japan</option>
-            <option value="tha">Thailand</option>
+          <select id="country" class="form-select form-control">
+            <option value="Singapore" selected>Singapore</option>
+            <option value="Japan">Japan</option>
+            <option value="Thailand">Thailand</option>
           </select>
         </div>
       </div>
@@ -32,7 +32,7 @@
   <div class="container">
     <div class="row">
       <div class="col" v-for="cat in categories" :key="cat">
-        <div class="btn btn-primary" v-on:click="goFilter(cat)">{{ cat }}</div>
+        <div class="btn btn-primary" style="width: 100%;" v-on:click="goFilter(cat)">{{ cat }}</div>
       </div>
     </div>
   </div>
@@ -40,28 +40,44 @@
   <div class="container">
     <div>
       <div class="row" v-for="row in database" :key="row">
-        <div class="col" v-for="item in row" :key="item">
+        <div class="col-4" v-for="item in row" :key="item">
           <figure>
             <img
               :id="item.Name"
               :src="item.ImageURL"
               :alt="item.Name"
-              :click="openModal(item.Name, item.ImageURL, item.Rating, item.Address, item.Phone, item.Description, item.Website)"
+              @click="
+                openModal(
+                  item.Name,
+                  item.ImageURL,
+                  item.Rating,
+                  item.Address,
+                  item.Contact,
+                  item.Description,
+                  item.Website,
+                  item.Category
+                )
+              "
             />
             <figcaption>{{ item.Name }}</figcaption>
           </figure>
         </div>
+        <div class="col" v-for="i in numberOfColumns - row.length" :key="i"></div>
       </div>
     </div>
   </div>
   <div id="searchResult" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-      <span class="close" :click="closeModal()">&times;</span>
+      <span class="close" @click="closeModal()">&times;</span>
       <div class="container">
         <div class="row">
-          <div id="photo">
+          <div id="photo" style="overlay: ">
             <!-- img -->
+          </div>
+          <div class="row" v-if="user">
+            <div class="col-8"></div>
+            <div class="col-4" id="favbut" style="text-align:right"></div>
           </div>
         </div>
         <div class="row">
@@ -70,7 +86,7 @@
               Name
               Rating
               Address
-              Phone
+              Contact
               Description
               Website
               -->
@@ -84,42 +100,112 @@
 <script>
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../firebase.js";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
-
 export default {
   name: "FoodAndDining",
+  computed: {
+    // return computed value methods here
+  },
   methods: {
     // Read Firebase
+    changeData(){
+      this.goFilter();
+    },
     async readFirebase() {
       // user in params
-      var z = await getDocs(collection(db, "FnB"));
-      let counter = 0;
-      let container = [];
-      z.forEach((doc) => {
-        let row = doc.data();
-        if (!this.categories.includes(row.Category)) {
-          this.categories.push(row.Category);
-        }
-        container.push(row);
-        counter++;
-        if (counter % this.numberOfColumns == 0 || counter == z.length) {
-          this.database.push(container);
-          container = [];
-        }
-      });
+      var countrybox = document.getElementById("country");
+      for(var i = 0; i < countrybox.length; i++){
+                var country = countrybox.options[i].value
+                var z = await getDocs(
+                  collection(db, `FoodAndDining/Restaurants/${country}`)
+                );
+              
+                let counter = 0;
+                let container = [];
+                z.forEach((doc) => {
+                  let row = doc.data();
+                  if (!this.categories.includes(row.Category)) {
+                    this.categories.push(row.Category);
+                  }
+                  row["Country"] = country
+                  container.push(row);
+                  this.allinfo.push(row);
+                  counter++;
+                  if (counter % this.numberOfColumns == 0 || counter == z.length) {
+                    this.database.push(container);
+                    container = [];
+                  }
+                });
+      }
     },
     goFilter(cat) {
-      console.log(cat);
+            console.log(cat);
+            // console.log(this.database)
+            //console.log(this.allinfo)
+            let counter = 0;
+            let container = [];
+            var country = document.getElementById("country").value
+            this.database = []
+            for(var i=0;i < this.allinfo.length; i++){
+                    let row = this.allinfo[i];
+                    //console.log(row);
+                    if(cat === undefined){
+                        if(row["Country"] == country) {
+                            container.push(row);
+                            counter++;
+                        }
+                    } else if (cat != "All") {
+                        if(row["Country"] == country && row["Category"] == cat) {
+                            container.push(row);
+                            counter++;
+                        } 
+                    } else {
+                        if(row["Country"] == country) {
+                            container.push(row);
+                            counter++;
+                        }
+                    }
+                    if ( (counter % this.numberOfColumns == 0 || counter == this.allinfo.length || i == this.allinfo.length-1)
+                          && counter != 0 ) {
+                                this.database.push(container);
+                                container = [];
+                    }
+            }
     },
     openModal(name, imageURL, rating, address, contact, desc, web) {
       var modal = document.getElementById("searchResult");
-      console.log(modal)
-      // need to insert Information into Modal
       var photoinfo = document.getElementById("photo");
-      photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%'>";
-
+      photoinfo.innerHTML =
+        "<img src='" +
+        imageURL +
+        " 'style='width:100%;border-radius: 30px;padding:10px'>";
+      console.log(this.favourites.length)
+      if (getAuth().currentUser != null) {
+        var favbut = document.getElementById("favbut");
+        var delbut = document.createElement("button");
+        favbut.innerHTML = "";
+        if (this.favourites.length > 0) {
+          for (var index = 0; index < this.favourites.length; index++) {
+            console.log(this.favourites[index]["Name"] == name)
+            if (this.favourites[index]["Name"] == name) {
+              createDelBut(name,this.allinfo);
+              break;
+            } else {
+              createAddBut(name, this.allinfo)
+            }
+          }
+        } else {
+          createAddBut(name, this.allinfo)
+        }
+      }
       var resultbox = document.getElementById("resultinfo");
       resultbox.innerHTML =
         "<h4><b>" +
@@ -140,19 +226,146 @@ export default {
         "For more information please visit <a href='" +
         web +
         "' target='_blank' style='color:black'>here</a> <br>";
-      //modal.style.display = "block";
+        modal.style.display = "block";
+      
+        function createDelBut(name,allinfo) {
+                delbut.className = "btn btn-primary"
+                delbut.id = String(name)
+                delbut.innerHTML = "Remove from Favourites"
+                delbut.onclick = function () {
+                    removeFav(name,allinfo)
+                    console.log("removed")
+                    console.log(allinfo)
+                    createAddBut(name,allinfo)
+                } 
+                favbut.append(delbut)
+            }
+            function createAddBut(name,allinfo) {
+                delbut.className = "btn btn-primary"
+                delbut.id = String(name)
+                delbut.innerHTML = "Add to Favourites"
+                delbut.onclick = function () {
+                    console.log(allinfo)
+                    addFav(name,allinfo)
+                    console.log("Added")
+                    createDelBut(name,allinfo)
+                } 
+                favbut.append(delbut)
+            }
+            async function removeFav(name,allinfo){
+                const fbuser = getAuth().currentUser.email;
+                var itemname = name
+                console.log("Removing Favourites: ", itemname)
+                await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
+                console.log("Document removed")
+                console.log(allinfo)
+            }
+            async function addFav(name,allinfo) {
+                const fbuser = getAuth().currentUser.email;
+                //console.log(favourites)
+                try {
+                    for(var i = 0; i < allinfo.length; i++){
+                        if(allinfo[i]["Name"] == name) {
+                            console.log(allinfo[i])
+                            const docRef = setDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", name), {
+                                Name: name,
+                                ImageURL: allinfo[i]["ImageURL"],
+                                Rating: allinfo[i]["Rating"],
+                                Address: allinfo[i]["Address"],
+                                Contact: allinfo[i]["Contact"],
+                                Description: allinfo[i]["Description"],
+                                Website: allinfo[i]["Website"],
+                                Category: allinfo[i]["Category"],
+                                Overhead: "Food And Dining"
+                            })
+                            console.log(docRef)
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error adding document:", error)
+                }
+                
+            }
+      /*
+      function addFav(
+        name,
+        imageURL,
+        rating,
+        address,
+        contact,
+        desc,
+        web,
+        category,
+        overhead
+      ) {
+        const fbuser = getAuth().currentUser.email;
+        try {
+          const docRef = setDoc(
+            doc(db, "Users/" + String(fbuser) + "/Favourites", name),
+            {
+              Name: name,
+              ImageURL: imageURL,
+              Rating: rating,
+              Address: address,
+              Contact: contact,
+              Description: desc,
+              Website: web,
+              Category: category,
+              Overhead: overhead,
+            }
+          );
+          console.log(docRef);
+        } catch (error) {
+          console.error("Error adding document:", error);
+        } finally {
+          console.log("Document added");
+          
+          //alert("Timeout")
+          //window.location.reload()
+        }
+        //console.log("Timeout")
+        //
+      }
+      async function removeFav(name) {
+        const fbuser = getAuth().currentUser.email;
+        var itemname = name;
+        console.log("Removing Favourites: ", itemname);
+        await deleteDoc(
+          doc(db, "Users/" + String(fbuser) + "/Favourites", itemname)
+        );
+        console.log("Document removed");
+        
+      } */
     },
     closeModal() {
       var modal = document.getElementById("searchResult");
-      console.log(modal)
-      //modal.style.display = "none";
+      console.log(modal);
+      modal.style.display = "none";
+      setTimeout(function () {
+          console.log("0.5 sec timeout");
+          window.location.reload();
+      }, 500);
     },
+    async readUserFirebase() {
+          
+            this.favourites = [];
+            const auth = getAuth();
+            const fbuser = auth.currentUser.email;
+            var z = await getDocs(collection(db,"Users/"+ String(fbuser)+"/Favourites"))
+            z.forEach((doc) => {
+                    let row = doc.data();
+                    this.favourites.push(row)
+                
+            });
+        }
   },
   data() {
     return {
       database: [],
       categories: ["All"],
       numberOfColumns: 3,
+      allinfo: [],
+      favourites: [],
     };
   },
   mounted() {
@@ -162,18 +375,17 @@ export default {
       "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     );
     document.head.appendChild(jquery);
-
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
+        console.log(user.email)
+        this.readUserFirebase();
       }
     });
     this.readFirebase();
   },
-  updated() {
-    
-  }
+  updated() {},
   // modifying firebase database script here for filtering
 };
 </script>
@@ -184,7 +396,6 @@ export default {
   height: 500px;
   padding-top: 100px;
 }
-
 h1,
 h3 {
   text-align: left;
@@ -192,46 +403,108 @@ h3 {
   font-weight: bold;
   color: white;
 }
-
 h2 {
   text-align: left;
   margin-left: 180px;
   font-weight: bold;
   color: rgb(1, 1, 87);
 }
-
 button {
   background-color: lightskyblue;
   border-color: lightskyblue;
   color: black;
   font-weight: bold;
 }
-
 img {
   width: 100%;
   height: 200px;
   border-radius: 10px;
   object-fit: cover;
 }
-
 .form-details {
   padding: 20px;
   border-radius: 10px;
   margin-right: 180px;
   margin-left: 160px;
 }
-
 label {
   color: white;
   float: left;
   text-align: left;
 }
-
 .btn-primary:hover,
 .btn-primary:focus,
-.btn-primary:active    {
-        background-color: #3276b1;
-        color: #FFF;
-        border-color: #285e8e;
+.btn-primary:active {
+  background-color: #3276b1;
+  color: #fff;
+  border-color: #285e8e;
+}
+.row {
+  background-color: transparent;
+  align-items: center;
+  margin: 10px 0px;
+}
+img {
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin: 5px;
+}
+.form-details {
+  padding: 20px;
+  border-radius: 10px;
+  margin-right: 180px;
+  margin-left: 160px;
+}
+label {
+  color: white;
+  float: left;
+  text-align: left;
+}
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  /* overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  text-align: right;
+  padding-right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+#resultinfo {
+  text-align: left;
+}
+.btn-primary, button {
+    background-color: lightskyblue;
+    border-color: lightskyblue;
+    color: black;
+    font-weight: bold;
+    float: right;
 }
 </style>

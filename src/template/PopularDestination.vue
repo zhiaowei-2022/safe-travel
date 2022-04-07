@@ -1,4 +1,4 @@
-:<template>
+<template>
     <figure>
         <img :src="this.image" :alt="this.altText">
         <figcaption> {{ countryName }} </figcaption>
@@ -20,8 +20,11 @@ export default {
 
 <style>
     img {
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
+        width: 95%;
+        border-radius: 20px;
+    }
+
+    figcaption {
+        font-weight: bold;
     }
 </style>
