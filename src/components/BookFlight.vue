@@ -220,7 +220,6 @@ export default {
                                 },
                             })
                         } else {
-                            console.log("wrong return date")
                             modal.style.display = "block"
                             error.innerHTML = "<h5><b> Please ensure that the return date is after the departure date. </b></h5>"
                         }
