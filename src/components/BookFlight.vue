@@ -411,7 +411,6 @@ export default {
     background-color: #fefefe;
     color: black;
     margin: 15% auto;
-    padding: 10px;
     border: 1px solid #888;
     width: 30%;
     height: 300px;

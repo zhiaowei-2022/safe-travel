@@ -385,6 +385,12 @@ img {
     height: 300px;
 }
 
+#invalid-options {
+    font-weight:bold; 
+    font-size:30px;
+    color: rgb(0, 15, 92);
+}
+
 .modal-body {
     padding: 2px 16px;
     justify-content: center;

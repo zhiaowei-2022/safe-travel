@@ -54,7 +54,7 @@
 
     <div id="nav" class="border border-1" style="position: relative">
         <ul class="nav nav-pills">
-            <li class="nav-item navi">
+            <li class="nav-item">
                 <a class="nav-link" id = "HomeView"><router-link style="text-decoration: none; color: inherit;" to="/">Home</router-link></a>
             </li>
             <li class="nav-item">
@@ -235,7 +235,7 @@ export default {
 
     },
 
-    Login() {
+    async Login() {
       var email = document.getElementById("email").value
       var password = document.getElementById("password").value
       const auth = getAuth();
@@ -259,6 +259,18 @@ export default {
           $('#loginModal').modal('hide')
           $('#exampleModal1').modal('toggle')
         });   
+        // });
+        if ( (this.$router.currentRoute._value.name) == "RegisterView" )  {
+          await this.$router.push({name: 'HomeView'})
+          }
+        
+        console.log("reload")
+          setTimeout(function() {
+              console.log("1 sec timeout")
+              window.location.reload()
+            }, 1000
+          )
+        console.log("reloaded")  
     },
 
     async signOut() {
@@ -291,10 +303,15 @@ export default {
     var current = (this.$router.currentRoute)
     
     $(document).ready(function() {
+      // $(this).removeClass('active'); 
       var page_name = current['_value']['name']
+      console.log(page_name)
+      // document.getElementById(page_name).classList.toggle("active")
+      // document.getElementById(page_name).classList.toggle("active")
       if (page_name != "UserProfile") {
         console.log(document.getElementById(page_name))
         document.getElementById(page_name).classList.toggle("active")
+        console.log(document.getElementById(page_name))
       }
 
     });
@@ -323,7 +340,8 @@ export default {
 
     else {
       $(this).children().addClass('active')
-      // $(this).removeClass('active');   
+      // console.log($(this).children())
+      // $(this).removeClass('active');  
 
     }
     
@@ -335,13 +353,14 @@ export default {
 
   },
   updated() {
-    console.log("here")
-    this.$nextTick(() => {
-      var current = (this.$router.currentRoute)
-      console.log(current)
-      var page_name = current['_value']['name']
-      document.getElementById(page_name).classList.toggle("active")
-    })
+    console.log("update")
+    // this.$nextTick(() => {
+    //   $(this).removeClass('active'); 
+    //   var current = (this.$router.currentRoute)
+    //   console.log(current)
+    //   var page_name = current['_value']['name']
+    //   document.getElementById(page_name).classList.toggle("active")
+    // })
   }
 
 };
