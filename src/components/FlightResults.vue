@@ -16,7 +16,7 @@
         </span>
     </div>
     <div class="container form-group">
-        <div v-if="database.length !== 0" @click="openSearchModal()">
+        <div v-if="database.length !== 0 || returnDatabase.length !== 0" @click="openSearchModal()">
             <button class="btn btn-primary" id="modify" name="submit" type="submit">
                 Modify Search
             </button>
