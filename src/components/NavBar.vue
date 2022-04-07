@@ -235,7 +235,7 @@ export default {
 
     },
 
-    Login() {
+    async Login() {
       var email = document.getElementById("email").value
       var password = document.getElementById("password").value
       const auth = getAuth();
@@ -259,6 +259,18 @@ export default {
           $('#loginModal').modal('hide')
           $('#exampleModal1').modal('toggle')
         });   
+        // });
+      if ( (this.$router.currentRoute._value.name) == "RegisterView" )  {
+          await this.$router.push({name: 'HomeView'})
+      }
+        
+        console.log("reload")
+          setTimeout(function() {
+              console.log("1 sec timeout")
+              window.location.reload()
+            }, 1000
+          )
+        console.log("reloaded")  
     },
 
     async signOut() {
@@ -291,15 +303,16 @@ export default {
     var current = (this.$router.currentRoute)
     
     $(document).ready(function() {
-      $(this).removeClass('active'); 
+      // $(this).removeClass('active'); 
       var page_name = current['_value']['name']
       console.log(page_name)
-      document.getElementById(page_name).classList.toggle("active")
-      // if (page_name != "UserProfile") {
-      //   console.log(document.getElementById(page_name))
-      //   document.getElementById(page_name).classList.toggle("active")
-      //   console.log(document.getElementById(page_name))
-      // }
+      // document.getElementById(page_name).classList.toggle("active")
+      // document.getElementById(page_name).classList.toggle("active")
+      if (page_name != "UserProfile") {
+        console.log(document.getElementById(page_name))
+        document.getElementById(page_name).classList.toggle("active")
+        console.log(document.getElementById(page_name))
+      }
 
     });
 
@@ -341,13 +354,13 @@ export default {
   },
   updated() {
     console.log("update")
-    this.$nextTick(() => {
-      $(this).removeClass('active'); 
-      var current = (this.$router.currentRoute)
-      console.log(current)
-      var page_name = current['_value']['name']
-      document.getElementById(page_name).classList.toggle("active")
-    })
+    // this.$nextTick(() => {
+    //   $(this).removeClass('active'); 
+    //   var current = (this.$router.currentRoute)
+    //   console.log(current)
+    //   var page_name = current['_value']['name']
+    //   document.getElementById(page_name).classList.toggle("active")
+    // })
   }
 
 };

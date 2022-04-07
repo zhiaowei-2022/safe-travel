@@ -21,7 +21,7 @@
                         />
                     </figure>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 favouritesModal">
                         <h4><strong> {{row.Name}} </strong></h4>
                         <br/>
                         <br/>
@@ -44,13 +44,14 @@
                         />
                     </figure>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 favouritesModal">
                         <h4><strong> {{row.Name}} </strong></h4>
                         <br/>
                         <br/>
-                        <h5>{{row.Category}} </h5>
+                        <h5>Category: {{row.Category}} </h5>
+                        
                     </div>
-                    
+                    <br>
                 </div>
                 </div>
             </div>
@@ -103,8 +104,6 @@ export default {
             var photoinfo = document.getElementById("photo");
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
             var favbut = document.getElementById("favbut");
-            favbut.innerHTML = "";
-            
             
                 for(var index = 0; index < this.favourites.length; index++) {
                         console.log(this.favourites[index]["Name"] == name)
@@ -116,10 +115,8 @@ export default {
                                 createAddBut(name, this.favourites)
                                 
                             }
-                    
                 }
             function createDelBut(name,favourites) {
-                favbut.id = String(name)
                 favbut.innerHTML = "Remove from Favourites"
                 favbut.onclick = function () {
                     removeFav(name,favourites)
@@ -130,8 +127,6 @@ export default {
                 
             }
             function createAddBut(name,favourites) {
-                
-                favbut.id = String(name)
                 favbut.innerHTML = "Add to Favourites"
                 favbut.onclick = function () {
                     //console.log(name)
@@ -139,16 +134,15 @@ export default {
                     addFav(name,favourites)
                     console.log("Added")
                     createDelBut(name,favourites)
-                } 
-                
+                }     
             }
-            
             async function removeFav(name,favourites){
                 var itemname = name
                 console.log("Removing Favourites: ", itemname)
                 await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
                 console.log("Document removed")
                 console.log(favourites)
+                
             }
             async function addFav(name,favourites) {
                 console.log(favourites)
@@ -306,12 +300,16 @@ h3 {
 #resultinfo {
         text-align: left;
 }
-.row {
+.favouritesModal {
         background-color: lightskyblue;
         color:rgb(0, 15, 92);
         align-items: center;
-        margin: 10px 0px;
-        height: 25%;
+        margin:auto;
+}
+
+.row {
+        background-color: lightskyblue;
+        margin-bottom: 5px;
 }
 img {
     width: 100%;
@@ -327,4 +325,4 @@ img {
     font-weight: bold;
     float: right;
 }
-</style>>
+</style>
