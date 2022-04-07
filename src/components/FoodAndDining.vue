@@ -17,7 +17,7 @@
     <form class="form-details">
       <div class="row">
         <div class="col-lg-2">
-          <select id="country" class="form-select form-control">
+          <select id="country" class="form-select form-control" @change="changeData()">
             <option value="Singapore" selected>Singapore</option>
             <option value="Japan">Japan</option>
             <option value="Thailand">Thailand</option>
@@ -34,7 +34,7 @@
   <h4> Pick a category </h4>
     <div class="row">
       <div class="col" v-for="cat in categories" :key="cat">
-        <div class="btn btn-primary" style="width: 100%;" v-on:click="goFilter(cat)">{{ cat }}</div>
+        <div class="btn btn-primary" style="width: 100%;" @click="goFilter(cat)">{{ cat }}</div>
       </div>
     </div>
   </div>
