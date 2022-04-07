@@ -43,9 +43,8 @@
           &nbsp;</p>
     </div>
   </div>
-  <strong><p id="login"> Already have an account? Login
-  <router-link to="/loginview" style="color:rgb(1, 1, 87)">HERE</router-link> </p>
-  <router-view/></strong>
+  <strong><p id="login"> Already have an account? Login now!</p>
+  </strong>
       
   <br>
   <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>

@@ -16,7 +16,7 @@
         </span>
     </div>
     <div class="container form-group">
-        <div v-if="database.length !== 0" @click="openSearchModal()">
+        <div v-if="database.length !== 0 || returnDatabase.length !== 0" @click="openSearchModal()">
             <button class="btn btn-primary" id="modify" name="submit" type="submit">
                 Modify Search
             </button>
@@ -24,7 +24,7 @@
     </div>
     <br>
 
-    <div class="container" v-if="database.length !== 0">
+    <div class="container">
         <h2>Depart - {{ originCountry }} to {{ destinationCountry }}</h2>
     </div>
 
@@ -43,20 +43,41 @@
             :arrivalTime="timeDisplay(flight.arrivalDateTime.toDate().toLocaleTimeString())"
             :arrivalDate="flight.arrivalDateTime.toDate().toDateString()"
             :duration="durationDisplay(flight.arrivalDateTime-flight.departureDateTime)"
-            :price="flight.price"
+            :price=round(flight.price)
             :airline="flight.airline"
             :link="flight.link"/>
 
         </div>
     </div>  
 
-    <div v-if="this.isOneWay == false"> 
-        <br>
-        <div class="container" v-if="returnDatabase.length !== 0">
+    <div v-if="database.length === 0 && this.isOneWay == true">
+        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
+        <h3>No Results Found</h3>
+        <h5>We could not find any departure flights that match your search.</h5> <br>
+        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
+            Search Again
+        </button>
+    </div>
+
+    <div v-if="database.length === 0 && returnDatabase.length !== 0">
+        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
+        <h3>No Results Found</h3>
+        <h5>We could not find any departure flights that match your search.</h5> <br>
+        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
+            Search Again
+        </button>
+    </div>
+
+    <div class="container">
+        <div v-if="this.isOneWay == false">
+            <br>
             <h2>Return - {{ destinationCountry }} to {{ originCountry }}</h2>
         </div>
+    </div>
+
+    <div v-if="this.isOneWay == false"> 
         <br>
-        <div v-if="database.length !== 0">
+        <div v-if="returnDatabase.length !== 0">
             <div v-for="flight in returnDatabase" v-bind:key="flight.uid">
                 <FlightResult 
                 :airlinePhoto="flight.airlinePic"
@@ -69,23 +90,14 @@
                 :arrivalTime="timeDisplay(flight.arrivalDateTime.toDate().toLocaleTimeString())"
                 :arrivalDate="flight.arrivalDateTime.toDate().toDateString()"
                 :duration="durationDisplay(flight.arrivalDateTime-flight.departureDateTime)"
-                :price="flight.price"
+                :price=round(flight.price)
                 :airline="flight.airline" 
                 :link="flight.link"/>
             </div>
         </div> 
     </div>
     
-    <div v-if="database.length === 0 && returnDatabase.length !== 0">
-        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
-        <h3>No Results Found</h3>
-        <h5>We could not find any departure flights that match your search.</h5> <br>
-        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
-            Search Again
-        </button>
-    </div>
-
-    <div v-if="database.length !== 0 && returnDatabase.length === 0">
+    <div v-if="database.length !== 0 && returnDatabase.length === 0 && this.isOneWay == false">
         <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
         <h3>No Results Found</h3>
         <h5>We could not find any return flights that match your search.</h5> <br>
@@ -94,14 +106,15 @@
         </button>
     </div>
 
-    <div v-if="database.length === 0 && returnDatabase.length === 0">
+    <div v-if="database.length === 0 && returnDatabase.length === 0  && this.isOneWay == false">
         <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
         <h3>No Results Found</h3>
         <h5>We could not find any departure and return flights that match your search.</h5> <br>
         <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
-            Search Again
+             Search Again
         </button>
     </div>
+
 
     <div id="searchModal" class="modal">
         <div class="modal-content">
@@ -167,6 +180,24 @@
             </form>
         </div>
     </div>
+
+    <div id="errorModal" class="modal">
+        <div class="modal-content" id="error-modal-content">
+            <div class="modal-header">
+                <h5 id="invalid-options">Invalid Options</h5>
+            </div>
+            <div class="modal-body">
+                <div id="errorMsg"></div>
+                <img id="no-results" src="@/assets/sad.png" alt=""/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                    Search Again
+                </button>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -201,6 +232,13 @@ export default {
             classType: this.$route.query.classType,
             manyPassengers: this.$route.query.manyPassengers,
             user : false,
+
+            newOriginCountry: this.$route.query.originCountry,
+            newDestinationCountry:this.$route.query.destinationCountry,
+            newDepartureDate: this.$route.query.departureDate,
+            newArrivalDate: this.$route.query.arrivalDate,
+            newNoOfPassengers: this.$route.query.noOfPassengers,
+            newClassType: this.$route.query.classType,
         }
     },
 
@@ -230,7 +268,7 @@ export default {
         },
 
         timeDisplay(time) {
-            return moment(time, "hh:mm:ss").format("hh:mm");
+            return moment(time, "hh:mm:ss").format("hh:mm A");
         },
 
         durationDisplay(sec) {
@@ -239,6 +277,10 @@ export default {
 
         getYear(timeStamp) {
             return moment(timeStamp.toDate().toDateString(), "dd/mm/yyyy").format("yyyy")
+        },
+
+        round(number) {
+            return number.toFixed(2);
         },
 
         async isOneWayFlightSearchValid() {
@@ -273,7 +315,7 @@ export default {
               querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.data()
-                // console.log("im here" + doc.id + "=>" + doc.data());
+                console.log("im here" + doc.id + "=>" + doc.data());
                 this.returnDatabase.push(data)
             });
         },
@@ -289,6 +331,8 @@ export default {
         },
 
         async modifySearch() {
+            var modal = document.getElementById("errorModal");
+            var error = document.getElementById("errorMsg")
             this.originCountry = this.newOriginCountry
             this.destinationCountry = this.newDestinationCountry
             this.departureDate = this.newDepartureDate
@@ -297,11 +341,40 @@ export default {
             this.classType = this.newClassType
             this.database = []
             this.returnDatabase = []
-            this.isOneWayFlightSearchValid()
-            if (this.isOneWay == false) { // return flight
-                this.isReturnFlightSearchValid()
+
+            if (this.newOriginCountry != "" && this.newDestinationCountry != "" && this.newDepartureDate != "" && this.classType != "") {
+                console.log("missing search")
+                if (this.newNoOfPassengers >= 1) {
+                    console.log("check passengers")
+                    if (this.isOneWay == true) {
+                        // one way flight
+                        this.isOneWayFlightSearchValid()
+                    } else {
+                        console.log("check return flight")
+                        // return flight
+                        if(this.newArrivalDate > this.newDepartureDate) {
+                            console.log("check dates")
+                            this.isOneWayFlightSearchValid()
+                            this.isReturnFlightSearchValid()
+                        } else {
+                            modal.style.display = "block"
+                            error.innerHTML = "<h5><b> Please ensure that the return date is after the departure date. </h6>"
+                        }
+                    }
+                } else {
+                    modal.style.display = "block"
+                    error.innerHTML = "<h6> Please ensure that the number of passengers is a positive number. </h6>"
+                }
+            } else {
+                modal.style.display = "block"
+                error.innerHTML = "<h6> Please fill up all fields to start searching. </h6>"
             }
             this.closeSearchModal()
+        },
+
+        closeErrorModal() {
+            var modal = document.getElementById("errorModal");
+            modal.style.display = "none"
         },
     }
 }
@@ -400,5 +473,16 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    }
+    #error-modal-content {
+    margin: 16% auto;
+    padding: 0px;
+    width: 700px;
+    height: 300px;
+    }
+    #invalid-options {
+    font-weight:bold; 
+    font-size:30px;
+    color: rgb(0, 15, 92);
     }
 </style>

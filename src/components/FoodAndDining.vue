@@ -398,7 +398,6 @@ export default {
         this.readUserFirebase();
       }
     });
-
     this.readFirebase();
   },
   updated() {},
