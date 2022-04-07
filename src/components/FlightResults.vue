@@ -268,7 +268,7 @@ export default {
         },
 
         timeDisplay(time) {
-            return moment(time, "hh:mm:ss").format("hh:mm");
+            return moment(time, "hh:mm:ss").format("hh:mm A");
         },
 
         durationDisplay(sec) {
