@@ -15,20 +15,19 @@
                 <div class="row-lg" id="duration">{{ duration }}</div>
                 <div class="row-lg" style="background-color: rgb(0, 15, 95, 0);"><i class="bi bi-arrow-right" style="font-size:50px; display: inline-block;"></i></div>
                 <div class="row-lg"> {{ airline }} </div>
-                <div class="row-lg"> Click <a :href="link" target="_blank">here</a> for flight info! </div>
             </div>
             <div class="col col-lg-3" style="text-align:left; margin-left: 50px">
                 <div class="flight-name"> {{ arrivalCountryId }} {{arrivalTime}}</div>
                 <div class="flight-body"> {{ arrivalCountryName }} </div>
                 <div class="flight-body"> {{ arrivalDate }}</div>
             </div>
-            <div class="col col-lg-2"> 
-                <div class="flight-price-added"> {{ price }} </div>
+            <div class="col col-lg-2">
+                <!-- added to likes -->
+                <div v-if="user" class="flight-price-added"> ${{ price }} </div>
                 <div v-if="user">
                     <!-- not added to likes -->
                     <!-- <div class="flight-price"> {{ price }} </div> -->
-                    <button v-if="false" type="button" class="btn btn-link" style="background-color: rgb(0, 15, 95, 0)">Added to favourites!</button>
-                    <button v-if="true" type="button" class="btn btn-link" style="background-color: rgb(0, 15, 95, 0)">Add to favourites?</button>
+                    <a class="btn btn-primary" :href="link" target="_blank"> Book now </a>
                 </div>
                 
             </div>
@@ -89,6 +88,7 @@ export default {
     background-color: rgb(0, 15, 95, 0.05);
     align-items: center;
     margin: 10px 0px;
+    color: black;
 }
 img {
     width: 120px;
@@ -104,16 +104,8 @@ img {
     color: black;
 }
 .flight-price-added {
-    background-color: rgb(0, 15, 95);
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    display: inline-block;
-    line-height: 100px;
     font-weight: bold;
-    color: white;
-    font-size: 15px;
-    margin-top: 20px;  
+    font-size: 25px;
 }
 .flight-price {
     background-color: rgb(0, 15, 95, 0.2);
@@ -136,5 +128,13 @@ button {
 #duration {
     background-color: rgb(0, 15, 95, 0); 
     display:inline-block;
+}
+
+a {
+    background-color: rgb(0, 15, 92);
+    border-color: rgb(0, 15, 92);
+    color: white;
+    font-weight: bold;
+    width: 120px;
 }
 </style>

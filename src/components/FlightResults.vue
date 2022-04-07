@@ -43,7 +43,7 @@
             :arrivalTime="timeDisplay(flight.arrivalDateTime.toDate().toLocaleTimeString())"
             :arrivalDate="flight.arrivalDateTime.toDate().toDateString()"
             :duration="durationDisplay(flight.arrivalDateTime-flight.departureDateTime)"
-            :price="flight.price"
+            :price=round(flight.price)
             :airline="flight.airline"
             :link="flight.link"/>
 
@@ -90,7 +90,7 @@
                 :arrivalTime="timeDisplay(flight.arrivalDateTime.toDate().toLocaleTimeString())"
                 :arrivalDate="flight.arrivalDateTime.toDate().toDateString()"
                 :duration="durationDisplay(flight.arrivalDateTime-flight.departureDateTime)"
-                :price="flight.price"
+                :price=round(flight.price)
                 :airline="flight.airline" 
                 :link="flight.link"/>
             </div>
@@ -277,6 +277,10 @@ export default {
 
         getYear(timeStamp) {
             return moment(timeStamp.toDate().toDateString(), "dd/mm/yyyy").format("yyyy")
+        },
+
+        round(number) {
+            return number.toFixed(2);
         },
 
         async isOneWayFlightSearchValid() {
