@@ -420,22 +420,6 @@ html,body{
   /* background-color: green; */
 }
 
-/* .modal {
-  text-align: center;
-  padding: 0!important;
-}
-.modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: -4px;
-}
-.modal-dialog {
-  display: inline-block;
-  text-align: left;
-  vertical-align: middle;
-} */
 
 
 
