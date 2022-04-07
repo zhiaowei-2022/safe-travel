@@ -21,7 +21,7 @@
                         />
                     </figure>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 favouritesModal">
                         <h4><strong> {{row.Name}} </strong></h4>
                         <br/>
                         <br/>
@@ -44,13 +44,16 @@
                         />
                     </figure>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 favouritesModal">
                         <h4><strong> {{row.Name}} </strong></h4>
                         <br/>
                         <br/>
-                        <h5>{{row.Category}} </h5>
+                        <h5>Category: {{row.Category}} </h5>
+                        <br/>
+                        <br/>
+                        <h5>Country: {{row.Country}} </h5>
                     </div>
-                    
+                    <br>
                 </div>
                 </div>
             </div>
@@ -129,7 +132,6 @@ export default {
                 } 
                 
             }
-
             function createAddBut(name,favourites) {
                 
                 favbut.id = String(name)
@@ -151,7 +153,6 @@ export default {
                 console.log("Document removed")
                 console.log(favourites)
             }
-
             async function addFav(name,favourites) {
                 console.log(favourites)
                 try {
@@ -226,7 +227,6 @@ export default {
             //console.log(this.favourites)
             
         }
-
     },
     data() {
         return {
@@ -244,7 +244,6 @@ export default {
         "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         );
         document.head.appendChild(jquery);
-
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if(user) {
@@ -263,19 +262,15 @@ h1, h2 {
     font-weight: bold;
     color: rgb(0, 15, 92);
 }
-
 h3 {
     text-align: left;
     margin-left: 10px;
     color:rgb(0, 15, 92);
     font-weight: bold;
 }
-
 .Favourite {
         margin-top:20px;
 }
-
-
     /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -289,7 +284,6 @@ h3 {
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-
     /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
@@ -298,7 +292,6 @@ h3 {
     border: 1px solid #888;
     width: 50%; /* Could be more or less, depending on screen size */
 }
-
     /* The Close Button */
 .close {
     color: #aaa;
@@ -307,29 +300,26 @@ h3 {
     font-size: 28px;
     font-weight: bold;
 }
-
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
-
 #resultinfo {
         text-align: left;
 }
-
-
-.row {
+.favouritesModal {
         background-color: lightskyblue;
         color:rgb(0, 15, 92);
         align-items: center;
-        margin: 10px 0px;
-        height: 25%;
+        margin:auto;
 }
 
-
-
+.row {
+        background-color: lightskyblue;
+        margin-bottom: 5px;
+}
 img {
     width: 100%;
     border-radius: 10px;
@@ -337,7 +327,6 @@ img {
     margin:5px;
     height: 200px;
 }
-
 .btn-primary, button {
     background-color: lightskyblue;
     border-color: lightskyblue;
@@ -345,7 +334,4 @@ img {
     font-weight: bold;
     float: right;
 }
-
-
-
-</style>>
+</style>

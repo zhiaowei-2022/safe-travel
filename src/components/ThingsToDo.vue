@@ -78,7 +78,6 @@
 </template>
 
 <script>
-
 import firebaseApp from "../firebase.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, collection, getDocs, setDoc, doc, deleteDoc} from "firebase/firestore"
@@ -157,7 +156,6 @@ export default {
                 "For more information please visit <a href='" + web + "' target='_blank' style='color:black'>here</a> <br>";
                 modal.style.display = "block";
                 //console.log(category);
-
             function createDelBut(name,allinfo) {
                 delbut.className = "btn btn-primary"
                 delbut.id = String(name)
@@ -170,7 +168,6 @@ export default {
                 } 
                 favbut.append(delbut)
             }
-
             function createAddBut(name,allinfo) {
                 delbut.className = "btn btn-primary"
                 delbut.id = String(name)
@@ -183,7 +180,6 @@ export default {
                 } 
                 favbut.append(delbut)
             }
-
             async function removeFav(name,allinfo){
                 const fbuser = getAuth().currentUser.email;
                 var itemname = name
@@ -192,7 +188,6 @@ export default {
                 console.log("Document removed")
                 console.log(allinfo)
             }
-
             async function addFav(name,allinfo) {
                 const fbuser = getAuth().currentUser.email;
                 //console.log(favourites)
@@ -250,7 +245,6 @@ export default {
                     }
                     row["Country"] = country
                     //console.log(row)
-
                     container.push(row);
                     this.allinfo.push(row) 
                     //console.log(this.allinfo)
@@ -299,7 +293,6 @@ export default {
         "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         );
         document.head.appendChild(jquery);
-
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -354,7 +347,6 @@ button {
     font-weight: bold;
     float: right;
 }
-
 .form-details {
   padding: 20px;
   border-radius: 10px;
@@ -366,7 +358,6 @@ label {
   float: left;
   text-align: left;
 }
-
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
@@ -380,7 +371,6 @@ label {
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
@@ -389,7 +379,6 @@ label {
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */
 }
-
 /* The Close Button */
 .close {
   color: #aaa;
@@ -398,18 +387,15 @@ label {
   font-size: 28px;
   font-weight: bold;
 }
-
 .close:hover,
 .close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
-
 #resultinfo {
     text-align: left;
 }
-
 .btn-primary, button {
     background-color: lightskyblue;
     border-color: lightskyblue;
@@ -417,6 +403,4 @@ label {
     font-weight: bold;
     float: right;
 }
-
-
 </style>
