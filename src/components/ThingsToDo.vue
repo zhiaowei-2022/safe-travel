@@ -58,7 +58,9 @@
         </div>
         <div class="row" v-if="user">
             <div class="col-8"></div>
-            <div class="col-4" id="favbut" style="text-align:right"></div>
+            <div class="col-4"  style="text-align:right">
+              <button class="btn btn-primary" id="favbut">Add to Favourites</button>
+            </div>
         </div>
         <div class="row">
           <div id="resultinfo">
@@ -129,21 +131,19 @@ export default {
             //console.log(this.favourites.length)
             if (getAuth().currentUser != null) {
               
-              var favbut = document.getElementById("favbut");
-              var delbut = document.createElement("button")
-              favbut.innerHTML = "";
+              var delbut = document.getElementById("favbut");
               if (this.favourites.length > 0){
                   for(var index = 0; index < this.favourites.length; index++) {
                           console.log(this.favourites[index]["Name"] == name)
                           if (this.favourites[index]["Name"] == name) {
-                              createDelBut(name,this.allinfo);
+                              createDelBut(name,this.allinfo,this.favourites);
                               break;
                             } else {
-                                createAddBut(name, this.allinfo)
+                                createAddBut(name, this.allinfo,this.favourites)
                             }
                   }
               } else {
-                  createAddBut(name, this.allinfo)
+                  createAddBut(name, this.allinfo,this.favourites)
               }
             }
             var resultbox = document.getElementById("resultinfo");
@@ -155,40 +155,48 @@ export default {
                 "<h5><b>Description:</b></h5> " + desc + "<br><br>" +
                 "For more information please visit <a href='" + web + "' target='_blank' style='color:black'>here</a> <br>";
                 modal.style.display = "block";
-                //console.log(category);
-            function createDelBut(name,allinfo) {
-                delbut.className = "btn btn-primary"
-                delbut.id = String(name)
+                
+            function createDelBut(name,allinfo,favourites) {
+                
+                //delbut.id = String(name)
                 delbut.innerHTML = "Remove from Favourites"
                 delbut.onclick = function () {
-                    removeFav(name,allinfo)
+                    removeFav(name,allinfo,favourites)
                     console.log("removed")
                     console.log(allinfo)
-                    createAddBut(name,allinfo)
+                    createAddBut(name,allinfo,favourites)
                 } 
-                favbut.append(delbut)
             }
-            function createAddBut(name,allinfo) {
-                delbut.className = "btn btn-primary"
-                delbut.id = String(name)
+            function createAddBut(name,allinfo,favourites) {
+
+                //delbut.id = String(name)
                 delbut.innerHTML = "Add to Favourites"
                 delbut.onclick = function () {
                     console.log(allinfo)
-                    addFav(name,allinfo)
+                    addFav(name,allinfo,favourites)
                     console.log("Added")
-                    createDelBut(name,allinfo)
+                    createDelBut(name,allinfo,favourites)
                 } 
-                favbut.append(delbut)
             }
-            async function removeFav(name,allinfo){
+            async function removeFav(name,allinfo,favourites){
+                console.log(favourites)
                 const fbuser = getAuth().currentUser.email;
                 var itemname = name
                 console.log("Removing Favourites: ", itemname)
                 await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
                 console.log("Document removed")
-                console.log(allinfo)
+                for (var i = 0; i < favourites.length; i++) {
+                  if ( favourites[i]["Name"] == name) {
+                    
+                    favourites.splice(i,1);
+                  } else {
+                    continue;
+                  }
+                }
+                console.log(favourites)
+                //console.log(allinfo)
             }
-            async function addFav(name,allinfo) {
+            async function addFav(name,allinfo,favourites) {
                 const fbuser = getAuth().currentUser.email;
                 //console.log(favourites)
                 try {
@@ -207,23 +215,25 @@ export default {
                                 Overhead: "Tourist Attractions"
                             })
                             console.log(docRef)
+                            favourites.push(allinfo[i])
                         }
                     }
                 } catch (error) {
                     console.error("Error adding document:", error)
                 }
-                
+                console.log(favourites)
             }
         },
         closeModal() {
             var modal = document.getElementById("searchResult");
             //console.log(modal)
             modal.style.display = "none";
+            /*
             setTimeout(function() {
                     console.log(".5 sec timeout")
                     window.location.reload()
                   }, 500
-            )
+            ) */
         },
         async readFirebase() {
         // user in params
@@ -269,12 +279,6 @@ export default {
                     this.favourites.push(row)
                 
             });
-            /*console.log(this.favourites)
-            setTimeout(function() {
-                    console.log("1 sec timeout")
-                    window.location.reload()
-                  }, 1000
-            ) */
         }
     },
     data() {

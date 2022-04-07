@@ -49,9 +49,7 @@
                         <br/>
                         <br/>
                         <h5>Category: {{row.Category}} </h5>
-                        <br/>
-                        <br/>
-                        <h5>Country: {{row.Country}} </h5>
+                        
                     </div>
                     <br>
                 </div>
@@ -106,8 +104,6 @@ export default {
             var photoinfo = document.getElementById("photo");
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
             var favbut = document.getElementById("favbut");
-            favbut.innerHTML = "";
-            
             
                 for(var index = 0; index < this.favourites.length; index++) {
                         console.log(this.favourites[index]["Name"] == name)
@@ -119,10 +115,8 @@ export default {
                                 createAddBut(name, this.favourites)
                                 
                             }
-                    
                 }
             function createDelBut(name,favourites) {
-                favbut.id = String(name)
                 favbut.innerHTML = "Remove from Favourites"
                 favbut.onclick = function () {
                     removeFav(name,favourites)
@@ -133,8 +127,6 @@ export default {
                 
             }
             function createAddBut(name,favourites) {
-                
-                favbut.id = String(name)
                 favbut.innerHTML = "Add to Favourites"
                 favbut.onclick = function () {
                     //console.log(name)
@@ -142,16 +134,15 @@ export default {
                     addFav(name,favourites)
                     console.log("Added")
                     createDelBut(name,favourites)
-                } 
-                
+                }     
             }
-            
             async function removeFav(name,favourites){
                 var itemname = name
                 console.log("Removing Favourites: ", itemname)
                 await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
                 console.log("Document removed")
                 console.log(favourites)
+                
             }
             async function addFav(name,favourites) {
                 console.log(favourites)
