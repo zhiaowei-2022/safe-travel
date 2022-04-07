@@ -81,7 +81,8 @@
 
   <!-- Modal -->  
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <!-- <div class="modal-dialog"> -->
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel" style="font-weight:bold; color: rgb(0, 15, 92);">Login to your account!</h5>
@@ -202,11 +203,29 @@ export default {
 
     closeModal() {
       $('#exampleModal1').modal('hide')
+      $('#loginModal').modal('hide')
       $('body').removeClass('modal-open');
       $('.modal-backdrop').remove()
 
       var name = this.$router.currentRoute._value.name
+      $('.active').removeClass('active')
       document.getElementById(name).classList.toggle("active")
+      // console.log( document.getElementById(name).classList)
+
+    //       if ( name== ("UserProfile") || name == ("FavouritePage") ) {
+    //   $(this).children().children().addClass('active')
+    // }
+
+    // else if (name == "RegisterView") {
+    //   $(this).children().children().addClass('active')
+    // }
+
+    // else {
+    //   console.log("here")
+    //   $(this).children().addClass('active')
+    //   // $(this).removeClass('active');   
+
+    // }
 
     },
 
@@ -398,7 +417,27 @@ html,body{
 
 #nav a.router-link-exact-active {
   color: white !important;
+  /* background-color: green; */
 }
+
+/* .modal {
+  text-align: center;
+  padding: 0!important;
+}
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+} */
+
+
 
 
 
