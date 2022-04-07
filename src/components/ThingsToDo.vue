@@ -86,7 +86,6 @@ import { getFirestore, collection, getDocs, setDoc, doc, deleteDoc} from "fireba
 const db = getFirestore(firebaseApp);
 export default {
     methods: {
-    
         changeData(){
             this.goFilter();
         },
