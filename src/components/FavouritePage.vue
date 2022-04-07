@@ -21,7 +21,7 @@
                         />
                     </figure>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 favouritesModal">
                         <h4><strong> {{row.Name}} </strong></h4>
                         <br/>
                         <br/>
@@ -44,13 +44,16 @@
                         />
                     </figure>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 favouritesModal">
                         <h4><strong> {{row.Name}} </strong></h4>
                         <br/>
                         <br/>
-                        <h5>{{row.Category}} </h5>
+                        <h5>Category: {{row.Category}} </h5>
+                        <br/>
+                        <br/>
+                        <h5>Country: {{row.Country}} </h5>
                     </div>
-                    
+                    <br>
                 </div>
                 </div>
             </div>
@@ -306,12 +309,16 @@ h3 {
 #resultinfo {
         text-align: left;
 }
-.row {
+.favouritesModal {
         background-color: lightskyblue;
         color:rgb(0, 15, 92);
         align-items: center;
-        margin: 10px 0px;
-        height: 25%;
+        margin:auto;
+}
+
+.row {
+        background-color: lightskyblue;
+        margin-bottom: 5px;
 }
 img {
     width: 100%;

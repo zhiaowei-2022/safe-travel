@@ -123,6 +123,7 @@ export default {
       // user in params
       var countrybox = document.getElementById("country");
       for(var i = 0; i < countrybox.length; i++){
+                var rowcounter = 0;
                 var country = countrybox.options[i].value
                 var z = await getDocs(
                   collection(db, `FoodAndDining/Restaurants/${country}`)
@@ -139,9 +140,10 @@ export default {
                   container.push(row);
                   this.allinfo.push(row);
                   counter++;
-                  if (counter % this.numberOfColumns == 0 || counter == z.length) {
+                  if ( (counter % this.numberOfColumns == 0 || counter == z.length) && rowcounter < 2 ) {
                     this.database.push(container);
                     container = [];
+                    rowcounter++;
                   }
                 });
       }
