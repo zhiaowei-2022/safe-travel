@@ -27,9 +27,11 @@
     </form>
   </div>
   <br />
-  <h2>Popular Dining</h2>
-  <br />
+  
   <div class="container">
+  
+  
+  <h4> Pick a category </h4>
     <div class="row">
       <div class="col" v-for="cat in categories" :key="cat">
         <div class="btn btn-primary" style="width: 100%;" v-on:click="goFilter(cat)">{{ cat }}</div>
@@ -38,6 +40,7 @@
   </div>
   <br /><br />
   <div class="container">
+    <h2>Popular Dining</h2>
     <div>
       <div class="row" v-for="row in database" :key="row">
         <div class="col-4" v-for="item in row" :key="item">
@@ -415,11 +418,11 @@ h3 {
   font-weight: bold;
   color: white;
 }
-h2 {
-  text-align: left;
-  margin-left: 180px;
-  font-weight: bold;
-  color: rgb(1, 1, 87);
+h2,h4 {
+    text-align: left;
+    margin-left: 20px;
+    font-weight: bold;
+    color: rgb(0, 15, 92);
 }
 button {
   background-color: lightskyblue;

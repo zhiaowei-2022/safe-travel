@@ -260,9 +260,9 @@ export default {
           $('#exampleModal1').modal('toggle')
         });   
         // });
-      if ( (this.$router.currentRoute._value.name) == "RegisterView" )  {
+        if ( (this.$router.currentRoute._value.name) == "RegisterView" )  {
           await this.$router.push({name: 'HomeView'})
-      }
+          }
         
         console.log("reload")
           setTimeout(function() {
