@@ -424,6 +424,10 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  font-weight: bold;
+  color: rgb(0, 15, 92);
+}
   .col{ 
       /* background-color: gray; */
     /* color: blue; */

@@ -4,7 +4,7 @@
     <div class="Favourite">
     
         <div v-if="user">
-            <div> <h2> <strong> {{user.displayName}}'s Favourites </strong> </h2> </div>
+            <div> <h1> {{user.displayName}}'s Favourites </h1> </div>
             <div class="container" id="Infocontainer" >
                 <div>
                 <h3> Favourite Tourist Attraction </h3>
@@ -250,7 +250,6 @@ export default {
 <style scoped>
 h1, h2 {
     text-align: center;
-    
     font-weight: bold;
     color: rgb(0, 15, 92);
 }
