@@ -117,7 +117,7 @@
     <div id="errorModal" class="modal">
         <div class="modal-content" id="error-modal-content">
             <div class="modal-header">
-                <h5>Invalid Options</h5>
+                <h5 id="invalid-options">Invalid Options</h5>
             </div>
             <div class="modal-body">
                 <div id="errorMsg"></div>
@@ -297,7 +297,7 @@ export default {
                         this.display()
                     } else {
                         modal.style.display = "block"
-                        error.innerHTML = "<h5><b> Please ensure that the check-out date is after the check-in date. </h6>"
+                        error.innerHTML = "<h6> Please ensure that the check-out date is after the check-in date. </h6>"
                     }
                 } else {
                     modal.style.display = "block"
@@ -383,6 +383,12 @@ img {
     padding: 0px;
     width: 30%;
     height: 300px;
+}
+
+#invalid-options {
+    font-weight:bold; 
+    font-size:30px;
+    color: rgb(0, 15, 92);
 }
 
 .modal-body {
