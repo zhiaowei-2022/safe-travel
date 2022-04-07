@@ -24,7 +24,7 @@
     </div>
     <br>
 
-    <div class="container" v-if="database.length !== 0">
+    <div class="container">
         <h2>Depart - {{ originCountry }} to {{ destinationCountry }}</h2>
     </div>
 
@@ -50,11 +50,32 @@
         </div>
     </div>  
 
-    <div v-if="this.isOneWay == false"> 
-        <br>
-        <div class="container" v-if="returnDatabase.length !== 0">
+    <div v-if="database.length === 0 && this.isOneWay == true">
+        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
+        <h3>No Results Found</h3>
+        <h5>We could not find any departure flights that match your search.</h5> <br>
+        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
+            Search Again
+        </button>
+    </div>
+
+    <div v-if="database.length === 0 && returnDatabase.length !== 0">
+        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
+        <h3>No Results Found</h3>
+        <h5>We could not find any departure flights that match your search.</h5> <br>
+        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
+            Search Again
+        </button>
+    </div>
+
+    <div class="container">
+        <div v-if="this.isOneWay == false">
+            <br>
             <h2>Return - {{ destinationCountry }} to {{ originCountry }}</h2>
         </div>
+    </div>
+
+    <div v-if="this.isOneWay == false"> 
         <br>
         <div v-if="returnDatabase.length !== 0">
             <div v-for="flight in returnDatabase" v-bind:key="flight.uid">
@@ -76,16 +97,7 @@
         </div> 
     </div>
     
-    <div v-if="database.length === 0 && returnDatabase.length !== 0">
-        <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
-        <h3>No Results Found</h3>
-        <h5>We could not find any departure flights that match your search.</h5> <br>
-        <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
-            Search Again
-        </button>
-    </div>
-
-    <div v-if="database.length !== 0 && returnDatabase.length === 0">
+    <div v-if="database.length !== 0 && returnDatabase.length === 0 && this.isOneWay == false">
         <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
         <h3>No Results Found</h3>
         <h5>We could not find any return flights that match your search.</h5> <br>
@@ -94,14 +106,15 @@
         </button>
     </div>
 
-    <div v-if="database.length === 0 && returnDatabase.length === 0">
+    <div v-if="database.length === 0 && returnDatabase.length === 0  && this.isOneWay == false">
         <img id="no-results" src="@/assets/sad.png" alt=""/> <br> <br>
         <h3>No Results Found</h3>
         <h5>We could not find any departure and return flights that match your search.</h5> <br>
         <button class="btn btn-primary" name="submit" type="button" onclick="history.back()">
-            Search Again
+             Search Again
         </button>
     </div>
+
 
     <div id="searchModal" class="modal">
         <div class="modal-content">
@@ -171,7 +184,7 @@
     <div id="errorModal" class="modal">
         <div class="modal-content" id="error-modal-content">
             <div class="modal-header">
-                <h5>Invalid Options</h5>
+                <h5 id="invalid-options">Invalid Options</h5>
             </div>
             <div class="modal-body">
                 <div id="errorMsg"></div>
@@ -456,5 +469,16 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    }
+    #error-modal-content {
+    margin: 16% auto;
+    padding: 0px;
+    width: 700px;
+    height: 300px;
+    }
+    #invalid-options {
+    font-weight:bold; 
+    font-size:30px;
+    color: rgb(0, 15, 92);
     }
 </style>

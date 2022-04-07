@@ -131,9 +131,15 @@
                 <img id="no-results" src="@/assets/sad.png" alt=""/>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
-                    Search Again
-                </button>
+                <div class="row">
+                    <div class="col-8">
+                    </div>
+                    <div class="col-4" style="width:100%">
+                        <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                            Search Again
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

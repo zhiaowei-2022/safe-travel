@@ -20,6 +20,7 @@
             <div class="col col-lg-3" style="text-align:left; margin-left: 50px">
                 <div class="flight-name"> {{ arrivalCountryId }} {{arrivalTime}}</div>
                 <div class="flight-body"> {{ arrivalCountryName }} </div>
+                <div class="flight-body"> {{ arrivalDate }}</div>
             </div>
             <div class="col col-lg-2"> 
                 <div class="flight-price-added"> {{ price }} </div>
