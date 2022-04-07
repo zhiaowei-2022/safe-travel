@@ -27,9 +27,11 @@
     </form>
   </div>
   <br />
-  <h2>Popular Dining</h2>
-  <br />
+  
   <div class="container">
+  
+  
+  <h4> Pick a category </h4>
     <div class="row">
       <div class="col" v-for="cat in categories" :key="cat">
         <div class="btn btn-primary" style="width: 100%;" v-on:click="goFilter(cat)">{{ cat }}</div>
@@ -38,6 +40,7 @@
   </div>
   <br /><br />
   <div class="container">
+    <h2>Popular Dining</h2>
     <div>
       <div class="row" v-for="row in database" :key="row">
         <div class="col-4" v-for="item in row" :key="item">
@@ -77,7 +80,9 @@
           </div>
           <div class="row" v-if="user">
             <div class="col-8"></div>
-            <div class="col-4" id="favbut" style="text-align:right"></div>
+            <div class="col-4"  style="text-align:right">
+              <button class="btn btn-primary" id="favbut">Add to Favourites</button>
+            </div>
           </div>
         </div>
         <div class="row">
@@ -123,6 +128,7 @@ export default {
       // user in params
       var countrybox = document.getElementById("country");
       for(var i = 0; i < countrybox.length; i++){
+                var rowcounter = 0;
                 var country = countrybox.options[i].value
                 var z = await getDocs(
                   collection(db, `FoodAndDining/Restaurants/${country}`)
@@ -139,9 +145,10 @@ export default {
                   container.push(row);
                   this.allinfo.push(row);
                   counter++;
-                  if (counter % this.numberOfColumns == 0 || counter == z.length) {
+                  if ( (counter % this.numberOfColumns == 0 || counter == z.length) && rowcounter < 2 ) {
                     this.database.push(container);
                     container = [];
+                    rowcounter++;
                   }
                 });
       }
@@ -190,20 +197,19 @@ export default {
       console.log(this.favourites.length)
       if (getAuth().currentUser != null) {
         var favbut = document.getElementById("favbut");
-        var delbut = document.createElement("button");
-        favbut.innerHTML = "";
+        
         if (this.favourites.length > 0) {
           for (var index = 0; index < this.favourites.length; index++) {
             console.log(this.favourites[index]["Name"] == name)
             if (this.favourites[index]["Name"] == name) {
-              createDelBut(name,this.allinfo);
+              createDelBut(name,this.allinfo, this.favourites);
               break;
             } else {
-              createAddBut(name, this.allinfo)
+              createAddBut(name, this.allinfo, this.favourites)
             }
           }
         } else {
-          createAddBut(name, this.allinfo)
+          createAddBut(name, this.allinfo, this.favourites)
         }
       }
       var resultbox = document.getElementById("resultinfo");
@@ -228,39 +234,46 @@ export default {
         "' target='_blank' style='color:black'>here</a> <br>";
         modal.style.display = "block";
       
-        function createDelBut(name,allinfo) {
-                delbut.className = "btn btn-primary"
-                delbut.id = String(name)
-                delbut.innerHTML = "Remove from Favourites"
-                delbut.onclick = function () {
-                    removeFav(name,allinfo)
+        function createDelBut(name,allinfo,favourites) {
+                
+                favbut.innerHTML = "Remove from Favourites"
+                favbut.onclick = function () {
+                    removeFav(name,allinfo,favourites)
                     console.log("removed")
                     console.log(allinfo)
-                    createAddBut(name,allinfo)
+                    createAddBut(name,allinfo,favourites)
                 } 
-                favbut.append(delbut)
+                //favbut.append(delbut)
             }
-            function createAddBut(name,allinfo) {
-                delbut.className = "btn btn-primary"
-                delbut.id = String(name)
-                delbut.innerHTML = "Add to Favourites"
-                delbut.onclick = function () {
+            function createAddBut(name,allinfo,favourites) {
+                
+                favbut.innerHTML = "Add to Favourites"
+                favbut.onclick = function () {
                     console.log(allinfo)
-                    addFav(name,allinfo)
+                    addFav(name,allinfo,favourites)
                     console.log("Added")
-                    createDelBut(name,allinfo)
+                    createDelBut(name,allinfo,favourites)
                 } 
-                favbut.append(delbut)
+                //favbut.append(delbut)
             }
-            async function removeFav(name,allinfo){
+            async function removeFav(name,allinfo,favourites){
                 const fbuser = getAuth().currentUser.email;
                 var itemname = name
                 console.log("Removing Favourites: ", itemname)
                 await deleteDoc(doc(db, "Users/"+String(fbuser)+"/Favourites", itemname));
                 console.log("Document removed")
                 console.log(allinfo)
+                for (var i = 0; i < favourites.length; i++) {
+                  if ( favourites[i]["Name"] == name) {
+                    
+                    favourites.splice(i,1);
+                  } else {
+                    continue;
+                  }
+                }
+                console.log(favourites)
             }
-            async function addFav(name,allinfo) {
+            async function addFav(name,allinfo,favourites) {
                 const fbuser = getAuth().currentUser.email;
                 //console.log(favourites)
                 try {
@@ -279,6 +292,7 @@ export default {
                                 Overhead: "Food And Dining"
                             })
                             console.log(docRef)
+                            favourites.push(allinfo[i])
                         }
                     }
                 } catch (error) {
@@ -341,10 +355,11 @@ export default {
       var modal = document.getElementById("searchResult");
       console.log(modal);
       modal.style.display = "none";
+      /*
       setTimeout(function () {
           console.log("0.5 sec timeout");
           window.location.reload();
-      }, 500);
+      }, 500); */
     },
     async readUserFirebase() {
           
@@ -403,11 +418,11 @@ h3 {
   font-weight: bold;
   color: white;
 }
-h2 {
-  text-align: left;
-  margin-left: 180px;
-  font-weight: bold;
-  color: rgb(1, 1, 87);
+h2,h4 {
+    text-align: left;
+    margin-left: 20px;
+    font-weight: bold;
+    color: rgb(0, 15, 92);
 }
 button {
   background-color: lightskyblue;
