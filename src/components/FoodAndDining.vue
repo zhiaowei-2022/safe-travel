@@ -156,16 +156,21 @@ export default {
                     this.categories.push(row.Category);
                   }
                   row["Country"] = country
-                  container.push(row);
-                  this.allinfo.push(row);
-                  counter++;
-                  if ( (counter % this.numberOfColumns == 0 || counter == z.length) && rowcounter < 2 ) {
-                    this.database.push(container);
-                    container = [];
-                    rowcounter++;
+                  if(row["Country"] == "Singapore") {
+                      container.push(row);
                   }
+                    
+                    this.allinfo.push(row) 
+                    //console.log(this.allinfo)
+                    counter++;
+                    if ((counter % this.numberOfColumns == 0 || counter == z.length) && container.length != 0 && rowcounter < 2) {
+                        this.database.push(container);
+                        container = [];
+                        rowcounter++;
+                    }
                 });
       }
+      this.categories.sort();
     },
     goFilter(cat) {
             console.log(cat);
@@ -174,6 +179,7 @@ export default {
             let counter = 0;
             let container = [];
             var country = document.getElementById("country").value
+            this.allinfo.sort(function(a, b){return b.Rating - a.Rating})
             this.database = []
             for(var i=0;i < this.allinfo.length; i++){
                     let row = this.allinfo[i];

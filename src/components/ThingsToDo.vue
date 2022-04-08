@@ -111,6 +111,7 @@ export default {
             let container = [];
             var country = document.getElementById("country").value
             this.database = []
+            this.allinfo.sort(function(a, b){return b.Rating - a.Rating})
             for(var i=0;i < this.allinfo.length; i++){
                     let row = this.allinfo[i];
                     //console.log(row);
@@ -122,6 +123,7 @@ export default {
                     } else if (cat != "All") {
                         if(row["Country"] == country && row["Category"] == cat) {
                             container.push(row);
+                            
                             counter++;
                         } 
                     } else {
@@ -132,8 +134,10 @@ export default {
                     }
                     if ( (counter % this.numberOfColumns == 0 || counter == this.allinfo.length || i == this.allinfo.length-1)
                           && counter != 0 ) {
+                                console.log(container);
                                 this.database.push(container);
                                 container = [];
+                                counter = 0;
                     }
             }
         },
@@ -275,6 +279,7 @@ export default {
         // user in params
             //console.log(document.getElementById("country").options[1].text)
             var countrybox = document.getElementById("country")
+            console.log(countrybox.value)
             //console.log(countrybox.length)
             for(var i = 0; i < countrybox.length; i++){
                 var country = countrybox.options[i].value
@@ -291,18 +296,25 @@ export default {
                     }
                     row["Country"] = country
                     //console.log(row)
-                    container.push(row);
+                    if(row["Country"] == "Singapore") {
+                      container.push(row);
+                      counter++;
+                    }
+                    
                     this.allinfo.push(row) 
                     //console.log(this.allinfo)
-                    counter++;
-                    if ((counter % this.numberOfColumns == 0 || counter == zz.length) && rowcounter < 2) {
+                    
+                    console.log(counter)
+                    if ( (counter % this.numberOfColumns == 0 || counter == zz.length) && container.length != 0 && rowcounter < 2) {
+                        //onsole.log(container)
                         this.database.push(container);
                         container = [];
                         rowcounter++;
                     }
                 });
             }
-            //console.log(this.database)
+            this.categories.sort();
+            
         },
         async readUserFirebase() {
           
