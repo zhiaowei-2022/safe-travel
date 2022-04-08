@@ -17,10 +17,10 @@
     <form class="form-details">
       <div class="row">
         <div class="col-lg-2">
-          <select id="country" class="form-select form-control" @change="changeData()">
-            <option value="Singapore" selected>Singapore</option>
+          <select id="country" class="form-select form-control" @change='changeData()'>
             <option value="Japan">Japan</option>
-            <option value="Thailand">Thailand</option>
+            <option value="Melbourne">Melbourne</option>
+            <option value="Singapore" selected>Singapore</option>
           </select>
         </div>
       </div>
@@ -78,12 +78,12 @@
           <div id="photo">
             <!-- img -->
           </div>
-          <div class="row" v-if="user">
+          
             <div class="col-8"></div>
             <div class="col-4"  style="text-align:right">
               <button class="btn btn-primary" id="favbut">Add to Favourites</button>
             </div>
-          </div>
+          
         </div>
         <div class="row">
           <div id="resultinfo">
@@ -99,6 +99,20 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div id="errorModal" class="modal">
+        <div class="modal-content" id="error-modal-content">
+            
+            <div class="modal-body">
+                <h5><b>Please Login or Register to add to your Favourites</b></h5>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                    Close
+                </button>
+            </div>
+        </div>
   </div>
 </template>
 
@@ -190,11 +204,10 @@ export default {
     openModal(name, imageURL, rating, address, contact, desc, web) {
       var modal = document.getElementById("searchResult");
       var photoinfo = document.getElementById("photo");
-      photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px; padding:10px'>";
+      photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
       console.log(this.favourites.length)
+      var favbut = document.getElementById("favbut");
       if (getAuth().currentUser != null) {
-        var favbut = document.getElementById("favbut");
-        
         if (this.favourites.length > 0) {
           for (var index = 0; index < this.favourites.length; index++) {
             console.log(this.favourites[index]["Name"] == name)
@@ -208,6 +221,8 @@ export default {
         } else {
           createAddBut(name, this.allinfo, this.favourites)
         }
+      } else {
+        loginbut();
       }
       var resultbox = document.getElementById("resultinfo");
       resultbox.innerHTML =
@@ -230,7 +245,17 @@ export default {
         web +
         "' target='_blank' style='color:black'>here</a> <br>";
         modal.style.display = "block";
-      
+
+        function loginbut(){
+                console.log(getAuth().currentUser)
+                favbut.onclick = function () {
+                  
+                  console.log("please log in")
+                  var errormodal = document.getElementById("errorModal");
+                  errormodal.style.display = "block";
+                }
+        }
+
         function createDelBut(name,allinfo,favourites) {
                 
                 favbut.innerHTML = "Remove from Favourites"
@@ -357,6 +382,10 @@ export default {
           console.log("0.5 sec timeout");
           window.location.reload();
       }, 500); */
+    },
+    closeErrorModal() {
+            var modal = document.getElementById("errorModal");
+            modal.style.display = "none"
     },
     async readUserFirebase() {
           
@@ -496,6 +525,34 @@ label {
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */
 }
+
+h5 {
+  margin-top:25%;
+}
+
+#error-modal-content {
+    margin: 16% auto;
+    padding: 0px;
+    width: 700px;
+    height: 300px;
+}
+
+.modal-body {
+    margin:auto;
+    font-size:30px;
+    color: rgb(0, 15, 92);
+    padding: 2px 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-footer {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+
 /* The Close Button */
 .close {
   color: #aaa;

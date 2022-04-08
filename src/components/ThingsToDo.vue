@@ -56,7 +56,7 @@
             <!-- img -->
           </div>
         </div>
-        <div class="row" v-if="user">
+        <div class="row">
             <div class="col-8"></div>
             <div class="col-4"  style="text-align:right">
               <button class="btn btn-primary" id="favbut">Add to Favourites</button>
@@ -77,6 +77,20 @@
       </div>
     </div>
   </div>
+
+  <div id="errorModal" class="modal">
+        <div class="modal-content" id="error-modal-content">
+            
+            <div class="modal-body">
+                <h5><b>Please Login or Register to add to your Favourites</b></h5>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="errorBtn" name="submit" type="button" @click="closeErrorModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -126,16 +140,17 @@ export default {
         openModal(name, imageURL, rating, address, contact, desc, web) {
             var modal = document.getElementById("searchResult");
             var photoinfo = document.getElementById("photo");
-            photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px;padding:10px'>";
+            photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
             //console.log(this.favourites.length)
+            var favbut = document.getElementById("favbut");
             if (getAuth().currentUser != null) {
               
-              var delbut = document.getElementById("favbut");
+              
               if (this.favourites.length > 0){
                   for(var index = 0; index < this.favourites.length; index++) {
                           console.log(this.favourites[index]["Name"] == name)
                           if (this.favourites[index]["Name"] == name) {
-                              createDelBut(name,this.allinfo,this.favourites);
+                              removeFavBut(name,this.allinfo,this.favourites);
                               break;
                             } else {
                                 createAddBut(name, this.allinfo,this.favourites)
@@ -144,7 +159,10 @@ export default {
               } else {
                   createAddBut(name, this.allinfo,this.favourites)
               }
+            } else {
+              loginbut();
             }
+
             var resultbox = document.getElementById("resultinfo");
             resultbox.innerHTML =
                 "<h4><b>" + name + "</b></h4>" +
@@ -154,12 +172,22 @@ export default {
                 "<h5><b>Description:</b></h5> " + desc + "<br><br>" +
                 "For more information please visit <a href='" + web + "' target='_blank' style='color:black'>here</a> <br>";
                 modal.style.display = "block";
-                
-            function createDelBut(name,allinfo,favourites) {
+            
+            function loginbut(){
+                console.log(getAuth().currentUser)
+                favbut.onclick = function () {
+                  
+                  console.log("please log in")
+                  var errormodal = document.getElementById("errorModal");
+                  errormodal.style.display = "block";
+                }
+            }
+
+            function removeFavBut(name,allinfo,favourites) {
                 
                 //delbut.id = String(name)
-                delbut.innerHTML = "Remove from Favourites"
-                delbut.onclick = function () {
+                favbut.innerHTML = "Remove from Favourites"
+                favbut.onclick = function () {
                     removeFav(name,allinfo,favourites)
                     console.log("removed")
                     console.log(allinfo)
@@ -167,15 +195,20 @@ export default {
                 } 
             }
             function createAddBut(name,allinfo,favourites) {
-
-                //delbut.id = String(name)
-                delbut.innerHTML = "Add to Favourites"
-                delbut.onclick = function () {
-                    console.log(allinfo)
-                    addFav(name,allinfo,favourites)
-                    console.log("Added")
-                    createDelBut(name,allinfo,favourites)
-                } 
+                //
+                //if (getAuth().currentUser != null) {
+                  //delbut.id = String(name)
+                  favbut.innerHTML = "Add to Favourites"
+                  favbut.onclick = function () {
+                      console.log(allinfo)
+                      addFav(name,allinfo,favourites)
+                      console.log("Added")
+                      removeFavBut(name,allinfo,favourites)
+                  }
+                  /*
+                } else {
+                  
+                } */
             }
             async function removeFav(name,allinfo,favourites){
                 console.log(favourites)
@@ -233,6 +266,10 @@ export default {
                     window.location.reload()
                   }, 500
             ) */
+        },
+        closeErrorModal() {
+            var modal = document.getElementById("errorModal");
+            modal.style.display = "none"
         },
         async readFirebase() {
         // user in params
@@ -382,6 +419,33 @@ label {
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */
 }
+
+h5 {
+  margin-top:25%;
+}
+
+#error-modal-content {
+    margin: 16% auto;
+    padding: 0px;
+    width: 700px;
+    height: 300px;
+}
+
+.modal-body {
+    margin:auto;
+    font-size:30px;
+    color: rgb(0, 15, 92);
+    padding: 2px 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-footer {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
 /* The Close Button */
 .close {
   color: #aaa;

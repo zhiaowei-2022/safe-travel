@@ -269,11 +269,8 @@ export default {
         // });
         if ( (this.$router.currentRoute._value.name) == "RegisterView" )  {
           await this.$router.push({name: 'HomeView'})
-          }
-        
-
+          } 
     },
-
     async signOut() {
         const auth = getAuth();
         const user = auth.currentUser;
@@ -285,9 +282,7 @@ export default {
         this.$router.go()
 
     },
-    
   },
-
   mounted() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
