@@ -75,12 +75,13 @@
       <span class="close" @click="closeModal()">&times;</span>
       <div class="container">
         <div class="row">
-          <div id="photo">
+          <div id="photo" style="height:400px; overflow-x:hidden; overflow-y: auto;">
             <!-- img -->
           </div>
           
             <div class="col-8"></div>
             <div class="col-4"  style="text-align:right">
+              <br />
               <button class="btn btn-primary" id="favbut">Add to Favourites</button>
             </div>
           
@@ -183,7 +184,7 @@ export default {
             this.database = []
             for(var i=0;i < this.allinfo.length; i++){
                     let row = this.allinfo[i];
-                    //console.log(row);
+                    // console.log(row);
                     if(cat === undefined){
                         if(row["Country"] == country) {
                             container.push(row);
@@ -200,17 +201,19 @@ export default {
                             counter++;
                         }
                     }
-                    if ( (counter % this.numberOfColumns == 0 || counter == this.allinfo.length || i == this.allinfo.length-1)
-                          && counter != 0 ) {
-                                this.database.push(container);
-                                container = [];
+                    if ( (counter % this.numberOfColumns == 0 || counter == this.allinfo.length || i == this.allinfo.length-1) && container.length != 0 && counter != 0 ) {
+                            this.database.push(container);
+                            container = [];
                     }
             }
+            console.log(`DB contents: ${Object.keys(this.database)}`)
+            console.log(`DB contents: ${Object.values(this.database)}`)
+            console.log(`Length of DB: ${this.database.length}`);
     },
     openModal(name, imageURL, rating, address, contact, desc, web) {
       var modal = document.getElementById("searchResult");
       var photoinfo = document.getElementById("photo");
-      photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
+      photoinfo.innerHTML = "<img src='" + imageURL + " ' class='img-fluid' style='width:100%; border-radius: 30px; padding: 10px;'>";
       console.log(this.favourites.length)
       var favbut = document.getElementById("favbut");
       if (getAuth().currentUser != null) {
