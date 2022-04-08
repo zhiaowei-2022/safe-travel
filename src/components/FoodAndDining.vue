@@ -75,7 +75,7 @@
       <span class="close" @click="closeModal()">&times;</span>
       <div class="container">
         <div class="row">
-          <div id="photo" style="overlay: ">
+          <div id="photo">
             <!-- img -->
           </div>
           <div class="row" v-if="user">
@@ -190,10 +190,7 @@ export default {
     openModal(name, imageURL, rating, address, contact, desc, web) {
       var modal = document.getElementById("searchResult");
       var photoinfo = document.getElementById("photo");
-      photoinfo.innerHTML =
-        "<img src='" +
-        imageURL +
-        " 'style='width:100%;border-radius: 30px;padding:10px'>";
+      photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;border-radius: 30px; padding:10px'>";
       console.log(this.favourites.length)
       if (getAuth().currentUser != null) {
         var favbut = document.getElementById("favbut");
@@ -466,6 +463,7 @@ img {
   object-fit: cover;
   margin: 5px;
 }
+
 .form-details {
   padding: 20px;
   border-radius: 10px;
