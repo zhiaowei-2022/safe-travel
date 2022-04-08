@@ -106,7 +106,7 @@
                   </td>
                   <td>
                     <input class="signInForm" v-if="showPassword" id="password" v-model="password" type="text" placeholder="*******">
-                    <input class="signInForm" v-else id="password" v-model="password" type="password" placeholder="*******"> <br>  
+                    <input class="signInForm" v-else id="password" v-model="password" type="password" placeholder="*******" @keyup.enter="Login()"> <br>  
                   </td>
 
                   <td>
@@ -250,7 +250,7 @@ export default {
               window.location.reload()
             }, 1000
           )
-          console.log("reloaded")
+        console.log("reloaded")  
         })
         .catch((error) => {
           console.log(error.message)
@@ -269,9 +269,8 @@ export default {
         // });
         if ( (this.$router.currentRoute._value.name) == "RegisterView" )  {
           await this.$router.push({name: 'HomeView'})
-        }  
+          } 
     },
-
     async signOut() {
         const auth = getAuth();
         const user = auth.currentUser;
@@ -283,9 +282,7 @@ export default {
         this.$router.go()
 
     },
-    
   },
-
   mounted() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {

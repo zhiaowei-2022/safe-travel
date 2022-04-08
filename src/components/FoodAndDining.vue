@@ -18,7 +18,6 @@
       <div class="row">
         <div class="col-lg-2">
           <select id="country" class="form-select form-control" @change='changeData()'>
-            
             <option value="Japan">Japan</option>
             <option value="Melbourne">Melbourne</option>
             <option value="Singapore" selected>Singapore</option>
@@ -76,7 +75,7 @@
       <span class="close" @click="closeModal()">&times;</span>
       <div class="container">
         <div class="row">
-          <div id="photo" style="overlay: ">
+          <div id="photo">
             <!-- img -->
           </div>
           
@@ -205,10 +204,7 @@ export default {
     openModal(name, imageURL, rating, address, contact, desc, web) {
       var modal = document.getElementById("searchResult");
       var photoinfo = document.getElementById("photo");
-      photoinfo.innerHTML =
-        "<img src='" +
-        imageURL +
-        " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
+      photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
       console.log(this.favourites.length)
       var favbut = document.getElementById("favbut");
       if (getAuth().currentUser != null) {
@@ -496,6 +492,7 @@ img {
   object-fit: cover;
   margin: 5px;
 }
+
 .form-details {
   padding: 20px;
   border-radius: 10px;
