@@ -244,6 +244,13 @@ export default {
           $('#loginModal').modal('hide')
           $('body').removeClass('modal-open');
           $('.modal-backdrop').remove()
+          console.log("reload")
+          setTimeout(function() {
+              console.log("1 sec timeout")
+              window.location.reload()
+            }, 1000
+          )
+          console.log("reloaded")
         })
         .catch((error) => {
           console.log(error.message)
@@ -262,15 +269,7 @@ export default {
         // });
         if ( (this.$router.currentRoute._value.name) == "RegisterView" )  {
           await this.$router.push({name: 'HomeView'})
-          }
-        
-        console.log("reload")
-          setTimeout(function() {
-              console.log("1 sec timeout")
-              window.location.reload()
-            }, 1000
-          )
-        console.log("reloaded")  
+        }  
     },
 
     async signOut() {
