@@ -106,7 +106,7 @@
                   </td>
                   <td>
                     <input class="signInForm" v-if="showPassword" id="password" v-model="password" type="text" placeholder="*******">
-                    <input class="signInForm" v-else id="password" v-model="password" type="password" placeholder="*******"> <br>  
+                    <input class="signInForm" v-else id="password" v-model="password" type="password" placeholder="*******" @keyup.enter="Login()"> <br>  
                   </td>
 
                   <td>
@@ -244,6 +244,13 @@ export default {
           $('#loginModal').modal('hide')
           $('body').removeClass('modal-open');
           $('.modal-backdrop').remove()
+          console.log("reload")
+          setTimeout(function() {
+              console.log("1 sec timeout")
+              window.location.reload()
+            }, 1000
+          )
+        console.log("reloaded")  
         })
         .catch((error) => {
           console.log(error.message)
@@ -264,13 +271,7 @@ export default {
           await this.$router.push({name: 'HomeView'})
           }
         
-        console.log("reload")
-          setTimeout(function() {
-              console.log("1 sec timeout")
-              window.location.reload()
-            }, 1000
-          )
-        console.log("reloaded")  
+
     },
 
     async signOut() {
