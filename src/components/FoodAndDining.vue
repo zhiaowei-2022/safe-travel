@@ -157,14 +157,18 @@ export default {
                     this.categories.push(row.Category);
                   }
                   row["Country"] = country
-                  container.push(row);
-                  this.allinfo.push(row);
-                  counter++;
-                  if ( (counter % this.numberOfColumns == 0 || counter == z.length) && rowcounter < 2 ) {
-                    this.database.push(container);
-                    container = [];
-                    rowcounter++;
+                  if(row["Country"] == "Singapore") {
+                      container.push(row);
                   }
+                    
+                    this.allinfo.push(row) 
+                    //console.log(this.allinfo)
+                    counter++;
+                    if ((counter % this.numberOfColumns == 0 || counter == z.length) && row["Country"] == "Singapore" && rowcounter < 2) {
+                        this.database.push(container);
+                        container = [];
+                        rowcounter++;
+                    }
                 });
       }
     },

@@ -275,6 +275,7 @@ export default {
         // user in params
             //console.log(document.getElementById("country").options[1].text)
             var countrybox = document.getElementById("country")
+            console.log(countrybox.value)
             //console.log(countrybox.length)
             for(var i = 0; i < countrybox.length; i++){
                 var country = countrybox.options[i].value
@@ -291,11 +292,14 @@ export default {
                     }
                     row["Country"] = country
                     //console.log(row)
-                    container.push(row);
+                    if(row["Country"] == "Singapore") {
+                      container.push(row);
+                    }
+                    
                     this.allinfo.push(row) 
                     //console.log(this.allinfo)
                     counter++;
-                    if ((counter % this.numberOfColumns == 0 || counter == zz.length) && rowcounter < 2) {
+                    if ((counter % this.numberOfColumns == 0 || counter == zz.length) && row["Country"] == "Singapore" && rowcounter < 2) {
                         this.database.push(container);
                         container = [];
                         rowcounter++;
