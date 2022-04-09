@@ -213,7 +213,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-danger" id="exampleModalLabel">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold; color: rgb(0, 15, 92)">
             Change Password
           </h5>
           <button

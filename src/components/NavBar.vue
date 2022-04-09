@@ -246,7 +246,7 @@
           <h5
             class="modal-title"
             id="exampleModalLabel1"
-            style="font-weight: bold; font-size: 30px"
+            style="font-weight: bold; font-size: 30px; color: rgb(0, 15, 92);"
           >
             {{ loginMsg }}
           </h5>
@@ -267,6 +267,7 @@
         <div class="modal-footer">
           <button
             class="btn btn-primary"
+            id="errorBtn"
             data-bs-target="#loginModal"
             data-bs-toggle="modal"
             data-bs-dismiss="modal"
@@ -495,5 +496,13 @@ html, body {
 
 #nav a.router-link-exact-active {
   color: white !important;
+}
+
+#errorBtn {
+  background-color: rgb(0, 15, 92);
+  border-color: rgb(0, 15, 92);
+  color: white;
+  font-weight: bold;
+  width: 150px;
 }
 </style>

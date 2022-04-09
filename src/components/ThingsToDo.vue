@@ -21,7 +21,6 @@
             class="form-select form-control"
             v-on:change="changeData()"
           >
-            <!-- <select id="country" class="form-select form-control">-->
             <option value="Japan">Japan</option>
             <option value="Melbourne">Melbourne</option>
             <option value="Singapore" selected>Singapore</option>
