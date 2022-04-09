@@ -168,7 +168,6 @@ export default {
             let docs = await getDocs(collection(db, "Origin"));
             docs.forEach((doc) => {
                 var docData = doc.data()
-                // console.log(docData.name)
                 this.countries.push(docData.Name)
             })
         },
@@ -201,7 +200,6 @@ export default {
                         "Fully Vaccinated: Quarantine <strong>" + originSnap.data().Vaxxed  + "</strong><br>" +
                         "Non-Fully Vaccinated: Quarantine <strong>" + originSnap.data().NonVaxxed + "</strong><br><br>" +
                         "<a  class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + originSnap.data().QuarrantineLink + " target='_blank'><b>See detailed Quarantine Information</b></a>";
-                        // "<a  class='btn btn-info' href=" + originSnap.data().QuarrantineLink + " target='_blank'>See detailed Quarantine Information</a>";
 
                         // COVID IN ORIGIN
                         covidOrigin.innerHTML = 
@@ -211,14 +209,12 @@ export default {
                         "7-Day Average: <strong>" + originSnap.data().WeeklyCases + "</strong><br>" +
                         "Mask Rule: <strong>" + originSnap.data().Mask + "</strong><br><br>" +
                         "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + originSnap.data().CovidLink + " target='_blank'><b>See detailed Covid Status</b></a>";
-                        // "<a class='btn btn-info' href=" + originSnap.data().CovidLink + " target='_blank'>See detailed Covid Status</a>";
                 } 
                 else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
                     }
 
-                // var dest = document.getElementById("destination")
                 console.log(dest.value)
                 var qtDest = document.getElementById("qtDest")
                 var covidDest = document.getElementById("covidDest")
@@ -234,7 +230,6 @@ export default {
                     "Fully Vaccinated: Quarantine <strong>" + destSnap.data().Vaxxed  + "</strong><br>" +
                     "Non-Fully Vaccinated: Quarantine <strong>" + destSnap.data().NonVaxxed + "</strong><br> <br>" +
                     "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + destSnap.data().QuarrantineLink + " target='_blank'><b>See detailed Quarantine Information</b></a>";
-                    // "<a class='btn btn-info' href=" + destSnap.data().QuarrantineLink + " target='_blank'>See detailed Quarantine Information</a>";
 
                     // COVID IN DEST
                     covidDest.innerHTML = 
@@ -244,7 +239,6 @@ export default {
                     "7-Day Average: <strong>" + destSnap.data().WeeklyCases + "</strong><br>" +
                     "Mask Rule: <strong>" + destSnap.data().Mask + "</strong><br><br>" +
                     "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + destSnap.data().CovidLink + " target='_blank'><b>See detailed Covid Status</b></a>";
-                    // "<a class='btn btn-info' href=" + destSnap.data().CovidLink + " target='_blank'>See detailed Covid Status</a>";
 
                     // VISA
                     visaDest.innerHTML = 
@@ -252,7 +246,6 @@ export default {
                     "<strong> " + origin.value + " to "  + dest.value + "</strong> </h4> <br>" +
                     "Visa Entry: <strong>" + destSnap.data().Visa + "</strong><br><br>" +
                     "<a class='btn btn-info' style='background-color: lightskyblue; border-color: lightskyblue;' href=" + destSnap.data().VisaLink + " target='_blank'><b>See detailed Visa Entry Requirement</b></a>";
-                    // "<a class='btn btn-info' href=" + destSnap.data().VisaLink + " target='_blank' >See detailed Visa Entry Requirement</a>";
                 } 
                 else {
                     // doc.data() will be undefined in this case
@@ -270,7 +263,6 @@ export default {
 <style scoped>
     .search-info {
         background-image: url("@/assets/holding-earth.jpg");
-        /* height: 50vh; */
         padding-top: 100px;
         padding-bottom: 120px;
         background-size: cover;
@@ -341,7 +333,6 @@ export default {
         padding-bottom: 20px;
         padding-left: 20px;
         padding-right: 20px;
-        /* box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px; */
 
     }
 

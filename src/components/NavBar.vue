@@ -81,7 +81,6 @@
 
   <!-- Modal -->  
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <!-- <div class="modal-dialog"> -->
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -167,6 +166,7 @@
 import * as $ from 'jquery'
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 
+
 export default {
   name: "NavBar",
 
@@ -210,22 +210,7 @@ export default {
       var name = this.$router.currentRoute._value.name
       $('.active').removeClass('active')
       document.getElementById(name).classList.toggle("active")
-      // console.log( document.getElementById(name).classList)
 
-    //       if ( name== ("UserProfile") || name == ("FavouritePage") ) {
-    //   $(this).children().children().addClass('active')
-    // }
-
-    // else if (name == "RegisterView") {
-    //   $(this).children().children().addClass('active')
-    // }
-
-    // else {
-    //   console.log("here")
-    //   $(this).children().addClass('active')
-    //   // $(this).removeClass('active');   
-
-    // }
 
     },
 
@@ -259,14 +244,13 @@ export default {
               this.loginMsg = "Invalid Email";
               break;
             default:
-              // alert("Incorrect Email/Password")
               this.loginMsg = "Incorrect Email/Password";
               break;
           }
           $('#loginModal').modal('hide')
           $('#exampleModal1').modal('toggle')
         });   
-        // });
+
         if ( (this.$router.currentRoute._value.name) == "RegisterView" )  {
           await this.$router.push({name: 'HomeView'})
           } 
@@ -275,7 +259,6 @@ export default {
         const auth = getAuth();
         const user = auth.currentUser;
         signOut(auth, user)
-        // console.log(this.$router.currentRoute._value.name)
         if ( ((this.$router.currentRoute._value.name) == "UserProfile") || ((this.$router.currentRoute._value.name) == "FavouritePage")) {
           await this.$router.push({name: 'HomeView'})
         }
@@ -290,41 +273,27 @@ export default {
         this.user = user;
         this.username = user.displayName
       }
+      else{
+        var current = (this.$router.currentRoute)
+        var page_name = current['_value']['name']
+        document.getElementById(page_name).classList.toggle("active")
+      }
     });
     let jquery = document.createElement("script");
     jquery.setAttribute("src", "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js");
     document.head.appendChild(jquery);
 
+  
     
-    var current = (this.$router.currentRoute)
-    
-    $(document).ready(function() {
-      // $(this).removeClass('active'); 
-      var page_name = current['_value']['name']
-      console.log(page_name)
-      // document.getElementById(page_name).classList.toggle("active")
-      // document.getElementById(page_name).classList.toggle("active")
-      if (page_name != "UserProfile") {
-        console.log(document.getElementById(page_name))
-        document.getElementById(page_name).classList.toggle("active")
-        console.log(document.getElementById(page_name))
-      }
-
-    });
+    // $(document).ready(function() {
+    // console.log(document.getElementById(page_name).classList)
+    // });
 
 
     $('.nav li').click(function() {
-      // $("#HomeView").removeClass("active")
-      // $("#BookFlight").removeClass("active")
-      // $("#ThingsToDo").removeClass("active")
-      // $("#FoodAndDining").removeClass("active")
-      // $("#AccomodationPage").removeClass("active")
-      // $("#TryingStuffs").removeClass("active")
-      // $("#RegisterView").removeClass("active")
-      // $("#UserProfile").removeClass("active")
+
       $('.active').removeClass('active')
 
-      // console.log($(this))
 
     if (($(this).children().children()[0].id) == ("UserProfile") || ($(this).children().children()[0].id) == ("FavouritePage")) {
       $(this).children().children().addClass('active')
@@ -349,14 +318,17 @@ export default {
 
   },
   updated() {
-    console.log("update")
-    // this.$nextTick(() => {
-    //   $(this).removeClass('active'); 
-    //   var current = (this.$router.currentRoute)
-    //   console.log(current)
-    //   var page_name = current['_value']['name']
-    //   document.getElementById(page_name).classList.toggle("active")
-    // })
+
+    this.$nextTick(() => {
+      console.log("update")
+      $(this).removeClass('active'); 
+      var current = (this.$router.currentRoute)
+      // console.log(current)
+      var page_name = current['_value']['name']
+      console.log(page_name)
+      document.getElementById(page_name).classList.toggle("active")
+      console.log(document.getElementById(page_name))
+    })
   }
 
 };
@@ -366,10 +338,6 @@ export default {
 #nav {
   padding: 20px;
   text-align: center;
-      /* position: fixed; */
-  /* position: -webkit-sticky; */
-  /* margin: 0 0 100px 0; */
-  /* top: 0; */
   
 }
 
@@ -432,7 +400,6 @@ html,body{
 
 #nav a.router-link-exact-active {
   color: white !important;
-  /* background-color: green; */
 }
 
 

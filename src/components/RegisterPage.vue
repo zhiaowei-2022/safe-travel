@@ -53,84 +53,6 @@
 </div>
 </div>
 
-<!-- <div id="holder">
-<div class="container">
-  <div class="title">
-    <h1> Register for an account </h1>
-  </div>
-
-  <div id="background">
-    <div class="form-details">
-    
-
-  <div class="field">
-    <div class="row justify-content-center">
-      <div class="col col-lg-1" style="text-align:right">
-        <strong><label for="email" id="credentials">Email: </label></strong>
-      </div>
-      <div class="col col-lg-3">
-        <input class="registerForm" v-model="email" @input="checkEmail()" type="email" placeholder="  xyz@gmail.com">
-        <p v-if="checkingEmail" id="invalidCritera"> {{emailCriteria}} </p>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="field">
-    <div class="row justify-content-md-center">
-      <div class="col col-lg-1" style="text-align:right">
-        <strong><label for="username" id="credentials">Username: </label></strong>
-      </div>
-      <div class="col col-lg-3">
-        <input class="registerForm" v-model="username" @input="checkUsername()" type="text" placeholder="xyz">
-        <p id="invalidCritera" v-if="checkingUsername" v-html="usernameCriteria"></p>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="field">
-    <div class="row justify-content-md-center">
-      <div class="col col-lg-1">
-        <strong><label for="password" id="credentials" style="text-align:right">Password: </label></strong> 
-      </div>
-      <div span class="col col-lg-3">
-        <input class="registerForm" v-if="showPassword" v-model="password" @input="checkPassword()" type="" placeholder="  *******">
-        <input class="registerForm" v-else v-model="password" @input="checkPassword()" type="password" placeholder="  *******">
-        <div v-if="showPassword" @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px;">
-          <i id = "visibility" class="fa-solid fa-eye"></i></div>
-        <div v-else @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px">
-          <i id = "visibility" class="fa-solid fa-eye-slash"></i>
-        </div>
-        <p id="invalidCritera" v-if="checkingPassword" v-html="passwordCriteria"></p> 
-      </div>
-
-
-    </div>
-  </div>
-
-<div class="field">
-  <div class="row justify-content-md-center">
-    <div class="col col-lg-1">
-      </div>
-      <div class="col col-lg-3" style="text-align:right">
-      
-          <strong><p id="login"> Already have an account? Login
-          <router-link to="/loginview" style="color:rgb(1, 1, 87)">HERE</router-link> </p>
-          <router-view/></strong> <br>
-              
-
-          <button type="button" id="registerBtn" v-on:click="register()" v-if="criteriaArray.every(x => x == true)">REGISTER</button>
-          <button type="button" v-else id ="invalidRegisterBtn"> REGISTER</button>
-          <br><br>
-          </div>
-
-  </div>
-</div>
-</div>
-</div>
-</div>
-</div> -->
 
         
 </template>
@@ -166,12 +88,6 @@ export default {
   },
   methods: {
       mounted() {
-        // const auth = getAuth();
-        // onAuthStateChanged(auth, (user) => {
-        //     if (user) {
-        //         this.user = user;
-        //     }
-        // });
         let jquery = document.createElement('script')
         jquery.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
         document.head.appendChild(jquery)
@@ -212,13 +128,7 @@ export default {
           this.emailCriteria = "Invalid Email Format" 
           return true;
         }
-        // if (!(this.email.includes("@"))) {
-        //   this.emailCriteria = "Invalid Email: Requires @"
-        //   return true
-        // } else if (!(this.email.includes("."))) {
-        //   this.emailCriteria = "Invalid Email: Requires ."
-        //   return true
-        //  } 
+
         
          else{
           const docRef = doc(db, "Users", this.email);
@@ -289,7 +199,6 @@ export default {
 
 
         if (x == false && y == false && z == false) {
-          // alert("Registering for " + username)
 
           try {
             const docRef = await setDoc(doc(db, "Users", email), {
@@ -349,7 +258,6 @@ export default {
       height: 35px;
       border-radius: 10px;
       border: 3px solid transparent;
-      /* padding: 0; */
       font-size: 15px;
       
     }
@@ -364,16 +272,7 @@ export default {
       
     }
 
-    /* #holder {
-      background-image: url("../assets/parachute.jpg");
-        height: 100%;
-        padding-top: 100px;
-        padding-bottom: 50px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        
-        } */
+
 
 
     #holder {
@@ -392,7 +291,6 @@ export default {
       left: 0;
       top: 0;
       width: 100%;
-      /* height: 80.5vh; */
       height: 100%;
       background-image: url("../assets/balloon.jpg");
       background-position: center;
@@ -407,7 +305,6 @@ export default {
     }
 
     #credentials {
-      /* color:white; */
       margin: 4px 0 0 0;
     }
 
@@ -427,19 +324,14 @@ export default {
       color: red;
       margin : 0px;
       padding : 0px;
-      /* margin: auto; */
       text-align:center;
     
     }
 
     .form-details {
         background-color: white;
-        /* padding: 20px; */
-        /* padding-left: 0px; */
-        /* border-radius: 10px; */
         margin-right: 300px;
         margin-left: 300px;
-        /* overflow:clip; */
     }
 
     .title {
@@ -468,17 +360,11 @@ export default {
       color: grey;
       justify-content: right;
       align-items: right;
-      /* margin-right: 100px; */
     }
 
-    /* #visibility:hover{
-    border-radius: 5px;
-    box-shadow: 4px 4px;
-    } */
+
 
     .col{ 
-       /* background-color: gray; */
-      /* color: blue; */
       text-align: left;
       border: 1px solid black;
     }

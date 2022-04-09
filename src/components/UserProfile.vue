@@ -135,7 +135,6 @@
         <div v-else @click="toggleShow" style="display:inline-block; margin: 7px 0 0 5px">
           <i id = "visibility" class="fa-solid fa-eye-slash"></i>
         </div>
-        <!-- <p id="invalidCritera" v-if="checkingPassword" v-html="passwordCriteria"></p>  -->
       </div>
     </div>
    </div>
@@ -252,7 +251,6 @@ export default {
           this.actualGender = docSnap.data().gender
           this.actualNation = docSnap.data().nation
           this.DPurl = docSnap.data().display_pic
-          // console.log(this.DP)
           document.getElementById(this.actualGender).checked = true
           })
       }
@@ -265,7 +263,6 @@ export default {
   methods: {
     async onFileSelected(event) {
       this.DP = event.target.files[0]
-      // console.log(this.DP)
       const storage = getStorage()
       const profileRef = ref(storage, "UsersDP/" + this.actualEmail + "/" + this.DP.name);
       console.log(profileRef)
@@ -299,13 +296,11 @@ export default {
       newUsername = (newUsername == "" ? this.actualUsername : newUsername)
 
       let newPhone = document.getElementById("phone").value
-      // console.log(newPhone)
       newPhone = (newPhone == 0 ? this.actualPhone : newPhone)
 
       let newGender = $('input[name=gender]:checked').val()
 
       let newNation = document.getElementById("nation").value
-      // console.log(newPhone)
       newNation = (newNation == "" ? this.actualNation : newNation)
 
       let updatedPassword = (this.newPassword == "" ? this.actualPassword : this.newPassword)
@@ -324,7 +319,6 @@ export default {
         displayName: newUsername,
       }).then(() => {
         console.log("updated displayname");
-        // console.log(updatedPassword)
         console.log(auth.currentUser);
       }).catch((error) => {
         console.log(error);
@@ -332,20 +326,18 @@ export default {
 
       await updatePassword(auth.currentUser, updatedPassword).then(() => {
         // Update successful.
-        console.log("updated pass");
         console.log(updatedPassword)
-        console.log(auth.currentUser);
       }).catch((error) => {
         // An error ocurred
         // ...
         console.log(error);
       });
 
-      console.log("1")
+
       await this.$router.push({name: 'UserProfile'}).then(() => {
-        console.log("2")
+
         this.$router.go()    
-        console.log("3")
+
       })
     },
 
@@ -429,12 +421,8 @@ h1 {
   color: rgb(0, 15, 92);
 }
   .col{ 
-      /* background-color: gray; */
-    /* color: blue; */
-    /* text-align: left; */
-    /* border: 1px solid black; */
     text-align: left;
-    /* height:100px; */
+
   }
 
   .accountForm {
