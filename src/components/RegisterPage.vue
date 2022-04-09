@@ -240,7 +240,7 @@ export default {
 
     invalidUsername() {
       this.criteriaArray[1] = false
-      if (this.username == "") {
+      if (this.username == "" || (!this.username.replace(/\s/g,"").length)) {
         this.usernameCriteria = "Invalid Username: Cannot be empty"
         return true
       } 
