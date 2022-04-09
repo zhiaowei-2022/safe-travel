@@ -33,8 +33,6 @@
             <option value="Melbourne">Melbourne</option>
             <option value="Germany">Germany</option>
             <option value="Bangkok">Bangkok</option>
-            <!-- <option v-for="country in listCountries" 
-                v-bind:key="country.countryName"> {{ country.countryName }} </option> -->
           </select>
         </div>
         <!-- Search field for destination country -->
@@ -224,12 +222,15 @@
 import firebaseApp from "@/firebase.js";
 import { getFirestore, collection, getDocs, query } from "firebase/firestore";
 import PopularDestination from "@/template/PopularDestination.vue";
+
 const db = getFirestore(firebaseApp);
+
 export default {
   name: "BookFlight",
   components: {
     PopularDestination,
   },
+
   data() {
     return {
       originCountry: null,
@@ -252,6 +253,7 @@ export default {
     document.head.appendChild(jquery);
     this.getPopularDestinations();
   },
+
   methods: {
     toggle() {
       this.isOneWay = this.isOneWay ? false : true;

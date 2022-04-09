@@ -26,14 +26,11 @@
                 <div v-if="user" class="flight-price-added"> ${{ price }} </div>
                 <div v-if="user">
                     <!-- not added to likes -->
-                    <!-- <div class="flight-price"> {{ price }} </div> -->
                     <a class="btn btn-primary" :href="link" target="_blank"> Book now </a>
                 </div>
-                
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
