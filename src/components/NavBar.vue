@@ -291,8 +291,8 @@ export default {
 
 
     $('.nav li').click(function() {
-      console.log($(this)[0])
-      console.log($(this)[0].id)
+      // console.log($(this)[0])
+      // console.log($(this)[0].id)
 
       if ($(this)[0].id != "login") {
 
