@@ -21,9 +21,9 @@
             class="form-select form-control"
             v-on:change="changeData()"
           >
+            <option value="Singapore" selected>Singapore</option>
             <option value="Japan">Japan</option>
             <option value="Melbourne">Melbourne</option>
-            <option value="Singapore" selected>Singapore</option>
           </select>
         </div>
       </div>
@@ -75,13 +75,11 @@
     </div>
   </div>
   <div id="searchResult" class="modal">
-    <!-- Modal content -->
     <div class="modal-content">
       <span class="close" v-on:click="closeModal()">&times;</span>
       <div class="container">
         <div class="row">
           <div id="photo">
-            <!-- img -->
           </div>
         </div>
         <div class="row">
@@ -94,14 +92,6 @@
         </div>
         <div class="row">
           <div id="resultinfo">
-            <!--
-              Name
-              Rating
-              Address
-              Phone
-              Description
-              Website
-              -->
           </div>
         </div>
       </div>
@@ -248,7 +238,6 @@ export default {
       }
 
       function removeFavBut(name, allinfo, favourites) {
-        //delbut.id = String(name)
         favbut.innerHTML = "Remove from Favourites";
         favbut.onclick = function () {
           removeFav(name, allinfo, favourites);
@@ -258,9 +247,6 @@ export default {
         };
       }
       function createAddBut(name, allinfo, favourites) {
-        //
-        //if (getAuth().currentUser != null) {
-        //delbut.id = String(name)
         favbut.innerHTML = "Add to Favourites";
         favbut.onclick = function () {
           console.log(allinfo);
@@ -268,10 +254,6 @@ export default {
           console.log("Added");
           removeFavBut(name, allinfo, favourites);
         };
-        /*
-                } else {
-                  
-                } */
       }
       async function removeFav(name, allinfo, favourites) {
         console.log(favourites);
@@ -290,11 +272,9 @@ export default {
           }
         }
         console.log(favourites);
-        //console.log(allinfo)
       }
       async function addFav(name, allinfo, favourites) {
         const fbuser = getAuth().currentUser.email;
-        //console.log(favourites)
         try {
           for (var i = 0; i < allinfo.length; i++) {
             if (allinfo[i]["Name"] == name) {
@@ -325,32 +305,20 @@ export default {
     },
     closeModal() {
       var modal = document.getElementById("searchResult");
-      //console.log(modal)
       modal.style.display = "none";
-      /*
-            setTimeout(function() {
-                    console.log(".5 sec timeout")
-                    window.location.reload()
-                  }, 500
-            ) */
     },
     closeErrorModal() {
       var modal = document.getElementById("errorModal");
       modal.style.display = "none";
     },
     async readFirebase() {
-      // user in params
-      //console.log(document.getElementById("country").options[1].text)
       var countrybox = document.getElementById("country");
       console.log(countrybox.value);
-      //console.log(countrybox.length)
       for (var i = 0; i < countrybox.length; i++) {
         var country = countrybox.options[i].value;
-
         var zz = await getDocs(
           collection(db, "ThingToDo/Attractions/" + country)
         );
-        //console.log(zz)
         let counter = 0;
         let container = [];
         let rowcounter = 0;
@@ -360,16 +328,11 @@ export default {
             this.categories.push(row.Category);
           }
           row["Country"] = country;
-          //console.log(row)
           if (row["Country"] == "Singapore") {
             container.push(row);
             counter++;
           }
-
           this.allinfo.push(row);
-          //console.log(this.allinfo)
-
-          console.log(counter);
           if (
             (counter % this.numberOfColumns == 0 || counter == zz.length) &&
             container.length != 0 &&

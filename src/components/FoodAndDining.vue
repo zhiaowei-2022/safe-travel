@@ -18,9 +18,10 @@
       <div class="row">
         <div class="col-lg-2">
           <select id="country" class="form-select form-control" @change='changeData()'>
+            <option value="Singapore" selected>Singapore</option>
             <option value="Japan">Japan</option>
             <option value="Melbourne">Melbourne</option>
-            <option value="Singapore" selected>Singapore</option>
+            
           </select>
         </div>
       </div>
