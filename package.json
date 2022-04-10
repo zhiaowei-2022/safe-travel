@@ -1,5 +1,5 @@
 {
-  "name": "safe-tavel",
+  "name": "safe-travel",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -52,6 +52,6 @@
     "not dead",
     "not ie 11"
   ],
-  "_id": "safe-tavel@0.1.0",
+  "_id": "safe-travel@0.1.0",
   "readme": "ERROR: No README data found!"
 }
