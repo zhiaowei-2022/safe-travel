@@ -291,26 +291,31 @@ export default {
 
 
     $('.nav li').click(function() {
+      console.log($(this)[0])
+      console.log($(this)[0].id)
 
-      $('.active').removeClass('active')
+      if ($(this)[0].id != "login") {
+
+        $('.active').removeClass('active')
 
 
-    if (($(this).children().children()[0].id) == ("UserProfile") || ($(this).children().children()[0].id) == ("FavouritePage")) {
-      $(this).children().children().addClass('active')
-    }
+      if (($(this).children().children()[0].id) == ("UserProfile") || ($(this).children().children()[0].id) == ("FavouritePage")) {
+        $(this).children().children().addClass('active')
+      }
 
-    else if (($(this).children().children()[0].id) == "RegisterView") {
-      $(this).children().children().addClass('active')
-    }
+      else if (($(this).children().children()[0].id) == "RegisterView") {
+        $(this).children().children().addClass('active')
+      }
 
-    else {
-      $(this).children().addClass('active')
-      // console.log($(this).children())
-      // $(this).removeClass('active');  
+      else {
+        $(this).children().addClass('active')
+        // console.log($(this).children())
+        // $(this).removeClass('active');  
 
-    }
-    
-      // console.log($(this).children().children()[0].id)
+      }
+      
+        // console.log($(this).children().children()[0].id)
+      }
 
 
     })
