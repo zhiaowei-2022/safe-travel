@@ -406,19 +406,20 @@ export default {
     document.head.appendChild(jquery);
 
     $(".nav li").click(function () {
+      if ($(this)[0].id != "login") {
       $(".active").removeClass("active");
-
-      if (
-        $(this).children().children()[0].id == "UserProfile" ||
-        $(this).children().children()[0].id == "FavouritePage"
-      ) {
-        $(this).children().children().addClass("active");
-      } else if ($(this).children().children()[0].id == "RegisterView") {
-        $(this).children().children().addClass("active");
-      } else {
-        $(this).children().addClass("active");
+        if (
+          $(this).children().children()[0].id == "UserProfile" ||
+          $(this).children().children()[0].id == "FavouritePage"
+        ) {
+          $(this).children().children().addClass("active");
+        } else if ($(this).children().children()[0].id == "RegisterView") {
+          $(this).children().children().addClass("active");
+        } else {
+          $(this).children().addClass("active");
+        }
       }
-    });
+    }); 
   },
   updated() {
     this.$nextTick(() => {
