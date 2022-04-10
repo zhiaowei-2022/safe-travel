@@ -23,8 +23,8 @@
             </div>
             <div class="col col-lg-2">
                 <!-- added to likes -->
-                <div v-if="user" class="flight-price-added"> ${{ price }} </div>
-                <div v-if="user">
+                <div class="flight-price-added"> ${{ price }} </div>
+                <div>
                     <!-- not added to likes -->
                     <!-- <div class="flight-price"> {{ price }} </div> -->
                     <a class="btn btn-primary" :href="link" target="_blank"> Book now </a>
@@ -88,6 +88,7 @@ export default {
     background-color: rgb(0, 15, 95, 0.05);
     align-items: center;
     margin: 10px 0px;
+    padding: 10px 0px;
     color: black;
 }
 img {
