@@ -14,17 +14,16 @@ export default {
         countryName: String,
         altText: String,
     }
-
 }
 </script>
 
 <style>
-    img {
-        width: 95%;
-        border-radius: 20px;
-    }
+img {
+    width: 95%;
+    border-radius: 20px;
+}
 
-    figcaption {
-        font-weight: bold;
-    }
+figcaption {
+    font-weight: bold;
+}
 </style>

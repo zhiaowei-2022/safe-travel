@@ -5,13 +5,11 @@ import AccommodationPage from '@/components/AccommodationPage.vue'
 import AccommodationResults from '@/components/AccommodationResults.vue'
 import BookFlight from '@/components/BookFlight.vue'
 import FlightResults from '@/components/FlightResults.vue'
-// import checkFB from '@/components/checkFB.vue'
-import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import HomeView from '@/views/HomeView.vue'
-import TryingStuffs from '@/components/TryingStuffs.vue'
 import FavouritePage from '@/components/FavouritePage.vue'
 import UserProfile from '@/components/UserProfile.vue'
+
 const routes = [
     {
         path: '/FoodAndDining',
@@ -54,19 +52,9 @@ const routes = [
         component: RegisterView
     },
     {
-        path: '/loginview',
-        name: 'LoginView',
-        component: LoginView
-    },
-    {
         path: '/userprofile',
         name: 'UserProfile',
         component: UserProfile
-    },
-    {
-        path: '/tryingstuffs',
-        name: 'TryingStuffs',
-        component: TryingStuffs
     },
     {
         path: '/favouritepage',
@@ -87,7 +75,6 @@ router.beforeEach((to, from, next) => {
     if (modalBackground) {
         modalBackground.remove()
     }
-
 
     // do other stuff
     next()

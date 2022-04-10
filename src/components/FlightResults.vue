@@ -188,7 +188,6 @@
 
   <div id="searchModal" class="modal">
     <div class="modal-content">
-      <!-- <span class="close" v-on:click="closeSearchModal()">&times;</span> -->
       <div class="modal-header">
         <h2 style="font-weight: bold">Modify Your Search</h2>
         <span class="close" v-on:click="closeSearchModal()">&times;</span>
@@ -342,6 +341,7 @@ export default {
     FlightSearchInput,
     FlightResult,
   },
+
   data() {
     return {
       database: [],
@@ -537,19 +537,23 @@ export default {
   justify-content: center;
   margin-top: 20px;
 }
+
 .search-result {
   text-align: left;
 }
+
 h2 {
   text-align: left;
   font-weight: bold;
   color: rgb(1, 1, 87);
 }
+
 .rectangle {
   width: 1300px;
   height: 150px;
   background: rgb(0, 15, 95, 0.13);
 }
+
 .circle {
   width: 120px;
   height: 120px;
@@ -558,6 +562,7 @@ h2 {
   margin-left: 30px;
   margin-top: 15px;
 }
+
 button {
   background-color: rgb(0, 15, 92);
   border-color: rgb(0, 15, 92);
@@ -565,15 +570,18 @@ button {
   font-weight: bold;
   width: 150px;
 }
+
 img {
   width: 90%;
   border-radius: 50%;
   display: inline-block;
 }
+
 #no-results {
   width: 120px;
   height: 120px;
 }
+
 .modal {
   display: none;
   position: fixed;
@@ -585,12 +593,14 @@ img {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 .modal-header {
   padding: 10px;
   color: rgb(0, 15, 92);
   display: flex;
   align-items: center;
 }
+
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
@@ -598,6 +608,7 @@ img {
   border: 1px solid #888;
   width: 80%;
 }
+
 .close {
   color: #aaa;
   text-align: right;
@@ -605,33 +616,39 @@ img {
   font-size: 35px;
   font-weight: bold;
 }
+
 .close:hover,
 .close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
+
 #modify {
   float: right;
   margin-top: 10px;
 }
+
 label {
   color: black;
   float: left;
   text-align: left;
   font-weight: bold;
 }
+
 i {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 #error-modal-content {
   margin: 16% auto;
   padding: 0px;
   width: 700px;
   height: 300px;
 }
+
 #invalid-options {
   font-weight: bold;
   font-size: 30px;

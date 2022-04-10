@@ -1,4 +1,4 @@
-# safe-tavel
+# safe-travel
 
 ## Project setup
 ```

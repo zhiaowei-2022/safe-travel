@@ -50,7 +50,6 @@
                         <br/>
                         <br/>
                         <h5>Category: {{row.Category}} </h5>
-                        
                     </div>
                     <br>
                 </div>
@@ -74,17 +73,8 @@
                 <button class="btn btn-primary" id="favbut">Remove from favourites</button>
             </div>
         </div>
-        <div >
-          <div id="resultinfo">
-            <!--
-              Name
-              Rating
-              Address
-              Phone
-              Description
-              Website
-              -->
-          </div>
+        <div>
+          <div id="resultinfo"></div>
         </div>
       </div>
     </div>
@@ -95,7 +85,9 @@
 import firebaseApp from "../firebase.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, collection, getDocs, setDoc, doc, deleteDoc} from "firebase/firestore"
+
 const db = getFirestore(firebaseApp);
+
 export default {
     name:"FavouritePage",
     methods: {
@@ -106,17 +98,18 @@ export default {
             photoinfo.innerHTML = "<img src='" + imageURL + " 'style='width:100%;height:400px;border-radius: 30px;padding:10px'>";
             var favbut = document.getElementById("favbut");
             
-                for(var index = 0; index < this.favourites.length; index++) {
-                        console.log(this.favourites[index]["Name"] == name)
-                        if (this.favourites[index]["Name"] == name) {
-                                createDelBut(name,this.favourites);
-                                
-                                break;
-                            } else {
-                                createAddBut(name, this.favourites)
-                                
-                            }
-                }
+            for(var index = 0; index < this.favourites.length; index++) {
+                    console.log(this.favourites[index]["Name"] == name)
+                    if (this.favourites[index]["Name"] == name) {
+                            createDelBut(name,this.favourites);
+                            
+                            break;
+                        } else {
+                            createAddBut(name, this.favourites)
+                            
+                        }
+            }
+
             function createDelBut(name,favourites) {
                 favbut.innerHTML = "Remove from Favourites"
                 favbut.onclick = function () {
@@ -137,6 +130,7 @@ export default {
                     createDelBut(name,favourites)
                 }     
             }
+
             async function removeFav(name,favourites){
                 var itemname = name
                 console.log("Removing Favourites: ", itemname)
@@ -145,6 +139,7 @@ export default {
                 console.log(favourites)
                 
             }
+
             async function addFav(name,favourites) {
                 console.log(favourites)
                 try {
@@ -170,6 +165,7 @@ export default {
                 }
                 
             }
+
             var resultbox = document.getElementById("resultinfo");
             resultbox.innerHTML =
                 "<h4><b>" +
@@ -200,26 +196,26 @@ export default {
             modal.style.display = "none";
             window.location.reload();
         },
+
         async readUserFirebase() {
             this.favourites = [];
             const auth = getAuth();
             const fbuser = auth.currentUser.email;
             var z = await getDocs(collection(db,"Users/"+ String(fbuser)+"/Favourites"))
             z.forEach((doc) => {
-                    let row = doc.data();
-                    if(row["Overhead"] == "Tourist Attractions") {
-                        this.favouriteTA.push(row)
-                    } else if (row["Overhead"] == "Food And Dining") {
-                        this.favouriteFB.push(row)
-                    }
-                    this.favourites.push(row)
-                    this.database.push(row)
+                let row = doc.data();
+                if(row["Overhead"] == "Tourist Attractions") {
+                    this.favouriteTA.push(row)
+                } else if (row["Overhead"] == "Food And Dining") {
+                    this.favouriteFB.push(row)
+                }
+                this.favourites.push(row)
+                this.database.push(row)
                     
             });
-            //console.log(this.favourites)
-            
         }
     },
+
     data() {
         return {
             user:false,
@@ -229,6 +225,7 @@ export default {
             database: [],
         }
     },
+
     mounted() {
         let jquery = document.createElement("script");
         jquery.setAttribute(
@@ -253,16 +250,19 @@ h1, h2 {
     font-weight: bold;
     color: rgb(0, 15, 92);
 }
+
 h3 {
     text-align: left;
     margin-left: 10px;
     color:rgb(0, 15, 92);
     font-weight: bold;
 }
+
 .Favourite {
         margin-top:20px;
 }
-    /* The Modal (background) */
+
+/* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -275,7 +275,8 @@ h3 {
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-    /* Modal Content/Box */
+
+/* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
@@ -283,7 +284,8 @@ h3 {
     border: 1px solid #888;
     width: 50%; /* Could be more or less, depending on screen size */
 }
-    /* The Close Button */
+
+/* The Close Button */
 .close {
     color: #aaa;
     text-align: right;
@@ -291,38 +293,38 @@ h3 {
     font-size: 28px;
     font-weight: bold;
 }
+
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
+
 #resultinfo {
-        text-align: left;
+    text-align: left;
 }
 
 .favouritesModal {
-        
-        
-        color:black;
-        align-items: center;
-        margin:auto;
+    color:black;
+    align-items: center;
+    margin:auto;
 }
 
 .row {
-        background-color: #f8f9fa;
-        border-color: #f8f9fa;
-
-        padding:10px 0px 0px 0px;
-        margin: 10px 0px 0px 0px;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+    padding:10px 0px 0px 0px;
+    margin: 10px 0px 0px 0px;
 }
+
 .row:hover {
-    
     color: #212529;
     background-color: #e2e6ea;
     border-color: #dae0e5;
 
 }
+
 img {
     width: 100%;
     border-radius: 10px;
