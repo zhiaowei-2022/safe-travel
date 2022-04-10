@@ -1,4 +1,5 @@
 <template>
+  <link rel="icon" href="@/assets/safe-travel-icon.png">
   <NavBar/>
   <router-view/>
   <br/><br/>
