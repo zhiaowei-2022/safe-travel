@@ -292,10 +292,6 @@ import {
 export default {
   name: "NavBar",
 
-  components: {
-    // LoginModal
-  },
-
   data() {
     return {
       user: false,
@@ -406,30 +402,27 @@ export default {
     document.head.appendChild(jquery);
 
     $(".nav li").click(function () {
+      if ($(this)[0].id != "login") {
       $(".active").removeClass("active");
-
-      if (
-        $(this).children().children()[0].id == "UserProfile" ||
-        $(this).children().children()[0].id == "FavouritePage"
-      ) {
-        $(this).children().children().addClass("active");
-      } else if ($(this).children().children()[0].id == "RegisterView") {
-        $(this).children().children().addClass("active");
-      } else {
-        $(this).children().addClass("active");
+        if (
+          $(this).children().children()[0].id == "UserProfile" ||
+          $(this).children().children()[0].id == "FavouritePage"
+        ) {
+          $(this).children().children().addClass("active");
+        } else if ($(this).children().children()[0].id == "RegisterView") {
+          $(this).children().children().addClass("active");
+        } else {
+          $(this).children().addClass("active");
+        }
       }
-    });
+    }); 
   },
   updated() {
     this.$nextTick(() => {
-      console.log("update");
       $(this).removeClass("active");
       var current = this.$router.currentRoute;
-      // console.log(current)
       var page_name = current["_value"]["name"];
-      console.log(page_name);
       document.getElementById(page_name).classList.toggle("active");
-      console.log(document.getElementById(page_name));
     });
   },
 };
